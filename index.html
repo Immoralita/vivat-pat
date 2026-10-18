@@ -164,11 +164,12 @@
     <div id="map"></div>
 
     <script>
+        // Настройки карты
         var map = L.map('map', {
             minZoom: 5,
             maxZoom: 8,
-            center: [42.5, 12.5], 
-            zoom: 6,
+            center: [45.0, 12.0], // Центр на Италии
+            zoom: 7,
             zoomControl: false 
         });
 
@@ -178,6 +179,11 @@
         // Загружаем картинку
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
+        // Ограничители краев
+        map.setMaxBounds(imageBounds);
+        map.on('drag', function() {
+            map.panInsideBounds(imageBounds, { animate: false });
+        });
 
         // Логика панели
         var panel = document.getElementById('panel');
@@ -192,13 +198,13 @@
             }
         });
 
-        // Данные картины (Юдифь в Венеции)
+        // Данные картин
         var artworks = [
             {
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
                 city: { ru: "Венеция (создана), Эрмитаж (хранится)", en: "Venice (created), Hermitage (stored)" },
-                coords: [45.75, 13.65], // Координаты Венеции
+                coords: [45.70, 12.90], // Сдвинутые координаты
                 author: "Джорджоне / Giorgione",
                 text: { 
                     ru: "«Юдифь» — картина итальянского живописца Джорджоне, представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. Картина отсылает нас к Ветхозаветному сюжету Книги Юдифи.",
@@ -238,8 +244,8 @@
             document.getElementById('lang-switch').innerText = currentLang === 'ru' ? 'EN' : 'RU';
             document.getElementById('panel-desc').innerText = currentLang === 'ru' ? 'Интерактивная карта шедевров Возрождения.' : 'Interactive map of Renaissance masterpieces.';
             document.getElementById('panel-sections').innerText = currentLang === 'ru' ? 'Разделы' : 'Sections';
-            document.getElementById('tab-countries').innerText = currentLang === 'ru' ? '🏛️ По странам' : '🏛️ By Country';
-            document.getElementById('tab-artists').innerText = currentLang === 'ru' ? '👨‍🎨 По художникам' : '👨‍🎨 By Artists';
+            document.getElementById('tab-countries').innerText = currentLang === 'ru' ? '🏛️ Страны' : '🏛️ Countries';
+            document.getElementById('tab-artists').innerText = currentLang === 'ru' ? '👨‍🎨 Художники' : '👨‍🎨 Artists';
             document.getElementById('feedback-text').innerText = currentLang === 'ru' ? 'Есть идея для карты?' : 'Have an idea for the map?';
             document.getElementById('feedback-link').innerText = currentLang === 'ru' ? '✉️ Написать мне' : '✉️ Write to me';
 
