@@ -117,6 +117,7 @@
             background: #fff;
         }
 
+        /* Стили для окошка с текстом */
         .leaflet-popup-content {
             font-family: 'Georgia', serif;
             color: #3e2723;
@@ -131,7 +132,16 @@
         .leaflet-popup-content p {
             font-size: 14px;
             line-height: 1.4;
-            margin-bottom: 0;
+            margin-bottom: 10px; /* Отступ для текста */
+        }
+
+        /* Стили для картинки внутри окошка */
+        .popup-image {
+            width: 100%; /* Картинка растягивается по ширине окошка */
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #8b5a2b;
         }
 
     </style>
@@ -168,7 +178,7 @@
         var map = L.map('map', {
             minZoom: 5,
             maxZoom: 8,
-            center: [45.0, 12.0], // Центр на Италии
+            center: [45.0, 12.0], 
             zoom: 7,
             zoomControl: false 
         });
@@ -176,13 +186,13 @@
         var imageUrl = 'map.jpg'; 
         var imageBounds = [[36.5, 5.0], [47.5, 20.0]]; 
 
-        // Загружаем картинку
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
-        // Ограничители краев
-        map.setMaxBounds(imageBounds);
+        // Ограничители краев (немного расширены, чтобы можно было прочитать текст)
+        var paddingBounds = [[35.0, 3.0], [49.0, 22.0]]; 
+        map.setMaxBounds(paddingBounds);
         map.on('drag', function() {
-            map.panInsideBounds(imageBounds, { animate: false });
+            map.panInsideBounds(paddingBounds, { animate: false });
         });
 
         // Логика панели
@@ -204,8 +214,10 @@
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
                 city: { ru: "Венеция (создана), Эрмитаж (хранится)", en: "Venice (created), Hermitage (stored)" },
-                coords: [45.45, 12.00], // Сдвинутые координаты
+                coords: [45.45, 12.10], // Подогнанные координаты
                 author: "Джорджоне / Giorgione",
+                // Сюда мы добавили путь к картинке. Файл должен называться judith.jpg и лежать в репозитории.
+                image: "judith.jpg",
                 text: { 
                     ru: "«Юдифь» — картина итальянского живописца Джорджоне, представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. Картина отсылает нас к Ветхозаветному сюжету Книги Юдифи.",
                     en: "Judith is a painting by the Italian artist Giorgione, a representative of the Venetian school. The painting refers to the Old Testament story of the Book of Judith."
@@ -224,16 +236,21 @@
             });
 
             artworks.forEach(function(art) {
+                // Добавляем картинку в HTML-код окошка
                 var popupContent = `
+                    <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
                     <h3>${art.title[currentLang]} (${art.year})</h3>
                     <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${art.author}</p>
                     <p><strong>${currentLang === 'ru' ? 'Где находится' : 'Location'}:</strong> ${art.city[currentLang]}</p>
                     <p>${art.text[currentLang]}</p>
                 `;
 
-                L.marker(art.coords)
+                var marker = L.marker(art.coords)
                     .addTo(map)
-                    .bindPopup(popupContent);
+                    .bindPopup(popupContent, {
+                        maxHeight: 300, // Ограничиваем высоту, чтобы текст скроллился внутри
+                        autoPanPadding: [50, 50] // Заставляет карту отъезжать, если окошко не влезает
+                    });
             });
         }
 
