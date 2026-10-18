@@ -13,15 +13,15 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'Georgia', serif; /* Красивый шрифт с засечками */
+            font-family: 'Georgia', serif;
             overflow: hidden;
         }
 
-        /* Карта на весь экран */
         #map {
             height: 100%;
             width: 100%;
             z-index: 1;
+            background-color: #e8dcc4; /* Цвет бумаги, пока грузится карта */
         }
 
         /* Выезжающая панель */
@@ -31,27 +31,25 @@
             left: 0;
             width: 350px;
             height: 100%;
-            background-color: rgba(245, 235, 220, 0.95); /* Цвет стариной бумаги */
+            background-color: rgba(245, 235, 220, 0.95);
             z-index: 1000;
-            transform: translateX(-100%); /* Спрятана за левым краем */
+            transform: translateX(-100%);
             transition: transform 0.3s ease;
             box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
         }
 
-        /* Класс для открытой панели */
         #panel.open {
             transform: translateX(0);
         }
 
-        /* Закладочка для открытия панели */
         #toggle-btn {
             position: absolute;
             top: 50%;
             left: 0;
             transform: translateY(-50%);
-            background-color: #8b5a2b; /* Коричневый */
+            background-color: #8b5a2b;
             color: white;
             border: none;
             padding: 15px 10px;
@@ -62,16 +60,15 @@
             transition: left 0.3s ease;
         }
 
-        /* Сдвигаем кнопку, когда панель открыта */
         #panel.open + #toggle-btn {
             left: 350px;
         }
 
-        /* Стили для содержимого панели */
         .panel-content {
             padding: 20px;
             overflow-y: auto;
             height: 100%;
+            position: relative;
         }
 
         .panel-content h2 {
@@ -99,7 +96,27 @@
             background: #e0d0c0;
         }
 
-        /* Стили для всплывающего окна с картиной */
+        /* Кнопка перевода языков */
+        #lang-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(245, 235, 220, 0.9);
+            border: 1px solid #8b5a2b;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            color: #3e2723;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        
+        #lang-switch:hover {
+            background: #fff;
+        }
+
         .leaflet-popup-content {
             font-family: 'Georgia', serif;
             color: #3e2723;
@@ -121,45 +138,51 @@
 </head>
 <body>
 
+    <!-- Кнопка смены языка -->
+    <button id="lang-switch" onclick="toggleLanguage()">EN</button>
+
     <!-- Выезжающая панель -->
     <div id="panel">
         <div class="panel-content">
             <h2>Vivat-Pat</h2>
-            <p style="font-size: 14px; color: #5d4037; margin-bottom: 20px;">Интерактивная карта шедевров Возрождения.</p>
+            <p id="panel-desc" style="font-size: 14px; color: #5d4037; margin-bottom: 20px;">Интерактивная карта шедевров Возрождения.</p>
             
-            <h3>Разделы</h3>
-            <button class="tab-btn">🏛️ По странам</button>
-            <button class="tab-btn">👨‍🎨 По художникам</button>
+            <h3 id="panel-sections">Разделы</h3>
+            <button class="tab-btn" id="tab-countries">🏛️ По странам</button>
+            <button class="tab-btn" id="tab-artists">👨‍🎨 По художникам</button>
             
             <hr style="border: 1px solid #8b5a2b; margin: 20px 0;">
             
-            <p style="font-size: 14px;">Есть идея для карты?<br>
-            <a href="mailto:patyukhova@gmail.com?subject=Идея для Vivat-Pat" style="color: #8b5a2b;">✉️ Написать мне</a></p>
+            <p style="font-size: 14px;">
+                <span id="feedback-text">Есть идея для карты?</span><br>
+                <a href="mailto:patyukhova@gmail.com?subject=Идея для Vivat-Pat" id="feedback-link" style="color: #8b5a2b;">✉️ Написать мне</a>
+            </p>
         </div>
     </div>
     
-    <!-- Кнопка для открытия панели -->
     <button id="toggle-btn">☰</button>
-
-    <!-- Сама карта -->
     <div id="map"></div>
 
     <script>
-        // 1. Инициализируем карту (центр на Италии)
-        var map = L.map('map').setView([42.5, 12.5], 6);
+        var map = L.map('map', {
+            minZoom: 4,
+            maxZoom: 8,
+            center: [42.5, 12.5], // Центр Италии
+            zoom: 6,
+            zoomControl: false 
+        });
 
-        // 2. Добавляем слой карты (пока обычный, потом заменим на твою гравюру)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        var imageUrl = 'map.jpg'; 
+        var imageBounds = [[36.5, 5.0], [47.5, 20.0]]; // Приблизительные границы Италии
 
-        // 3. Логика работы панели
+        L.imageOverlay(imageUrl, imageBounds).addTo(map);
+
+        // Логика панели
         var panel = document.getElementById('panel');
         var toggleBtn = document.getElementById('toggle-btn');
 
         toggleBtn.addEventListener('click', function() {
             panel.classList.toggle('open');
-            // Меняем иконку в зависимости от состояния
             if (panel.classList.contains('open')) {
                 toggleBtn.innerHTML = '✕';
             } else {
@@ -167,33 +190,65 @@
             }
         });
 
-        // 4. Твои данные (пока одна картина - Джорджоне)
-        // Позже мы вынесем это в отдельный файл, чтобы тебе было проще редактировать
+        // Данные картины
         var artworks = [
             {
-                title: "Юдифь",
+                title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
-                city: "Санкт-Петербург", // Хранится в Эрмитаже
-                coords: [59.9398, 30.3146], // Координаты Эрмитажа
-                author: "Джорджоне",
-                text: "Картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. С 1772 года находится в Государственном Эрмитаже. Картина отсылает нас к Ветхозаветному сюжету, а именно к Книге Юдифи... (тут будет продолжение твоего текста)"
+                city: { ru: "Санкт-Петербург (Эрмитаж)", en: "St. Petersburg (Hermitage)" },
+                coords: [59.9398, 30.3146], 
+                author: "Джорджоне / Giorgione",
+                text: { 
+                    ru: "Картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко)... (тут будет продолжение твоего текста)",
+                    en: "Painting by the Italian artist Giorgione... (English text will be here later)"
+                }
             }
         ];
 
-        // 5. Функция для добавления точек на карту
-        artworks.forEach(function(art) {
-            // Создаем всплывающее окно с текстом
-            var popupContent = `
-                <h3>${art.title} (${art.year})</h3>
-                <p><strong>Художник:</strong> ${art.author}</p>
-                <p><strong>Где находится:</strong> ${art.city}</p>
-                <p>${art.text}</p>
-            `;
+        var currentLang = 'ru';
 
-            // Ставим маркер
-            L.marker(art.coords)
-                .addTo(map)
-                .bindPopup(popupContent);
+        // Функция для отрисовки точек
+        function drawMarkers() {
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+
+            artworks.forEach(function(art) {
+                var popupContent = `
+                    <h3>${art.title[currentLang]} (${art.year})</h3>
+                    <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${art.author}</p>
+                    <p><strong>${currentLang === 'ru' ? 'Где находится' : 'Location'}:</strong> ${art.city[currentLang]}</p>
+                    <p>${art.text[currentLang]}</p>
+                `;
+
+                L.marker(art.coords)
+                    .addTo(map)
+                    .bindPopup(popupContent);
+            });
+        }
+
+        // Логика перевода
+        function toggleLanguage() {
+            currentLang = currentLang === 'ru' ? 'en' : 'ru';
+            
+            document.getElementById('lang-switch').innerText = currentLang === 'ru' ? 'EN' : 'RU';
+            document.getElementById('panel-desc').innerText = currentLang === 'ru' ? 'Интерактивная карта шедевров Возрождения.' : 'Interactive map of Renaissance masterpieces.';
+            document.getElementById('panel-sections').innerText = currentLang === 'ru' ? 'Разделы' : 'Sections';
+            document.getElementById('tab-countries').innerText = currentLang === 'ru' ? '🏛️ По странам' : '🏛️ By Country';
+            document.getElementById('tab-artists').innerText = currentLang === 'ru' ? '👨‍🎨 По художникам' : '👨‍🎨 By Artists';
+            document.getElementById('feedback-text').innerText = currentLang === 'ru' ? 'Есть идея для карты?' : 'Have an idea for the map?';
+            document.getElementById('feedback-link').innerText = currentLang === 'ru' ? '✉️ Написать мне' : '✉️ Write to me';
+
+            drawMarkers();
+        }
+
+        drawMarkers();
+
+        map.setMaxBounds(imageBounds);
+        map.on('drag', function() {
+            map.panInsideBounds(imageBounds, { animate: false });
         });
 
     </script>
