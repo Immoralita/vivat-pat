@@ -148,8 +148,8 @@
             <p id="panel-desc" style="font-size: 14px; color: #5d4037; margin-bottom: 20px;">Интерактивная карта шедевров Возрождения.</p>
             
             <h3 id="panel-sections">Разделы</h3>
-            <button class="tab-btn" id="tab-countries">🏛️ По странам</button>
-            <button class="tab-btn" id="tab-artists">👨‍🎨 По художникам</button>
+            <button class="tab-btn" id="tab-countries">🏛️ Страны</button>
+            <button class="tab-btn" id="tab-artists">👨‍🎨 Художники</button>
             
             <hr style="border: 1px solid #8b5a2b; margin: 20px 0;">
             
@@ -178,11 +178,6 @@
         // Загружаем картинку
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
-        // Убираем пустые поля (фикс бежевого фона)
-        map.setMaxBounds(imageBounds);
-        map.on('drag', function() {
-            map.panInsideBounds(imageBounds, { animate: false });
-        });
 
         // Логика панели
         var panel = document.getElementById('panel');
@@ -203,7 +198,7 @@
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
                 city: { ru: "Венеция (создана), Эрмитаж (хранится)", en: "Venice (created), Hermitage (stored)" },
-                coords: [45.4341, 12.3388], // Координаты Венеции
+                coords: [45.4380, 12.3358], // Координаты Венеции
                 author: "Джорджоне / Giorgione",
                 text: { 
                     ru: "«Юдифь» — картина итальянского живописца Джорджоне, представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. Картина отсылает нас к Ветхозаветному сюжету Книги Юдифи.",
