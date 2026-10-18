@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivat-Pat | Карта Возрождения</title>
+    <!-- Подключаем карту Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Georgia', serif; /* Красивый шрифт с засечками */
+            overflow: hidden;
+        }
+
+        /* Карта на весь экран */
+        #map {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* Выезжающая панель */
+        #panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 350px;
+            height: 100%;
+            background-color: rgba(245, 235, 220, 0.95); /* Цвет стариной бумаги */
+            z-index: 1000;
+            transform: translateX(-100%); /* Спрятана за левым краем */
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Класс для открытой панели */
+        #panel.open {
+            transform: translateX(0);
+        }
+
+        /* Закладочка для открытия панели */
+        #toggle-btn {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            background-color: #8b5a2b; /* Коричневый */
+            color: white;
+            border: none;
+            padding: 15px 10px;
+            cursor: pointer;
+            z-index: 1001;
+            border-radius: 0 5px 5px 0;
+            font-size: 20px;
+            transition: left 0.3s ease;
+        }
+
+        /* Сдвигаем кнопку, когда панель открыта */
+        #panel.open + #toggle-btn {
+            left: 350px;
+        }
+
+        /* Стили для содержимого панели */
+        .panel-content {
+            padding: 20px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .panel-content h2 {
+            margin-top: 0;
+            color: #3e2723;
+            border-bottom: 2px solid #8b5a2b;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: 1px solid #8b5a2b;
+            color: #3e2723;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            text-align: left;
+            transition: background 0.2s;
+        }
+        
+        .tab-btn:hover {
+            background: #e0d0c0;
+        }
+
+        /* Стили для всплывающего окна с картиной */
+        .leaflet-popup-content {
+            font-family: 'Georgia', serif;
+            color: #3e2723;
+            max-width: 300px;
+        }
+
+        .leaflet-popup-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+        
+        .leaflet-popup-content p {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Выезжающая панель -->
+    <div id="panel">
+        <div class="panel-content">
+            <h2>Vivat-Pat</h2>
+            <p style="font-size: 14px; color: #5d4037; margin-bottom: 20px;">Интерактивная карта шедевров Возрождения.</p>
+            
+            <h3>Разделы</h3>
+            <button class="tab-btn">🏛️ По странам</button>
+            <button class="tab-btn">👨‍🎨 По художникам</button>
+            
+            <hr style="border: 1px solid #8b5a2b; margin: 20px 0;">
+            
+            <p style="font-size: 14px;">Есть идея для карты?<br>
+            <a href="mailto:patyukhova@gmail.com?subject=Идея для Vivat-Pat" style="color: #8b5a2b;">✉️ Написать мне</a></p>
+        </div>
+    </div>
+    
+    <!-- Кнопка для открытия панели -->
+    <button id="toggle-btn">☰</button>
+
+    <!-- Сама карта -->
+    <div id="map"></div>
+
+    <script>
+        // 1. Инициализируем карту (центр на Италии)
+        var map = L.map('map').setView([42.5, 12.5], 6);
+
+        // 2. Добавляем слой карты (пока обычный, потом заменим на твою гравюру)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 3. Логика работы панели
+        var panel = document.getElementById('panel');
+        var toggleBtn = document.getElementById('toggle-btn');
+
+        toggleBtn.addEventListener('click', function() {
+            panel.classList.toggle('open');
+            // Меняем иконку в зависимости от состояния
+            if (panel.classList.contains('open')) {
+                toggleBtn.innerHTML = '✕';
+            } else {
+                toggleBtn.innerHTML = '☰';
+            }
+        });
+
+        // 4. Твои данные (пока одна картина - Джорджоне)
+        // Позже мы вынесем это в отдельный файл, чтобы тебе было проще редактировать
+        var artworks = [
+            {
+                title: "Юдифь",
+                year: "ок. 1502",
+                city: "Санкт-Петербург", // Хранится в Эрмитаже
+                coords: [59.9398, 30.3146], // Координаты Эрмитажа
+                author: "Джорджоне",
+                text: "Картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. С 1772 года находится в Государственном Эрмитаже. Картина отсылает нас к Ветхозаветному сюжету, а именно к Книге Юдифи... (тут будет продолжение твоего текста)"
+            }
+        ];
+
+        // 5. Функция для добавления точек на карту
+        artworks.forEach(function(art) {
+            // Создаем всплывающее окно с текстом
+            var popupContent = `
+                <h3>${art.title} (${art.year})</h3>
+                <p><strong>Художник:</strong> ${art.author}</p>
+                <p><strong>Где находится:</strong> ${art.city}</p>
+                <p>${art.text}</p>
+            `;
+
+            // Ставим маркер
+            L.marker(art.coords)
+                .addTo(map)
+                .bindPopup(popupContent);
+        });
+
+    </script>
+</body>
+</html>
