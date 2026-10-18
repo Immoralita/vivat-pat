@@ -21,7 +21,7 @@
             height: 100%;
             width: 100%;
             z-index: 1;
-            background-color: #e8dcc4; /* Цвет бумаги, пока грузится карта */
+            background-color: #e8dcc4; 
         }
 
         /* Выезжающая панель */
@@ -165,17 +165,24 @@
 
     <script>
         var map = L.map('map', {
-            minZoom: 4,
+            minZoom: 5,
             maxZoom: 8,
-            center: [42.5, 12.5], // Центр Италии
+            center: [42.5, 12.5], 
             zoom: 6,
             zoomControl: false 
         });
 
         var imageUrl = 'map.jpg'; 
-        var imageBounds = [[36.5, 5.0], [47.5, 20.0]]; // Приблизительные границы Италии
+        var imageBounds = [[36.5, 5.0], [47.5, 20.0]]; 
 
+        // Загружаем картинку
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
+
+        // Убираем пустые поля (фикс бежевого фона)
+        map.setMaxBounds(imageBounds);
+        map.on('drag', function() {
+            map.panInsideBounds(imageBounds, { animate: false });
+        });
 
         // Логика панели
         var panel = document.getElementById('panel');
@@ -190,17 +197,17 @@
             }
         });
 
-        // Данные картины
+        // Данные картины (Юдифь в Венеции)
         var artworks = [
             {
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
-                city: { ru: "Санкт-Петербург (Эрмитаж)", en: "St. Petersburg (Hermitage)" },
-                coords: [59.9398, 30.3146], 
+                city: { ru: "Венеция (создана), Эрмитаж (хранится)", en: "Venice (created), Hermitage (stored)" },
+                coords: [45.4341, 12.3388], // Координаты Венеции
                 author: "Джорджоне / Giorgione",
                 text: { 
-                    ru: "Картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко)... (тут будет продолжение твоего текста)",
-                    en: "Painting by the Italian artist Giorgione... (English text will be here later)"
+                    ru: "«Юдифь» — картина итальянского живописца Джорджоне, представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. Картина отсылает нас к Ветхозаветному сюжету Книги Юдифи.",
+                    en: "Judith is a painting by the Italian artist Giorgione, a representative of the Venetian school. The painting refers to the Old Testament story of the Book of Judith."
                 }
             }
         ];
@@ -245,8 +252,6 @@
         }
 
         drawMarkers();
-
-       
 
     </script>
 </body>
