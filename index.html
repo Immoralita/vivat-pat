@@ -117,11 +117,11 @@
             background: #fff;
         }
 
-        /* Стили для окошка с текстом (УВЕЛИЧИЛИ) */
+        /* Стили для окошка с текстом */
         .leaflet-popup-content {
             font-family: 'Georgia', serif;
             color: #3e2723;
-            max-width: 450px; 
+            max-width: 650px; 
             font-size: 15px; 
         }
 
@@ -137,25 +137,28 @@
             margin-bottom: 12px;
         }
 
-        /* Стили для картинки внутри окошка */
         .popup-image {
             width: 100%; 
             height: auto;
+            max-height: 400px; 
+            object-fit: contain; 
             border-radius: 4px;
             margin-bottom: 12px;
             border: 1px solid #8b5a2b;
         }
 
-        /* АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ (экран меньше 600px) */
         @media (max-width: 600px) {
             .leaflet-popup-content {
-                max-width: 85vw; /* Плашечка занимает 85% ширины экрана телефона */
+                max-width: 90vw; 
+            }
+            .popup-image {
+                max-height: 250px; 
             }
             #panel {
-                width: 85vw; /* Панель тоже становится шире на телефоне */
+                width: 85vw; 
             }
             #panel.open + #toggle-btn {
-                left: 85vw; /* Кнопка сдвигается вместе с панелью */
+                left: 85vw; 
             }
         }
 
@@ -163,10 +166,8 @@
 </head>
 <body>
 
-    <!-- Кнопка смены языка -->
     <button id="lang-switch" onclick="toggleLanguage()">EN</button>
 
-    <!-- Выезжающая панель -->
     <div id="panel">
         <div class="panel-content">
             <h2>Vivat-Pat</h2>
@@ -189,7 +190,6 @@
     <div id="map"></div>
 
     <script>
-        // Настройки карты
         var map = L.map('map', {
             minZoom: 5,
             maxZoom: 8,
@@ -198,20 +198,17 @@
             zoomControl: false 
         });
 
-        // ТЕПЕРЬ ФАЙЛ WEBP
         var imageUrl = 'map.webp'; 
         var imageBounds = [[36.5, 5.0], [47.5, 20.0]]; 
 
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
-        // Ограничители краев
         var paddingBounds = [[35.0, 3.0], [49.0, 22.0]]; 
         map.setMaxBounds(paddingBounds);
         map.on('drag', function() {
             map.panInsideBounds(paddingBounds, { animate: false });
         });
 
-        // Логика панели
         var panel = document.getElementById('panel');
         var toggleBtn = document.getElementById('toggle-btn');
 
@@ -224,16 +221,16 @@
             }
         });
 
-        // Данные картин
         var artworks = [
             {
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
-                // Убрали Эрмитаж, оставили только город
+                // Новое поле "Место создания"
                 city: { ru: "Венеция", en: "Venice" }, 
-                coords: [45.55, 11.75], // Сдвинули левее и выше
-                author: { ru: "Джорджоне", en: "Giorgione" }, // Убрали слэш, теперь переключается
+                coords: [45.55, 11.75], 
+                author: { ru: "Джорджоне", en: "Giorgione" }, 
                 image: "judith.jpg", 
+                color: "blue", // <--- Голубой цвет для Венеции
                 text: { 
                     ru: "«Юдифь» — картина итальянского живописца Джорджоне, представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. Картина отсылает нас к Ветхозаветному сюжету Книги Юдифи.",
                     en: "Judith is a painting by the Italian artist Giorgione, a representative of the Venetian school. The painting refers to the Old Testament story of the Book of Judith."
@@ -243,7 +240,6 @@
 
         var currentLang = 'ru';
 
-        // Функция для отрисовки точек
         function drawMarkers() {
             map.eachLayer(function (layer) {
                 if (layer instanceof L.Marker) {
@@ -256,11 +252,20 @@
                     <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
                     <h3>${art.title[currentLang]} (${art.year})</h3>
                     <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${art.author[currentLang]}</p>
-                    <p><strong>${currentLang === 'ru' ? 'Где находится' : 'Location'}:</strong> ${art.city[currentLang]}</p>
+                    <p><strong>${currentLang === 'ru' ? 'Место создания' : 'Place of creation'}:</strong> ${art.city[currentLang]}</p>
                     <p>${art.text[currentLang]}</p>
                 `;
 
-                var marker = L.marker(art.coords)
+                var markerIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + art.color + '.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+
+                var marker = L.marker(art.coords, {icon: markerIcon})
                     .addTo(map)
                     .bindPopup(popupContent, {
                         maxHeight: 500, 
@@ -269,7 +274,6 @@
             });
         }
 
-        // Логика перевода
         function toggleLanguage() {
             currentLang = currentLang === 'ru' ? 'en' : 'ru';
             
