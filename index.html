@@ -96,7 +96,6 @@
             background: #e0d0c0;
         }
 
-        /* Кнопка перевода языков */
         #lang-switch {
             position: absolute;
             top: 20px;
@@ -117,7 +116,6 @@
             background: #fff;
         }
 
-        /* Стили для окошка с текстом */
         .leaflet-popup-content {
             font-family: 'Georgia', serif;
             color: #3e2723;
@@ -147,13 +145,12 @@
             border: 1px solid #8b5a2b;
         }
 
+        /* АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ */
         @media (max-width: 600px) {
             .leaflet-popup-content {
-                max-width: 90vw; 
+                max-width: 90vw; /* Ширина плашки на телефоне */
             }
-            .popup-image {
-                max-height: 250px; 
-            }
+            /* Мы убрали ограничение max-height для картинки, теперь она большая */
             #panel {
                 width: 85vw; 
             }
@@ -203,11 +200,19 @@
 
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
-        var paddingBounds = [[35.0, 3.0], [49.0, 22.0]]; 
-        map.setMaxBounds(paddingBounds);
-        map.on('drag', function() {
-            map.panInsideBounds(paddingBounds, { animate: false });
-        });
+        // Рамки ТОЛЬКО для компьютера
+        function setDesktopBounds() {
+            if (window.innerWidth > 600) {
+                var paddingBounds = [[30.0, -5.0], [55.0, 30.0]]; 
+                map.setMaxBounds(paddingBounds);
+            } else {
+                // На телефоне НЕТ ограничителей, чтобы плашка влезла
+                map.setMaxBounds(null); 
+            }
+        }
+
+        setDesktopBounds();
+        window.addEventListener('resize', setDesktopBounds);
 
         var panel = document.getElementById('panel');
         var toggleBtn = document.getElementById('toggle-btn');
@@ -225,12 +230,11 @@
             {
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
-                // Новое поле "Место создания"
                 city: { ru: "Венеция", en: "Venice" }, 
                 coords: [45.55, 11.75], 
                 author: { ru: "Джорджоне", en: "Giorgione" }, 
                 image: "judith.jpg", 
-                color: "blue", // <--- Голубой цвет для Венеции
+                color: "blue", 
                 text: { 
                     ru: "«Юдифь» — картина итальянского живописца Джорджоне, представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. Картина отсылает нас к Ветхозаветному сюжету Книги Юдифи.",
                     en: "Judith is a painting by the Italian artist Giorgione, a representative of the Venetian school. The painting refers to the Old Testament story of the Book of Judith."
