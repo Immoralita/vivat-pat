@@ -24,7 +24,7 @@
             background-color: #e8dcc4; 
         }
 
-        /* Выезжающая панель */
+        /* Выезжающая панель (по умолчанию для компьютера) */
         #panel {
             position: absolute;
             top: 0;
@@ -116,6 +116,7 @@
             background: #fff;
         }
 
+        /* Стили для окошка с текстом */
         .leaflet-popup-content {
             font-family: 'Georgia', serif;
             color: #3e2723;
@@ -135,11 +136,10 @@
             margin-bottom: 12px;
         }
 
+        /* НИКАКИХ ограничений для картинки! */
         .popup-image {
             width: 100%; 
             height: auto;
-            max-height: 400px; 
-            object-fit: contain; 
             border-radius: 4px;
             margin-bottom: 12px;
             border: 1px solid #8b5a2b;
@@ -147,15 +147,38 @@
 
         /* АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ */
         @media (max-width: 600px) {
+            /* Плашка на телефоне выезжает СНИЗУ */
             .leaflet-popup-content {
-                max-width: 90vw; /* Ширина плашки на телефоне */
+                max-width: 90vw; 
             }
-            /* Мы убрали ограничение max-height для картинки, теперь она большая */
+            
             #panel {
-                width: 85vw; 
+                top: auto; /* Убираем привязку к верху */
+                bottom: 0; /* Привязываем к низу */
+                left: 0;
+                width: 100%;
+                height: 80vh; /* Занимает 80% высоты экрана */
+                transform: translateY(100%); /* Спрятана ВНИЗУ */
+                border-radius: 20px 20px 0 0; /* Закругленные углы сверху */
             }
+
+            #panel.open {
+                transform: translateY(0); /* Выезжает снизу */
+            }
+
+            /* Кнопка на телефоне тоже переезжает вниз */
+            #toggle-btn {
+                top: auto;
+                bottom: 20px;
+                left: 20px;
+                transform: none;
+                border-radius: 50%; /* Круглая кнопка */
+                padding: 15px;
+            }
+
             #panel.open + #toggle-btn {
-                left: 85vw; 
+                left: 20px;
+                bottom: 82vh; /* Кнопка поднимается вместе с панелью */
             }
         }
 
@@ -206,7 +229,7 @@
                 var paddingBounds = [[30.0, -5.0], [55.0, 30.0]]; 
                 map.setMaxBounds(paddingBounds);
             } else {
-                // На телефоне НЕТ ограничителей, чтобы плашка влезла
+                // На телефоне НЕТ ограничителей
                 map.setMaxBounds(null); 
             }
         }
