@@ -117,31 +117,46 @@
             background: #fff;
         }
 
-        /* Стили для окошка с текстом */
+        /* Стили для окошка с текстом (УВЕЛИЧИЛИ) */
         .leaflet-popup-content {
             font-family: 'Georgia', serif;
             color: #3e2723;
-            max-width: 300px;
+            max-width: 450px; 
+            font-size: 15px; 
         }
 
         .leaflet-popup-content h3 {
             margin: 0 0 10px 0;
-            font-size: 20px;
+            font-size: 22px;
+            color: #2c1a14;
         }
         
         .leaflet-popup-content p {
-            font-size: 14px;
-            line-height: 1.4;
-            margin-bottom: 10px; /* Отступ для текста */
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 12px;
         }
 
         /* Стили для картинки внутри окошка */
         .popup-image {
-            width: 100%; /* Картинка растягивается по ширине окошка */
+            width: 100%; 
             height: auto;
             border-radius: 4px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border: 1px solid #8b5a2b;
+        }
+
+        /* АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ (экран меньше 600px) */
+        @media (max-width: 600px) {
+            .leaflet-popup-content {
+                max-width: 85vw; /* Плашечка занимает 85% ширины экрана телефона */
+            }
+            #panel {
+                width: 85vw; /* Панель тоже становится шире на телефоне */
+            }
+            #panel.open + #toggle-btn {
+                left: 85vw; /* Кнопка сдвигается вместе с панелью */
+            }
         }
 
     </style>
@@ -183,12 +198,13 @@
             zoomControl: false 
         });
 
-        var imageUrl = 'map.jpg'; 
+        // ТЕПЕРЬ ФАЙЛ WEBP
+        var imageUrl = 'map.webp'; 
         var imageBounds = [[36.5, 5.0], [47.5, 20.0]]; 
 
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
-        // Ограничители краев (немного расширены, чтобы можно было прочитать текст)
+        // Ограничители краев
         var paddingBounds = [[35.0, 3.0], [49.0, 22.0]]; 
         map.setMaxBounds(paddingBounds);
         map.on('drag', function() {
@@ -213,11 +229,11 @@
             {
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "ок. 1502",
-                city: { ru: "Венеция (создана), Эрмитаж (хранится)", en: "Venice (created), Hermitage (stored)" },
-                coords: [45.45, 12.10], // Подогнанные координаты
-                author: "Джорджоне / Giorgione",
-                // Сюда мы добавили путь к картинке. Файл должен называться judith.jpg и лежать в репозитории.
-                image: "judith.jpg",
+                // Убрали Эрмитаж, оставили только город
+                city: { ru: "Венеция", en: "Venice" }, 
+                coords: [45.55, 11.75], // Сдвинули левее и выше
+                author: { ru: "Джорджоне", en: "Giorgione" }, // Убрали слэш, теперь переключается
+                image: "judith.jpg", 
                 text: { 
                     ru: "«Юдифь» — картина итальянского живописца Джорджоне, представителя венецианской школы. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована именно ему. Картина отсылает нас к Ветхозаветному сюжету Книги Юдифи.",
                     en: "Judith is a painting by the Italian artist Giorgione, a representative of the Venetian school. The painting refers to the Old Testament story of the Book of Judith."
@@ -236,11 +252,10 @@
             });
 
             artworks.forEach(function(art) {
-                // Добавляем картинку в HTML-код окошка
                 var popupContent = `
                     <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
                     <h3>${art.title[currentLang]} (${art.year})</h3>
-                    <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${art.author}</p>
+                    <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${art.author[currentLang]}</p>
                     <p><strong>${currentLang === 'ru' ? 'Где находится' : 'Location'}:</strong> ${art.city[currentLang]}</p>
                     <p>${art.text[currentLang]}</p>
                 `;
@@ -248,8 +263,8 @@
                 var marker = L.marker(art.coords)
                     .addTo(map)
                     .bindPopup(popupContent, {
-                        maxHeight: 300, // Ограничиваем высоту, чтобы текст скроллился внутри
-                        autoPanPadding: [50, 50] // Заставляет карту отъезжать, если окошко не влезает
+                        maxHeight: 500, 
+                        autoPanPadding: [50, 50] 
                     });
             });
         }
