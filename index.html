@@ -26,14 +26,43 @@
         .leaflet-popup-content li { margin-bottom: 5px; line-height: 1.4; }
         .popup-image { width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 4px; margin-bottom: 12px; border: 1px solid #8b5a2b; }
         
-        /* Сноски теперь кликабельные, без всплывающих окон */
-        .footnote { border-bottom: 1px dotted #8b5a2b; cursor: pointer; color: #5d4037; font-weight: bold; transition: color 0.2s; }
-        .footnote:hover { color: #d35400; }
+        /* Обычные сноски (черные плашки) */
+        .footnote { border-bottom: 1px dotted #8b5a2b; cursor: help; position: relative; color: #5d4037; font-weight: bold; }
+        .footnote:hover::after { 
+            content: attr(data-text); 
+            position: absolute; 
+            bottom: 120%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: #3e2723; 
+            color: white; 
+            padding: 15px; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            width: 350px; 
+            max-width: 80vw; 
+            z-index: 2000; 
+            line-height: 1.4; 
+            pointer-events: none; 
+            font-weight: normal; 
+            text-align: left; 
+            display: block; 
+            white-space: normal;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            word-wrap: break-word;
+        }
 
-        /* Блок для отображения сноски */
-        .footnote-display { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; display: none; background-color: rgba(139, 90, 43, 0.05); padding: 15px; border-radius: 4px; }
-        .footnote-display h4 { margin: 0 0 10px 0; font-size: 16px; color: #3e2723; }
-        .footnote-display p { margin: 0 0 10px 0; }
+        /* Блок для Венецианской школы */
+        .special-footnote-box {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(139, 90, 43, 0.05);
+            border-top: 2px solid #8b5a2b;
+            border-bottom: 2px solid #8b5a2b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .special-footnote-box h4 { margin: 0 0 10px 0; font-size: 16px; color: #3e2723; }
         
         .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
         audio { width: 100%; margin-top: 5px; }
@@ -42,6 +71,7 @@
             .leaflet-popup-content-wrapper { width: 90vw !important; }
             #panel { width: 100%; height: 50%; top: auto; bottom: 0; transform: translateY(100%); transition: transform 0.3s ease; border-radius: 20px 20px 0 0; padding: 15px; }
             #panel.open { transform: translateY(0); }
+            .footnote:hover::after { width: 250px; }
         }
     </style>
 </head>
@@ -106,23 +136,25 @@
                 },
                 footnotes: {
                     ru: {
-                        "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком.<br><br>Несколько ключевых особенностей:<ul><li>Приоритет колорита над чётким контуром и пластикой формы.</li><li>Лессировочная масляная живопись на тёмном грунте (техника, при которой прозрачные слои краски наносят поверх высохших предыдущих, чтобы добиться глубины, светоносности и особой теплоты тонов).</li><li>Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры.</li><li>Гармония человека и поэтического пейзажа.</li></ul>",
                         "единодушно атрибутирована": "Абсолютным большинством специалистов признана творением конкретно этого автора.",
                         "неканонической": "Книга Ветхого Завета, которой нет в древнееврейском каноне, но которая включена в православные (и католические) издания Библии. Православие считает такие книги назидательными и полезными для чтения, но не приравнивает к каноническим.",
                         "второканонической": "То же, что православные называют «неканоническими», но в католической традиции. На Тридентском соборе (XVI в.) такие книги включили в канон и назвали «второканоническими» (то есть вошедшими в канон во вторую очередь).",
-                        "апокрифичной": "В православии это тексты, которые никогда не входили в Библию ни в одной традиции. Они отвергнуты Церковью как поддельные или содержащие недостоверные учения.<br><br>НО!<br>В протестантской традиции термин «апокрифы» применяют к тем книгам, которые православные называют «неканоническими».",
+                        "апокрифичной": "В православии это тексты, которые никогда не входили в Библию ни в одной традиции. Они отвергнуты Церковью как поддельные или содержащие недостоверные учения.<br><br><b>НО!</b><br>В протестантской традиции термин «апокрифы» применяют к тем книгам, которые православные называют «неканоническими».",
                         "приготовляли землю и воду": "Приготовление земли и воды здесь — символ безоговорочной капитуляции; дипломатический ритуал, при котором завоевателям буквально преподносили горсть земли и чашу с водой (право на землю и водные ресурсы).",
                         "укрепить её": "Даровать физические и духовные силы для совершения чего-либо. В данном случае — для нанесения смертельного удара."
                     },
                     en: {
-                        "Venetian school": "The Venetian school is one of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br>Several key features:<ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground (a technique in which transparent layers of paint are applied over dried previous ones to achieve depth, luminosity and a special warmth of tones).</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>",
                         "unanimously attributed": "Recognised by the absolute majority of specialists as the work of this particular author.",
                         "non-canonical": "A book of the Old Testament that is not in the Hebrew canon, but which is included in Orthodox (and Catholic) editions of the Bible. Orthodoxy considers such books edifying and useful for reading, but does not equate them with canonical ones.",
                         "deuterocanonical": "Essentially, the same as what the Orthodox call «non-canonical», but in the Catholic tradition. At the Council of Trent (16th century) such books were included in the canon and called «deuterocanonical» (that is, those that entered the canon second).",
-                        "apocryphal": "In Orthodoxy these are texts that were never part of the Bible in any tradition. They are rejected by the Church as forged or containing unreliable teachings.<br><br>BUT!<br>In the Protestant tradition, the term «apocrypha» is applied to those books that the Orthodox call «non-canonical».",
+                        "apocryphal": "In Orthodoxy these are texts that were never part of the Bible in any tradition. They are rejected by the Church as forged or containing unreliable teachings.<br><br><b>BUT!</b><br>In the Protestant tradition, the term «apocrypha» is applied to those books that the Orthodox call «non-canonical».",
                         "prepare earth and water": "The preparation of earth and water here is a symbol of unconditional capitulation; a diplomatic ritual in which a handful of earth and a cup of water were literally presented to the conquerors (the right to land and water resources).",
                         "to strengthen her": "To grant physical and spiritual strength to accomplish something. In this case — to deliver a fatal blow."
                     }
+                },
+                specialFootnote: {
+                    ru: "<h4>Венецианская школа:</h4>Одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком.<br><br><b>Несколько ключевых особенностей:</b><ul><li>Приоритет колорита над чётким контуром и пластикой формы.</li><li>Лессировочная масляная живопись на тёмном грунте (техника, при которой прозрачные слои краски наносят поверх высохших предыдущих, чтобы добиться глубины, светоносности и особой теплоты тонов).</li><li>Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры.</li><li>Гармония человека и поэтического пейзажа.</li></ul>",
+                    en: "<h4>The Venetian school:</h4>One of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br><b>Several key features:</b><ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground (a technique in which transparent layers of paint are applied over dried previous ones to achieve depth, luminosity and a special warmth of tones).</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>"
                 }
             }
         ];
@@ -172,27 +204,12 @@
             if (footnotes) {
                 for (const [key, val] of Object.entries(footnotes)) {
                     let searchStr = '[' + key + ']';
-                    // Добавляем onclick для показа сноски внизу
-                    let replaceStr = `<span class="footnote" onclick="showFootnote('${key.replace(/'/g, "\\'")}')">${key}</span>`;
+                    let replaceStr = `<span class="footnote" data-text="${val.replace(/"/g, '&quot;')}">${key}</span>`;
                     processed = processed.split(searchStr).join(replaceStr);
                 }
             }
             return processed;
         }
-
-        // Функция для отображения сноски в блоке
-        window.showFootnote = function(key) {
-            var art = artworks[0]; // Берем первую картину
-            var fnText = art.footnotes[currentLang][key];
-            
-            var displayBox = document.getElementById('footnote-display-box');
-            var contentBox = document.getElementById('footnote-content');
-            
-            if (fnText) {
-                contentBox.innerHTML = fnText;
-                displayBox.style.display = 'block';
-            }
-        };
 
         function drawMarkers(country) {
             map.eachLayer(function (layer) {
@@ -207,6 +224,8 @@
                         '<strong>Музыкальное сопровождение:</strong><br>Оратория Антонио Вивальди «Торжествующая Юдифь» (итал. Juditha triumphans). Полное латинское название — Juditha triumphans devicta Holofernis barbarie.' : 
                         '<strong>Musical accompaniment:</strong><br>Antonio Vivaldi\'s oratorio «Juditha triumphans» (Italian: Juditha triumphans). The full Latin title is Juditha triumphans devicta Holofernis barbarie.';
 
+                    var specialBox = art.specialFootnote ? `<div class="special-footnote-box">${art.specialFootnote[currentLang]}</div>` : '';
+
                     var popupContent = `
                         <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
                         <h3>${art.title[currentLang]} (${art.year})</h3>
@@ -214,13 +233,7 @@
                         <p><strong>${currentLang === 'ru' ? 'Место создания' : 'Place of creation'}:</strong> ${art.city[currentLang]}</p>
                         <p><strong>${currentLang === 'ru' ? 'Место хранения' : 'Current location'}:</strong> ${art.museum[currentLang]}</p>
                         <p>${formattedText}</p>
-                        
-                        <!-- Блок для сносок -->
-                        <div id="footnote-display-box" class="footnote-display">
-                            <h4>${currentLang === 'ru' ? 'Сноска:' : 'Footnote:'}</h4>
-                            <div id="footnote-content"></div>
-                        </div>
-
+                        ${specialBox}
                         <div class="audio-wrapper">
                             <p>${musicText}</p>
                             <audio controls><source src="${art.audio}" type="audio/mpeg"></audio>
