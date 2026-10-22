@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivat-Pat</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .leaflet-attribution-flag { display: none !important; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Georgia', serif; overflow: hidden; }
+        #map { height: 100%; width: 100%; z-index: 1; background-color: #e8dcc4; }
+        
+        #panel { position: absolute; top: 0; left: 0; width: 350px; height: 100%; background: rgba(245, 235, 220, 0.95); z-index: 1000; padding: 20px; box-sizing: border-box; overflow-y: auto;}
+        .tab-btn { background: none; border: 1px solid #8b5a2b; color: #3e2723; padding: 10px; width: 100%; cursor: pointer; font-family: 'Georgia', serif; font-size: 16px; text-align: left; margin-bottom: 5px; }
+        
+        #lang-switch { position: absolute; top: 20px; right: 20px; z-index: 1000; background: rgba(245, 235, 220, 0.9); border: 1px solid #8b5a2b; padding: 8px 15px; cursor: pointer; font-size: 16px; }
+        
+        .leaflet-popup-content { font-family: 'Georgia', serif; max-width: 500px; }
+        .popup-image { width: 100%; height: auto; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <button id="lang-switch" onclick="toggleLanguage()">EN</button>
+
+    <div id="panel">
+        <h2 id="site-title">Vivat-Pat</h2>
+        <p id="panel-desc">Интерактивная карта.</p>
+        
+        <button class="tab-btn" onclick="showMenu()" id="btn-countries">🏛️ Страны</button>
+        <div id="country-list" style="display: none; margin-top: 10px;">
+            <button class="tab-btn" onclick="switchCountry('italy')" id="btn-italy">🇮🇹 Италия</button>
+            <div style="padding-left: 15px;">
+                <button class="tab-btn" onclick="drawMarkers('italy')" id="btn-renaissance">Высокое Возрождение</button>
+            </div>
+            <button class="tab-btn" onclick="switchCountry('france')" id="btn-france">🇫🇷 Франция</button>
+        </div>
+    </div>
+    
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map', { minZoom: 5, maxZoom: 8, center: [45.0, 12.0], zoom: 7 });
+        var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
+        var franceLayer = L.imageOverlay('map_france.webp', [[42.0, -5.0], [51.5, 8.5]]);
+
+        var currentLang = 'ru';
+
+        var artworks = [
+            {
+                country: "italy",
+                title: { ru: "Юдифь", en: "Judith" },
+                year: "ок. 1502",
+                author: { ru: "Джорджоне", en: "Giorgione" }, 
+                coords: [45.55, 11.75], 
+                image: "judith.jpg", 
+                text: { 
+                    ru: "**«Юдифь»** — картина итальянского живописца Джорджоне. Несмотря на то, что художник имел привычку не подписывать свои работы, она единодушно атрибутирована ему. Картина отсылает нас к ветхозаветному сюжету Книги Юдифи.",
+                    en: "**«Judith»** is a painting by the Italian artist Giorgione. Although he had a habit of not signing his works, it is unanimously attributed to him. The painting refers to the Old Testament story of the Book of Judith."
+                }
+            }
+        ];
+
+        function showMenu() {
+            var list = document.getElementById('country-list');
+            list.style.display = list.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function switchCountry(country) {
+            if (country === 'france') {
+                map.removeLayer(italyLayer);
+                franceLayer.addTo(map);
+                map.setView([46.5, 2.0], 6);
+                map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
+            } else {
+                if(map.hasLayer(franceLayer)) map.removeLayer(franceLayer);
+                italyLayer.addTo(map);
+                map.setView([45.0, 12.0], 7);
+                drawMarkers('italy');
+            }
+        }
+
+        function drawMarkers(country) {
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) map.removeLayer(layer);
+            });
+
+            artworks.forEach(function(art) {
+                if (art.country === country) {
+                    var processedText = art.text[currentLang].replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    var popupContent = `
+                        <img src="${art.image}" class="popup-image">
+                        <h3>${art.title[currentLang]} (${art.year})</h3>
+                        <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${art.author[currentLang]}</p>
+                        <p>${processedText}</p>
+                    `;
+                    L.marker(art.coords).addTo(map).bindPopup(popupContent, { maxHeight: 400 });
+                }
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ru' ? 'en' : 'ru';
+            document.getElementById('lang-switch').innerText = currentLang === 'ru' ? 'EN' : 'RU';
+            document.getElementById('panel-desc').innerText = currentLang === 'ru' ? 'Интерактивная карта.' : 'Interactive map.';
+            document.getElementById('btn-countries').innerText = currentLang === 'ru' ? '🏛️ Страны' : '🏛️ Countries';
+            document.getElementById('btn-italy').innerText = currentLang === 'ru' ? '🇮🇹 Италия' : '🇮🇹 Italy';
+            document.getElementById('btn-france').innerText = currentLang === 'ru' ? '🇫🇷 Франция' : '🇫🇷 France';
+            document.getElementById('btn-renaissance').innerText = currentLang === 'ru' ? 'Высокое Возрождение' : 'High Renaissance';
+            drawMarkers('italy');
+        }
+
+        drawMarkers('italy');
+    </script>
+</body>
+</html>
