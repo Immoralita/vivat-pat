@@ -3,86 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vivat-Pat | ТЕСТ</title>
+    <title>Тест</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        .leaflet-attribution-flag { display: none !important; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Georgia', serif; overflow: hidden; }
-        #map { height: 100%; width: 100%; z-index: 1; background-color: #e8dcc4; }
-        #panel { position: absolute; top: 0; left: 0; width: 300px; height: 100%; background: #f5ebdcdd; z-index: 1000; padding: 20px; box-sizing: border-box; }
-        .menu-btn { width: 100%; padding: 10px; margin-bottom: 5px; cursor: pointer; background: none; border: 1px solid #8b5a2b; text-align: left; font-size: 16px; }
-        .submenu { display: none; padding-left: 15px; }
-        .submenu.active { display: block; }
-        .submenu-btn { width: 100%; padding: 8px; margin-bottom: 5px; cursor: pointer; border: none; background: none; text-align: left; font-size: 14px; border-bottom: 1px dashed #8b5a2b; }
+        body, html { margin: 0; padding: 0; height: 100%; }
+        #map { height: 100%; width: 100%; }
     </style>
 </head>
 <body>
-
-    <div id="panel">
-        <h2>Vivat-Pat (ТЕСТ)</h2>
-        <button class="menu-btn" onclick="document.getElementById('countries-menu').classList.toggle('active')">🏛️ Страны</button>
-        <div id="countries-menu" class="submenu">
-            <button class="submenu-btn" onclick="switchCountry('italy')">🇮🇹 Италия</button>
-            <div style="padding-left: 10px;">
-                <button class="submenu-btn" onclick="filterEra('high')">Высокое Возрождение</button>
-            </div>
-            <button class="submenu-btn" onclick="switchCountry('france')">🇫🇷 Франция</button>
-        </div>
-    </div>
-    
     <div id="map"></div>
 
     <script>
-        var map = L.map('map', { minZoom: 5, maxZoom: 8, center: [45.0, 12.0], zoom: 7, zoomControl: false });
-        var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
-        var franceLayer = L.imageOverlay('map_france.webp', [[42.0, -5.0], [51.5, 8.5]]);
+        // Самая простая карта
+        var map = L.map('map').setView([45.0, 12.0], 7);
+        L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
 
-        var artworks = [
-            {
-                country: "italy",
-                era: "high", 
-                title: "Юдифь",
-                coords: [45.55, 11.75], 
-                text: "Это ТЕСТОВЫЙ текст для проверки. Если ты это видишь, значит, код работает!"
-            }
-        ];
-
-        var currentEra = 'high';
-
-        function switchCountry(country) {
-            if (country === 'france') {
-                map.removeLayer(italyLayer);
-                franceLayer.addTo(map);
-                map.setView([46.5, 2.0], 6);
-                drawMarkers('france');
-            } else {
-                if(map.hasLayer(franceLayer)) map.removeLayer(franceLayer);
-                italyLayer.addTo(map);
-                map.setView([45.0, 12.0], 7);
-                drawMarkers('italy');
-            }
-        }
-
-        function filterEra(era) {
-            currentEra = era;
-            drawMarkers('italy');
-        }
-
-        function drawMarkers(country) {
-            map.eachLayer(function (layer) {
-                if (layer instanceof L.Marker) map.removeLayer(layer);
-            });
-
-            artworks.forEach(function(art) {
-                if (art.country === country && art.era === currentEra) {
-                    var popupContent = `<h3>${art.title}</h3><p>${art.text}</p>`;
-                    L.marker(art.coords).addTo(map).bindPopup(popupContent);
-                }
-            });
-        }
-
-        drawMarkers('italy');
+        // Самая простая точка
+        L.marker([45.55, 11.75]).addTo(map).bindPopup('Привет! Я работаю!');
     </script>
 </body>
 </html>
