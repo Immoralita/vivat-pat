@@ -286,7 +286,7 @@
             let processed = text;
             // Жирный шрифт
             processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                     // Сноски
+            // Сноски
             if (footnotes) {
                 for (const [key, val] of Object.entries(footnotes)) {
                     let searchStr = '[' + key + ']';
