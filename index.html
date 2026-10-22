@@ -12,11 +12,29 @@
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Georgia', serif; overflow: hidden; }
         #map { height: 100%; width: 100%; z-index: 1; background-color: #e8dcc4; }
         
-        #panel { position: absolute; top: 0; left: 0; width: 350px; height: 100%; background: rgba(245, 235, 220, 0.95); z-index: 1000; padding: 20px; box-sizing: border-box; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.3); transform: translateX(-100%); transition: transform 0.3s ease; }
+        /* ПАНЕЛЬ (одинаково для всех устройств) */
+        #panel { 
+            position: absolute; top: 0; left: 0; 
+            width: 350px; /* На телефоне будет растягиваться */
+            height: 100%; 
+            background: rgba(245, 235, 220, 0.98); 
+            z-index: 1000; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            overflow-y: auto; 
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3); 
+            transform: translateX(-100%); 
+            transition: transform 0.3s ease; 
+        }
         #panel.open { transform: translateX(0); }
         
-        /* Кнопка поверх всего */
-        #toggle-btn { position: absolute; top: 50%; left: 0; transform: translateY(-50%); background-color: #8b5a2b; color: white; border: none; padding: 15px 10px; cursor: pointer; z-index: 9999; border-radius: 0 5px 5px 0; font-size: 20px; transition: left 0.3s ease; }
+        /* КНОПКА (всегда слева, поверх панели) */
+        #toggle-btn { 
+            position: absolute; top: 50%; left: 0; transform: translateY(-50%); 
+            background-color: #8b5a2b; color: white; border: none; padding: 15px 10px; 
+            cursor: pointer; z-index: 1001; border-radius: 0 5px 5px 0; font-size: 20px; 
+            transition: left 0.3s ease; 
+        }
         #panel.open + #toggle-btn { left: 350px; }
 
         .tab-btn { background: none; border: 1px solid #8b5a2b; color: #3e2723; padding: 10px; width: 100%; cursor: pointer; font-family: 'Georgia', serif; font-size: 16px; text-align: left; margin-bottom: 5px; transition: background 0.2s; }
@@ -41,11 +59,10 @@
         .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
         audio { width: 100%; margin-top: 5px; }
 
+        /* АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ (только ширина панели) */
         @media (max-width: 768px) {
-            #panel { width: 100%; height: 60vh; top: auto; bottom: 0; transform: translateY(100%); border-radius: 20px 20px 0 0; padding: 15px; }
-            #panel.open { transform: translateY(0); }
-            #toggle-btn { top: auto; bottom: 20px; left: 20px; transform: none; border-radius: 50%; padding: 15px 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-            #panel.open + #toggle-btn { left: 20px; bottom: 62vh; }
+            #panel { width: 85%; } /* Панель на телефоне шире */
+            #panel.open + #toggle-btn { left: 85%; } /* Кнопка сдвигается за панелью */
             .leaflet-popup-content-wrapper { width: 95vw !important; max-width: 95vw !important; }
             .leaflet-popup-content { max-height: 70vh; overflow-y: auto; overflow-x: hidden; padding: 10px !important; }
             .leaflet-popup-content p, .leaflet-popup-content li { font-size: 14px; }
@@ -82,7 +99,6 @@
     <div id="map"></div>
 
     <script>
-        // Инициализация карты
         var map = L.map('map', { minZoom: 5, maxZoom: 8, center: [45.0, 12.0], zoom: 7, zoomControl: false });
         var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
         var franceLayer = L.imageOverlay('map_france.webp', [[42.0, -5.0], [51.5, 8.5]]);
@@ -90,30 +106,25 @@
         var currentLang = 'ru';
         var currentCountry = 'italy';
 
-        // Открытие/закрытие панели
         function togglePanel() {
             var panel = document.getElementById('panel');
             var btn = document.getElementById('toggle-btn');
-            if (panel.style.transform === 'translateX(0px)' || panel.style.transform === 'translateY(0px)') {
-                if(window.innerWidth > 768) panel.style.transform = 'translateX(-100%)';
-                else panel.style.transform = 'translateY(100%)';
+            
+            if (panel.classList.contains('open')) {
+                panel.classList.remove('open');
                 btn.innerHTML = '☰';
             } else {
-                panel.style.transform = 'translateX(0)';
+                panel.classList.add('open');
                 btn.innerHTML = '✕';
-                if(window.innerWidth > 768) btn.style.left = '350px';
-                else btn.style.bottom = '62vh';
             }
         }
 
-        // Меню стран
         function toggleMenu() {
             var list = document.getElementById('country-list');
             if(list.style.display === 'none') list.style.display = 'block';
             else list.style.display = 'none';
         }
 
-        // Эпоха
         function showEra() {
             if (currentCountry !== 'italy') {
                 switchCountry('italy');
@@ -129,7 +140,6 @@
             }
         }
 
-        // Переключение стран
         function switchCountry(country) {
             currentCountry = country;
             if (country === 'france') {
@@ -147,7 +157,6 @@
             }
         }
 
-        // Отрисовка маркера
         function drawMarkers(country) {
             map.eachLayer(function (layer) {
                 if (layer instanceof L.Marker) map.removeLayer(layer);
@@ -161,24 +170,28 @@
                     <h3>Юдифь (1504-1506 гг.)</h3>
                     <p><strong>Художник:</strong> Джорджоне</p>
                     <p><strong>Место создания:</strong> Венеция</p>
-                    <p><strong>Место хранения:</strong> Эрмитаж</p>
-                    <p>Текст про картину...</p>
-                    <audio controls><source src="vivaldi.mp3" type="audio/mpeg"></audio>
+                    <p><strong>Место хранения:</strong> Россия, г. Санкт-Петербург, ФГБУК «Государственный Эрмитаж» (Дворцовая набережная, дом 34)</p>
+                    <p>**«Юдифь»** — картина итальянского живописца Джорджоне... (тут будет твой текст)</p>
+                    <div class="audio-wrapper">
+                        <p><strong>Музыкальное сопровождение:</strong><br>Оратория Антонио Вивальди «Торжествующая Юдифь»</p>
+                        <audio controls><source src="vivaldi.mp3" type="audio/mpeg"></audio>
+                    </div>
                 `;
+                // Применяем жирный шрифт к тексту
+                popupContent = popupContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                
                 L.marker(coords).addTo(map).bindPopup(popupContent, { maxHeight: 600 });
             }
         }
 
-        // Смена языка (упрощенно)
         function toggleLanguage() {
             currentLang = currentLang === 'ru' ? 'en' : 'ru';
             document.getElementById('lang-switch').innerText = currentLang === 'ru' ? 'EN' : 'RU';
+            // Здесь можно добавить перевод текста, если нужно
         }
 
-        // Запуск при загрузке
-        window.onload = function() {
-            drawMarkers('italy');
-        };
+        // Вызов при загрузке
+        drawMarkers('italy');
     </script>
 </body>
 </html>
