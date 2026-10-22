@@ -18,23 +18,24 @@
         
         #lang-switch { position: absolute; top: 20px; right: 20px; z-index: 1000; background: rgba(245, 235, 220, 0.9); border: 1px solid #8b5a2b; padding: 8px 15px; cursor: pointer; font-size: 16px; font-family: 'Georgia', serif; color: #3e2723; }
         
-        .leaflet-popup-content { font-family: 'Georgia', serif; color: #3e2723; max-width: 800px; font-size: 15px; }
+        .leaflet-popup-content-wrapper { width: 700px !important; max-width: 90vw !important; }
+        .leaflet-popup-content { font-family: 'Georgia', serif; color: #3e2723; width: 100% !important; margin: 0 !important; padding: 10px; font-size: 15px; }
         .leaflet-popup-content h3 { margin: 0 0 10px 0; font-size: 22px; color: #2c1a14; }
         .leaflet-popup-content p { font-size: 15px; line-height: 1.5; margin-bottom: 12px; }
         .leaflet-popup-content ul { padding-left: 20px; margin-bottom: 12px; }
         .leaflet-popup-content li { margin-bottom: 5px; line-height: 1.4; }
-        .popup-image { width: 100%; height: auto; border-radius: 4px; margin-bottom: 12px; border: 1px solid #8b5a2b; }
+        .popup-image { width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 4px; margin-bottom: 12px; border: 1px solid #8b5a2b; }
         
         .footnote { border-bottom: 1px dotted #8b5a2b; cursor: help; position: relative; color: #5d4037; font-weight: bold; }
-        .footnote:hover::after { content: attr(data-text); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #3e2723; color: white; padding: 15px; border-radius: 6px; font-size: 14px; width: 400px; z-index: 2000; line-height: 1.4; pointer-events: none; font-weight: normal; text-align: left; }
+        .footnote:hover::after { content: attr(data-text); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #3e2723; color: white; padding: 15px; border-radius: 6px; font-size: 14px; width: 400px; z-index: 2000; line-height: 1.4; pointer-events: none; font-weight: normal; text-align: left; display: block; white-space: normal; }
         
         .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
         audio { width: 100%; margin-top: 5px; }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            .leaflet-popup-content-wrapper { width: 90vw !important; }
             #panel { width: 100%; height: 50%; top: auto; bottom: 0; transform: translateY(100%); transition: transform 0.3s ease; border-radius: 20px 20px 0 0; padding: 15px; }
             #panel.open { transform: translateY(0); }
-            .leaflet-popup-content { max-width: 90vw; }
             .footnote:hover::after { width: 250px; }
         }
     </style>
@@ -73,6 +74,7 @@
         var franceLayer = L.imageOverlay('map_france.webp', [[42.0, -5.0], [51.5, 8.5]]);
 
         var currentLang = 'ru';
+        var currentCountry = 'italy'; // Запоминаем, какая карта открыта
 
         var eras = {
             high: {
@@ -99,20 +101,20 @@
                 },
                 footnotes: {
                     ru: {
-                        "венецианской школы": "**Венецианская школа** — одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком.<br><br>**Несколько ключевых особенностей:**<ul><li>Приоритет колорита над чётким контуром и пластикой формы.</li><li>Лессировочная масляная живопись на тёмном грунте.</li><li>Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры.</li><li>Гармония человека и поэтического пейзажа.</li></ul>",
+                        "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком. Несколько ключевых особенностей: Приоритет колорита над чётким контуром и пластикой формы. Лессировочная масляная живопись на тёмном грунте. Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры. Гармония человека и поэтического пейзажа.",
                         "единодушно атрибутирована": "Абсолютным большинством специалистов признана творением конкретно этого автора.",
                         "неканонической": "Книга Ветхого Завета, которой нет в древнееврейском каноне, но которая включена в православные (и католические) издания Библии. Православие считает такие книги назидательными и полезными для чтения, но не приравнивает к каноническим.",
                         "второканонической": "То же, что православные называют «неканоническими», но в католической традиции. На Тридентском соборе (XVI в.) такие книги включили в канон и назвали «второканоническими» (то есть вошедшими в канон во вторую очередь).",
-                        "апокрифичной": "В православии это тексты, которые никогда не входили в Библию ни в одной традиции. Они отвергнуты Церковью как поддельные или содержащие недостоверные учения.<br><br>**НО!**<br>В протестантской традиции термин «апокрифы» применяют к тем книгам, которые православные называют «неканоническими».",
+                        "апокрифичной": "В православии это тексты, которые никогда не входили в Библию ни в одной традиции. Они отвергнуты Церковью как поддельные или содержащие недостоверные учения. НО! В протестантской традиции термин «апокрифы» применяют к тем книгам, которые православные называют «неканоническими».",
                         "приготовляли землю и воду": "Приготовление земли и воды здесь — символ безоговорочной капитуляции; дипломатический ритуал, при котором завоевателям буквально преподносили горсть земли и чашу с водой (право на землю и водные ресурсы).",
                         "укрепить её": "Даровать физические и духовные силы для совершения чего-либо. В данном случае — для нанесения смертельного удара."
                     },
                     en: {
-                        "Venetian school": "**The Venetian school** is one of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br>**Several key features:**<ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground.</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>",
+                        "Venetian school": "The Venetian school is one of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing. Several key features: The priority of colour over a clear contour and plasticity of form. Glaze oil painting on a dark ground. Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture. Harmony of man and poetic landscape.",
                         "unanimously attributed": "Recognised by the absolute majority of specialists as the work of this particular author.",
                         "non-canonical": "A book of the Old Testament that is not in the Hebrew canon, but which is included in Orthodox (and Catholic) editions of the Bible. Orthodoxy considers such books edifying and useful for reading, but does not equate them with canonical ones.",
                         "deuterocanonical": "Essentially, the same as what the Orthodox call «non-canonical», but in the Catholic tradition. At the Council of Trent (16th century) such books were included in the canon and called «deuterocanonical» (that is, those that entered the canon second).",
-                        "apocryphal": "In Orthodoxy these are texts that were never part of the Bible in any tradition. They are rejected by the Church as forged or containing unreliable teachings.<br><br>**BUT!**<br>In the Protestant tradition, the term «apocrypha» is applied to those books that the Orthodox call «non-canonical».",
+                        "apocryphal": "In Orthodoxy these are texts that were never part of the Bible in any tradition. They are rejected by the Church as forged or containing unreliable teachings. BUT! In the Protestant tradition, the term «apocrypha» is applied to those books that the Orthodox call «non-canonical».",
                         "prepare earth and water": "The preparation of earth and water here is a symbol of unconditional capitulation; a diplomatic ritual in which a handful of earth and a cup of water were literally presented to the conquerors (the right to land and water resources).",
                         "to strengthen her": "To grant physical and spiritual strength to accomplish something. In this case — to deliver a fatal blow."
                     }
@@ -127,12 +129,15 @@
         }
 
         function showEraInfo(era) {
+            // ФИКС: Если сейчас открыта Франция, принудительно переключаем на Италию
+            if (currentCountry !== 'italy') {
+                switchCountry('italy');
+            }
+
             var box = document.getElementById('era-info-box');
             if (box.style.display === 'none') {
                 box.style.display = 'block';
-                // Убираем теги для отображения простого текста в панели
-                var rawText = eras[era][currentLang];
-                box.innerHTML = rawText.replace(/<br>/g, '<br>'); 
+                box.innerHTML = processText(eras[era][currentLang], null); 
                 drawMarkers('italy');
             } else {
                 box.style.display = 'none';
@@ -141,6 +146,7 @@
         }
 
         function switchCountry(country) {
+            currentCountry = country; // Запоминаем текущую страну
             if (country === 'france') {
                 map.removeLayer(italyLayer);
                 franceLayer.addTo(map);
@@ -210,13 +216,13 @@
             
             var box = document.getElementById('era-info-box');
             if (box.style.display !== 'none') {
-                box.innerHTML = eras['high'][currentLang];
+                box.innerHTML = processText(eras['high'][currentLang], null);
             }
-            drawMarkers('italy');
+            drawMarkers(currentCountry); // Перерисовываем точки для той страны, где мы находимся
         }
 
         // Инициализация
-        // drawMarkers('italy'); // Убрал автозапуск, чтобы точка появлялась только после клика на эпоху
+        // drawMarkers('italy'); // Точка появляется только после клика
     </script>
 </body>
 </html>
