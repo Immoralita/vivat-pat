@@ -11,34 +11,21 @@
         .leaflet-attribution-flag { display: none !important; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Georgia', serif; overflow: hidden; }
         
-        /* Панель теперь просто стоит слева */
         #panel { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 350px; 
-            height: 100%; 
-            background: rgba(245, 235, 220, 0.98); 
-            z-index: 1000; 
-            padding: 20px; 
-            box-sizing: border-box; 
-            overflow-y: auto; 
+            position: absolute; top: 0; left: 0; width: 350px; height: 100%; 
+            background: rgba(245, 235, 220, 0.98); z-index: 1000; 
+            padding: 20px; box-sizing: border-box; overflow-y: auto; 
             box-shadow: 2px 0 10px rgba(0,0,0,0.3); 
         }
         
-        /* Карта сдвинута вправо, чтобы не залезать под панель */
         #map { 
-            height: 100%; 
-            width: calc(100% - 350px); 
-            margin-left: 350px;
-            z-index: 1; 
-            background-color: #e8dcc4; 
+            height: 100%; width: calc(100% - 350px); margin-left: 350px;
+            z-index: 1; background-color: #e8dcc4; 
         }
         
         .tab-btn { background: none; border: 1px solid #8b5a2b; color: #3e2723; padding: 10px; width: 100%; cursor: pointer; font-family: 'Georgia', serif; font-size: 16px; text-align: left; margin-bottom: 5px; transition: background 0.2s; }
         .tab-btn:hover { background: #e0d0c0; }
         
-        /* Кнопка языка переехала на карту */
         #lang-switch { position: absolute; top: 20px; right: 20px; z-index: 1000; background: rgba(245, 235, 220, 0.9); border: 1px solid #8b5a2b; padding: 8px 15px; cursor: pointer; font-size: 16px; font-family: 'Georgia', serif; color: #3e2723; }
         
         .leaflet-popup-content-wrapper { width: 700px !important; max-width: 90vw !important; }
@@ -58,16 +45,32 @@
         .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
         audio { width: 100%; margin-top: 5px; }
 
-        /* Если экран маленький (телефон), прячем панель, чтобы не мешала (раз мы на ноутбуке показываем) */
+        #mobile-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #e8dcc4; z-index: 9999;
+            flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; box-sizing: border-box; text-align: center;
+            font-family: 'Georgia', serif; color: #3e2723;
+        }
+        #mobile-overlay h2 { font-size: 24px; margin-bottom: 20px; color: #8b5a2b; }
+        #mobile-overlay p { font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
+        #mobile-overlay .link-box { background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 5px; border: 1px dashed #8b5a2b; word-break: break-all; font-weight: bold; font-size: 14px; }
+
         @media (max-width: 768px) {
-            #panel { display: none; }
-            #map { width: 100%; margin-left: 0; }
+            #panel, #map, #lang-switch { display: none; }
+            #mobile-overlay { display: flex; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Статичная панель слева -->
+    <div id="mobile-overlay">
+        <h2>Vivat-Pat</h2>
+        <p>Для комфортного просмотра интерактивной карты и чтения текстов, пожалуйста, откройте этот сайт на компьютере или ноутбуке.</p>
+        <p>Скопируйте ссылку ниже и вставьте её в адресную строку браузера на вашем ПК:</p>
+        <div class="link-box">https://immoralita.github.io/vivat-pat/</div>
+    </div>
+
     <div id="panel">
         <h2 id="site-title">Vivat-Pat</h2>
         <p id="panel-desc" style="font-size: 14px; color: #5d4037; margin-bottom: 20px;">Интерактивная карта шедевров Возрождения.</p>
@@ -76,9 +79,10 @@
         <div id="country-list" style="display: none; margin-top: 10px;">
             <button class="tab-btn" onclick="switchCountry('italy')" id="btn-italy">Италия</button>
             <div style="padding-left: 15px; margin-bottom: 5px;">
-                <button class="tab-btn" onclick="showEraInfo('high')" id="btn-renaissance" style="font-size: 14px;">Высокое Возрождение</button>
-                <div id="era-info-box" style="display: none; font-size: 13px; color: #5d4037; padding: 10px; border-left: 2px solid #8b5a2b; margin-bottom: 10px;">
-                </div>
+                <button class="tab-btn" onclick="showEraInfo('early')" id="btn-early" style="font-size: 14px;">Раннее Возрождение</button>
+                <button class="tab-btn" onclick="showEraInfo('high')" id="btn-high" style="font-size: 14px;">Высокое Возрождение</button>
+                <button class="tab-btn" onclick="showEraInfo('late')" id="btn-late" style="font-size: 14px;">Позднее Возрождение</button>
+                <div id="era-info-box" style="display: none; font-size: 13px; color: #5d4037; padding: 10px; border-left: 2px solid #8b5a2b; margin-bottom: 10px;"></div>
             </div>
             <button class="tab-btn" onclick="switchCountry('france')" id="btn-france">Франция</button>
         </div>
@@ -90,10 +94,7 @@
         </p>
     </div>
     
-    <!-- Кнопка языка -->
     <button id="lang-switch" onclick="toggleLanguage()">EN</button>
-
-    <!-- Сама карта -->
     <div id="map"></div>
 
     <script>
@@ -104,16 +105,27 @@
         var currentLang = 'ru';
         var currentCountry = 'italy';
 
+        // Тексты для эпох
         var eras = {
+            early: {
+                ru: "**Раннее Возрождение**<br>**Годы: XIV–XV века (около 1350–1470).**<br>Период перехода от средневековой традиции к новому искусству, основанному на изучении античности и натуры.<ul><li>Художники активно экспериментируют с линейной перспективой для передачи глубины пространства.</li><li>В центре внимания оказывается человек, его эмоции и физическое строение, что связано с ростом гуманизма.</li><li>Архитектура и скульптура ориентируются на античные образцы, но ещё не достигают полной гармонии и монументальности.</li><li>Произведения часто сохраняют некоторую графичность и детализацию, характерную для позднеготической традиции.</li></ul>",
+                en: "**Early Renaissance**<br>**Years: XIV–XV centuries (c. 1350–1470).**<br>A period of transition from medieval tradition to a new art based on the study of antiquity and nature.<ul><li>Artists actively experimented with linear perspective to create depth of space.</li><li>The focus shifted to the human figure, its emotions and physical structure, linked to the growth of humanism.</li><li>Architecture and sculpture looked to classical models but had not yet achieved full harmony and monumentality.</li><li>Works often retained a certain graphic quality and detail characteristic of the late Gothic tradition.</li></ul>"
+            },
             high: {
                 ru: "**Высокое Возрождение**<br>**Годы: конец XV – начало XVI века (около 1490–1520).**<br>Период наивысшего расцвета ренессансного искусства, достигшего идеальной гармонии и монументальной величавости.<ul><li>Композиции отличаются строгой уравновешенностью, симметрией и ясностью.</li><li>Художники достигают совершенства в передаче человеческого тела и реалистичности образов.</li><li>Искусство приобретает героический и торжественный характер, прославляя величие человека.</li><li>Техника живописи совершенствуется, в частности, за счёт использования масляных красок и лессировок для глубины цвета.</li></ul>",
                 en: "**High Renaissance**<br>**Years: Late XV – early XVI century (c. 1490–1520).**<br>The period of the highest flowering of Renaissance art, which achieved ideal harmony and monumental grandeur.<ul><li>Compositions are characterized by strict balance, symmetry, and clarity.</li><li>Artists achieved perfection in rendering the human figure and realistic detail.</li><li>Art took on a heroic and solemn character, celebrating the dignity of humanity.</li><li>Painting technique advanced, particularly through the use of oil paint and glazes to achieve depth of colour.</li></ul>"
+            },
+            late: {
+                ru: "**Позднее Возрождение**<br>**Годы: XVI век (около 1520–1600).**<br>Период эволюции ренессансного стиля в сторону большей эмоциональности и свободы, часто отождествляемый с маньеризмом.<ul><li>Композиции становятся более динамичными и асимметричными, утрачивая былую ясность.</li><li>Художники сознательно отходят от строгих классических правил в пользу субъективного выражения.</li><li>Цвет и фактура приобретают большую экспрессивную нагрузку, а формы иногда намеренно деформируются.</li><li>В творчестве поздних мастеров (например, Тициана) усиливается драматизм и психологическая глубина образов.</li></ul>",
+                en: "**Late Renaissance**<br>**Years: XVI century (c. 1520–1600).**<br>A period of evolution of the Renaissance style toward greater emotionality and freedom, often identified with Mannerism.<ul><li>Compositions became more dynamic and asymmetrical, losing their former clarity.</li><li>Artists deliberately departed from strict classical rules in favour of subjective expression.</li><li>Colour and texture took on greater expressive weight, and forms were sometimes intentionally distorted.</li><li>In the work of later masters (e.g., Titian), the drama and psychological depth of images intensified.</li></ul>"
             }
         };
 
+        // Данные картин
         var artworks = [
             {
                 country: "italy",
+                era: "high", // Эпоха: Высокое Возрождение
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "1504-1506 гг.",
                 city: { ru: "Венеция", en: "Venice" }, 
@@ -149,6 +161,21 @@
                     ru: "<h4>Венецианская школа:</h4>Одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком.<br><br><b>Несколько ключевых особенностей:</b><ul><li>Приоритет колорита над чётким контуром и пластикой формы.</li><li>Лессировочная масляная живопись на тёмном грунте (техника, при которой прозрачные слои краски наносят поверх высохших предыдущих, чтобы добиться глубины, светоносности и особой теплоты тонов).</li><li>Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры.</li><li>Гармония человека и поэтического пейзажа.</li></ul>",
                     en: "<h4>The Venetian school:</h4>One of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br><b>Several key features:</b><ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground (a technique in which transparent layers of paint are applied over dried previous ones to achieve depth, luminosity and a special warmth of tones).</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>"
                 }
+            },
+            {
+                country: "italy",
+                era: "early", // Эпоха: Раннее Возрождение
+                title: { ru: "Рождение Венеры (Тест)", en: "Birth of Venus (Test)" },
+                year: "ок. 1485",
+                city: { ru: "Флоренция", en: "Florence" }, 
+                museum: { ru: "Галерея Уффици", en: "Uffizi Gallery" },
+                author: { ru: "Сандро Боттичелли", en: "Sandro Botticelli" }, 
+                coords: [43.767, 11.255], // Флоренция
+                image: "judith.jpg", // Пока используем ту же картинку
+                text: { 
+                    ru: "Это тестовая точка для Раннего Возрождения. Сюда мы добавим Боттичелли.",
+                    en: "This is a test point for Early Renaissance. We will add Botticelli here."
+                }
             }
         ];
 
@@ -164,14 +191,9 @@
             }
 
             var box = document.getElementById('era-info-box');
-            if (box.style.display === 'none') {
-                box.style.display = 'block';
-                box.innerHTML = processText(eras[era][currentLang], null); 
-                drawMarkers('italy');
-            } else {
-                box.style.display = 'none';
-                map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
-            }
+            box.style.display = 'block';
+            box.innerHTML = processText(eras[era][currentLang], null); 
+            drawMarkers('italy', era); // Передаем эпоху для фильтрации
         }
 
         function switchCountry(country) {
@@ -204,13 +226,15 @@
             return processed;
         }
 
-        function drawMarkers(country) {
+        // Функция отрисовки теперь принимает эпоху
+        function drawMarkers(country, era = 'high') {
             map.eachLayer(function (layer) {
                 if (layer instanceof L.Marker) map.removeLayer(layer);
             });
 
             artworks.forEach(function(art) {
-                if (art.country === country) {
+                // Показываем точку только если совпадает страна и эпоха
+                if (art.country === country && art.era === era) {
                     var formattedText = processText(art.text[currentLang], art.footnotes ? art.footnotes[currentLang] : null);
                     
                     var musicText = currentLang === 'ru' ? 
@@ -218,6 +242,7 @@
                         '<strong>Musical accompaniment:</strong><br>Antonio Vivaldi\'s oratorio «Juditha triumphans» (Italian: Juditha triumphans). The full Latin title is Juditha triumphans devicta Holofernis barbarie.';
 
                     var specialBox = art.specialFootnote ? `<div class="special-footnote-box">${art.specialFootnote[currentLang]}</div>` : '';
+                    var audioBox = art.audio ? `<div class="audio-wrapper"><p>${musicText}</p><audio controls><source src="${art.audio}" type="audio/mpeg"></audio></div>` : '';
 
                     var popupContent = `
                         <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
@@ -227,10 +252,7 @@
                         <p><strong>${currentLang === 'ru' ? 'Место хранения' : 'Current location'}:</strong> ${art.museum[currentLang]}</p>
                         <p>${formattedText}</p>
                         ${specialBox}
-                        <div class="audio-wrapper">
-                            <p>${musicText}</p>
-                            <audio controls><source src="${art.audio}" type="audio/mpeg"></audio>
-                        </div>
+                        ${audioBox}
                     `;
 
                     L.marker(art.coords).addTo(map).bindPopup(popupContent, { maxHeight: 600, autoPanPadding: [50, 50] });
@@ -245,19 +267,18 @@
             document.getElementById('btn-countries').innerText = currentLang === 'ru' ? '🏛️ Страны' : '🏛️ Countries';
             document.getElementById('btn-italy').innerText = currentLang === 'ru' ? 'Италия' : 'Italy';
             document.getElementById('btn-france').innerText = currentLang === 'ru' ? 'Франция' : 'France';
-            document.getElementById('btn-renaissance').innerText = currentLang === 'ru' ? 'Высокое Возрождение' : 'High Renaissance';
+            document.getElementById('btn-early').innerText = currentLang === 'ru' ? 'Раннее Возрождение' : 'Early Renaissance';
+            document.getElementById('btn-high').innerText = currentLang === 'ru' ? 'Высокое Возрождение' : 'High Renaissance';
+            document.getElementById('btn-late').innerText = currentLang === 'ru' ? 'Позднее Возрождение' : 'Late Renaissance';
             document.getElementById('feedback-text').innerText = currentLang === 'ru' ? 'Есть идея для карты?' : 'Have an idea for the map?';
             document.getElementById('feedback-link').innerText = currentLang === 'ru' ? '✉️ Написать мне' : '✉️ Write to me';
             
-            var box = document.getElementById('era-info-box');
-            if (box.style.display !== 'none') {
-                box.innerHTML = processText(eras['high'][currentLang], null);
-            }
-            drawMarkers(currentCountry);
+            // Очищаем старую инфу об эпохе при смене языка
+            document.getElementById('era-info-box').style.display = 'none';
+            map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
         }
 
-        // Вызов при загрузке страницы, чтобы точка была сразу
-        drawMarkers('italy');
+        drawMarkers('italy', 'high'); // Показываем Высокое по умолчанию
     </script>
 </body>
 </html>
