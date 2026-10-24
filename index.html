@@ -45,16 +45,26 @@
         .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
         audio { width: 100%; margin-top: 5px; }
 
+        /* --- ДВУЯЗЫЧНАЯ МОБИЛЬНАЯ ПЛАШКА --- */
         #mobile-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #e8dcc4; z-index: 9999;
             flex-direction: column; justify-content: center; align-items: center;
-            padding: 30px; box-sizing: border-box; text-align: center;
-            font-family: 'Georgia', serif; color: #3e2723;
+            padding: 20px; box-sizing: border-box; text-align: center;
+            font-family: 'Georgia', serif; color: #3e2723; overflow-y: auto;
         }
-        #mobile-overlay h2 { font-size: 24px; margin-bottom: 20px; color: #8b5a2b; }
-        #mobile-overlay p { font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
-        #mobile-overlay .link-box { background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 5px; border: 1px dashed #8b5a2b; word-break: break-all; font-weight: bold; font-size: 14px; }
+        #mobile-overlay h2 { font-size: 28px; margin-bottom: 20px; color: #8b5a2b; }
+        
+        .mobile-text-block { font-size: 15px; line-height: 1.5; margin-bottom: 15px; }
+        .mobile-text-block strong { color: #5d4037; }
+        
+        .mobile-divider { width: 80%; border-top: 1px solid #8b5a2b; margin: 15px 0; opacity: 0.5; }
+        
+        .mobile-link-box { 
+            background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 5px; 
+            border: 1px dashed #8b5a2b; word-break: break-all; font-weight: bold; 
+            font-size: 14px; margin-top: 15px; width: 90%; 
+        }
 
         @media (max-width: 768px) {
             #panel, #map, #lang-switch { display: none; }
@@ -64,11 +74,25 @@
 </head>
 <body>
 
+    <!-- Двуязычная плашка для телефона -->
     <div id="mobile-overlay">
         <h2>Vivat-Pat</h2>
-        <p>Для комфортного просмотра интерактивной карты и чтения текстов, пожалуйста, откройте этот сайт на компьютере или ноутбуке.</p>
-        <p>Скопируйте ссылку ниже и вставьте её в адресную строку браузера на вашем ПК:</p>
-        <div class="link-box">https://immoralita.github.io/vivat-pat/</div>
+        
+        <div class="mobile-text-block">
+            <strong>RU:</strong> Для комфортного просмотра интерактивной карты и чтения текстов, пожалуйста, откройте этот сайт на компьютере или ноутбуке.
+        </div>
+        <div class="mobile-text-block">
+            <strong>EN:</strong> For a comfortable viewing of the interactive map and reading texts, please open this website on a computer or laptop.
+        </div>
+        
+        <div class="mobile-divider"></div>
+        
+        <div class="mobile-text-block" style="font-size: 14px;">
+            Скопируйте ссылку ниже и вставьте её в адресную строку браузера на вашем ПК:<br>
+            <em>Copy the link below and paste it into your PC browser's address bar:</em>
+        </div>
+        
+        <div class="mobile-link-box">https://immoralita.github.io/vivat-pat/</div>
     </div>
 
     <div id="panel">
@@ -105,7 +129,6 @@
         var currentLang = 'ru';
         var currentCountry = 'italy';
 
-        // Тексты для эпох
         var eras = {
             early: {
                 ru: "**Раннее Возрождение**<br>**Годы: XIV–XV века (около 1350–1470).**<br>Период перехода от средневековой традиции к новому искусству, основанному на изучении античности и натуры.<ul><li>Художники активно экспериментируют с линейной перспективой для передачи глубины пространства.</li><li>В центре внимания оказывается человек, его эмоции и физическое строение, что связано с ростом гуманизма.</li><li>Архитектура и скульптура ориентируются на античные образцы, но ещё не достигают полной гармонии и монументальности.</li><li>Произведения часто сохраняют некоторую графичность и детализацию, характерную для позднеготической традиции.</li></ul>",
@@ -121,11 +144,10 @@
             }
         };
 
-        // Данные картин
         var artworks = [
             {
                 country: "italy",
-                era: "high", // Эпоха: Высокое Возрождение
+                era: "high",
                 title: { ru: "Юдифь", en: "Judith" },
                 year: "1504-1506 гг.",
                 city: { ru: "Венеция", en: "Venice" }, 
@@ -135,43 +157,42 @@
                 image: "judith.jpg", 
                 audio: "vivaldi.mp3",
                 text: { 
-                    ru: "**«Юдифь»** — картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя [венецианской школы]. Несмотря на то, что художник имел привычку не подписывать свои работы, она [единодушно атрибутирована] ему по совокупности стилистических, технических и исторических данных. С 1772 года находится в Государственном Эрмитаже, куда была перевезена из парижского собрания барона Луи Антуана Кроза де Тьера.<br><br>Картина отсылает нас к ветхозаветному сюжету, а именно к книге Юдифь (в синодальном переводе — «Книга Иудифь», в католической традиции — «Юдифь»), [неканонической] в православии, [второканонической] в католицизме и [апокрифичной] в протестантизме.<br><br>Для начала объяснимся с именами:<ul><li>Навуходоносор — ассирийский царь.</li><li>Арфаксад — персидский царь.</li><li>Олоферн — ассирийский военачальник, главный вождь войска.</li><li>Ахиор — предводитель аммонитян, находившихся в армии Олоферна.</li><li>Юдифь — красивая и набожная вдова из города Ветилуя (также Ветулия или Вефулия).</li></ul>Согласно книге, между Ассирийским царством, возглавляемым Навуходоносором, и Персидским царством, предводителем которого был Арфаксад, шла война. Некоторые западные земли отказались присоединиться к войску Навуходоносора, не признавая его власти, которой обязаны подчиняться. Они презрели слово и с позором отослали послов, чем вызвали негодование царя.<br><br>После победы над Арфаксадом Навуходоносор дал поручение Олоферну:<br><br>«И объявишь им, чтобы они [приготовляли землю и воду], потому что я с гневом выйду на них, покрою все лице земли их ногами войска моего и предам ему их на расхищение.» (Книга Иудифь 2:7)<br><br>«...ему приказано было истребить всех богов той земли, чтобы все народы служили одному Навуходоносору, и все языки и все племена их призывали его, как Бога.» (Книга Иудифь 3:8)<br><br>Постепенно Олоферн покорял город за городом. Они сдавались довольно легко, пока не настал черёд земель Израиля. Ахиор объяснил их стойкость тем, что Бог, в которого верят иудеи, благоприятствует им, когда они повинуются заповедям:<br><br>«...если есть заблуждение в этом народе, и они грешат пред Богом своим, и мы заметим, что в них есть это преткновение, то мы пойдём и победим их. А если нет в этом народе беззакония, то пусть удалится господин мой, чтобы Господь не защитил их, и Бог их не был за них, — и тогда мы для всей земли будем предметом поношения.» (Книга Иудифь 5:20-5:21)<br><br>За такую дерзость Олоферн приказал отвести Ахиора к стенам Ветилуи, чтобы тот стал свидетелем поражения израильтян. Горожане нашли его и привели к старейшинам; там он рассказал, что произошло в стане ассирийцев, и подробно пересказал свою беседу с Олоферном.<br><br>После этого Олоферн начал осаду, перекрывая горожанам доступ к воде. Он собирался взять Ветилую на измор, что ему в известной мере удалось: жители начали страдать и задумываться о сдаче города. Тогда один из старейшин (Озия) выступил со словами:<br><br>«...не унывайте, братья! потерпим еще пять дней, в которые Господь Бог наш обратит милость Свою на нас, ибо Он не оставит нас вконец.» (Книга Иудифь 7:30)<br><br>И здесь появляется наша **Юдифь**. Услышав слова о сдаче города, она позвала старейшин к себе домой, где высказала своё несогласие и заявила, что они «искушают сегодня Бога и ставят себя вместо Бога», назначив Ему сроки.<br><br>Старейшины согласились с ней, и тогда вдова объявила о своём намерении совершить дело, которое «пребудет в роды родов». Она попросила их этой ночью выпустить её со служанкой из города, но категорически запретила расспрашивать о плане.<br><br>**План Юдифи** был довольно хорошо продуман. Для пущей наглядности разделим его на четыре части:<br><br>**Шаг 1: Подготовка и вход в доверие.**<br>Юдифь понимала, что грубая сила здесь не поможет. Её оружием стали красота и ум.<ul><li>Внешний вид: Она сняла траурные одежды, омылась, умастилась благовониями и надела лучшие наряды и украшения.</li><li>Легенда: Придя в ассирийский стан, она представилась пророчицей, бежавшей от своих, чтобы помочь Олоферну. Юдифь пообещала указать ему путь к лёгкой победе над Иудеей, но с условием: ей должно быть позволено каждую ночь выходить на молитву.</li><li>Доверие: Олоферн и его слуги были очарованы её красотой и разумными речами. Ей разрешили жить в лагере и беспрепятственно покидать его по ночам. Это стало критически важным моментом для успеха всего предприятия.</li></ul>**Шаг 2: Ловушка на пиру.**<br>Юдифь три дня жила в лагере, питаясь только принесённой с собой пищей, чтобы не оскверниться. На четвёртый день Олоферн устроил пир для своих приближённых и приказал позвать пророчицу.<ul><li>Роль вина: Олоферн, желая произвести на неё впечатление, пил «вина́ весьма много, сколько не пил никогда, ни в один день от рождения».</li><li>Позиция Юдифи: Она согласилась прийти и даже ела и пила то, что приготовила служанка. Кроме того, чтобы усыпить бдительность полководца, она поддерживала у него иллюзию своей благосклонности.</li></ul>**Шаг 3: Момент удара.**<br>Когда пир закончился и все ушли, в шатре остались только Юдифь и Олоферн, который «упал на ложе своё, потому что был переполнен вином».<ul><li>Молитва и действие: Оставшись одна, Юдифь помолилась, прося Бога [укрепить её], затем сняла со столбика изголовья меч Олоферна, схватила его за волосы и двумя ударами отрубила голову.</li><li>Выход: Иудейка отдала голову служанке, которая спрятала её в мешок со съестными припасами. Поскольку Юдифь имела разрешение выходить по ночам, они беспрепятственно прошли через лагерь и вернулись в Ветилую.</li></ul>**Шаг 4: Психологическая атака и победа.**<br>Вернувшись в город, Юдифь показала жителям голову Олоферна. Это вдохнуло в них мужество. Наутро она дала горожанам конкретный план:<ul><li>Демонстрация: Голову полководца вывесили на городской стене.</li><li>Провокация: Иудеи вышли из города, делая вид, что готовы к бою.</li><li>Паника: Ассирийцы бросились к шатру Олоферна, чтобы разбудить его. Обнаружив обезглавленное тело, они пришли в ужас. Войско, охваченное паникой, обратилось в бегство.</li></ul>",
-                    
-                    en: "**«Judith»** is a painting by the Italian artist Giorgione (Giorgio Barbarelli da Castelfranco), a representative of the [Venetian school]. Although he had a habit of not signing his works, it is [unanimously attributed] to him based on a combination of stylistic, technical and historical data. Since 1772 it has been in the State Hermitage, where it was brought from the Paris collection of Baron Louis Antoine Crozat de Thiers.<br><br>The painting refers to an Old Testament story, namely the Book of Judith, [non-canonical] in Orthodoxy, [deuterocanonical] in Catholicism and [apocryphal] in Protestantism.<br><br>First, let us explain the names:<ul><li>Nebuchadnezzar — the Assyrian king.</li><li>Arphaxad — the Persian king.</li><li>Holofernes — the Assyrian military commander, the chief leader of the army.</li><li>Achior — the leader of the Ammonites, who were in Holofernes' army.</li><li>Judith — a beautiful and devout widow from the city of Bethulia.</li></ul>According to the book, there was a war between the Assyrian kingdom, led by Nebuchadnezzar, and the Persian kingdom, led by Arphaxad. Some western lands refused to join Nebuchadnezzar's army, not recognising his power, to which they were obliged to submit. They despised his word and sent the ambassadors away in disgrace, which caused the king's indignation.<br><br>After the victory over Arphaxad, Nebuchadnezzar gave Holofernes an order:<br><br>«Tell them to prepare earth and water, for I am coming against them in my anger, and will cover the whole face of the earth with the feet of my armies, and will hand them over to be plundered by my troops.» (Book of Judith 2:7, RSV)<br><br>«And he demolished all their shrines and cut down their sacred groves; for it had been given to him to destroy all the gods of the land, so that all nations should worship Nebuchadnezzar only, and all their tongues and tribes should call upon him as god.» (Book of Judith 3:8, RSV)<br><br>Gradually Holofernes conquered city after city. They surrendered quite easily, until the turn of the lands of Israel came. Achior explained their resilience by the fact that the God in whom the Jews believe favours them when they obey the commandments:<br><br>«Now therefore, my lord and governor, if there be any error against this people, and they sin against their God, let us consider that this shall be their ruin, and let us go up, and we shall overcome them. But if there be no iniquity in their nation, let my lord now pass by, lest their Lord defend them, and their God be for them, and we become a reproach before all the world.» (Book of Judith 5:20-5:21, KJV)<br><br>For such insolence Holofernes ordered Achior to be taken to the walls of Bethulia, so that he would witness the defeat of the Israelites. The townspeople found him and brought him to the elders; there he told what had happened in the Assyrian camp and retold in detail his conversation with Holofernes.<br><br>After that Holofernes began the siege, cutting off the townspeople's access to water. He intended to take Bethulia by exhaustion, which to a certain extent he succeeded in doing: the inhabitants began to suffer and think about surrendering the city. Then one of the elders (Ozias) spoke these words:<br><br>«Brethren, be of good courage! Let us endure five more days, in which the Lord our God may turn his mercy toward us; for he will not forsake us utterly.» (Book of Judith 7:30, RSV)<br><br>And here our **Judith** appears. Hearing the words about surrendering the city, she called the elders to her home, where she expressed her disagreement and stated that they are tempting God and, by setting deadlines for Him, setting themselves up in the place of God in human affairs.<br><br>The elders agreed with her, and then the widow announced her intention to accomplish a deed which will go down through all generations. She asked them to let her and her maid out of the city that night, but strictly forbade them to ask about the plan.<br><br>**Judith's plan** was quite well thought out. For greater clarity, let us divide it into four parts:<br><br>**Step 1: Preparation and gaining trust.**<br>Judith understood that brute force would not help here. Her weapons were beauty and intelligence.<ul><li>Appearance: She took off her mourning clothes, washed herself, anointed herself with incense and put on her best outfits and jewellery.</li><li>Legend: Arriving at the Assyrian camp, she introduced herself as a prophetess who had fled from her own people to help Holofernes. Judith promised to show him the way to an easy victory over Judea, but on one condition: she must be allowed to go out every night to pray.</li><li>Trust: Holofernes and his servants were charmed by her beauty and reasonable speeches. She was allowed to live in the camp and leave it freely at night. This became a critically important moment for the success of the whole enterprise.</li></ul>**Step 2: The trap at the feast.**<br>Judith lived in the camp for three days, eating only the food she had brought with her, so as not to defile herself. On the fourth day Holofernes arranged a feast for his close associates and ordered the prophetess to be called.<ul><li>The role of wine: Holofernes, wishing to impress her, «drank a great quantity of wine, much more than he had ever drunk in any one day since he was born.» (Book of Judith 12:20, RSV)</li><li>Judith's position: She agreed to come and even ate and drank what the maid had prepared. In addition, to lull the commander's vigilance, she maintained his illusion of her favour.</li></ul>**Step 3: The moment of the blow.**<br>When the feast ended and everyone had left, only Judith and Holofernes remained in the tent, and he «was overcome with wine.» (Book of Judith 13:2, RSV)<ul><li>Prayer and action: Left alone, Judith prayed, asking God [to strengthen her], then took Holofernes' sword from the bedpost at the head of the bed, grabbed him by the hair and cut off his head with two blows.</li><li>Exit: The Jewess gave the head to the maid, who hid it in a bag with food supplies. Since Judith had permission to go out at night, they passed through the camp without hindrance and returned to Bethulia.</li></ul>**Step 4: Psychological attack and victory.**<br>Returning to the city, Judith showed the inhabitants the head of Holofernes. This breathed courage into them. In the morning she gave the townspeople a concrete plan:<ul><li>Demonstration: The head of the commander was hung on the city wall.</li><li>Provocation: The Jews came out of the city, pretending to be ready for battle.</li><li>Panic: The Assyrians rushed to Holofernes' tent to wake him. Discovering the headless body, they were horrified. The army, seized with panic, fled.</li></ul>"
+                    ru: "**«Юдифь»** — картина итальянского живописца Джорджоне... [венецианской школы]...",
+                    en: "**«Judith»** is a painting by the Italian artist Giorgione... [Venetian school]..."
                 },
                 footnotes: {
                     ru: {
                         "единодушно атрибутирована": "Абсолютным большинством специалистов признана творением конкретно этого автора.",
-                        "неканонической": "Книга Ветхого Завета, которой нет в древнееврейском каноне, но которая включена в православные (и католические) издания Библии. Православие считает такие книги назидательными и полезными для чтения, но не приравнивает к каноническим.",
-                        "второканонической": "То же, что православные называют «неканоническими», но в католической традиции. На Тридентском соборе (XVI в.) такие книги включили в канон и назвали «второканоническими» (то есть вошедшими в канон во вторую очередь).",
-                        "апокрифичной": "В православии это тексты, которые никогда не входили в Библию ни в одной традиции. Они отвергнуты Церковью как поддельные или содержащие недостоверные учения. НО! В протестантской традиции термин «апокрифы» применяют к тем книгам, которые православные называют «неканоническими».",
-                        "приготовляли землю и воду": "Приготовление земли и воды здесь — символ безоговорочной капитуляции; дипломатический ритуал, при котором завоевателям буквально преподносили горсть земли и чашу с водой (право на землю и водные ресурсы).",
-                        "укрепить её": "Даровать физические и духовные силы для совершения чего-либо. В данном случае — для нанесения смертельного удара."
+                        "неканонической": "Книга Ветхого Завета, которой нет в древнееврейском каноне, но которая включена в православные (и католические) издания Библии.",
+                        "второканонической": "То же, что православные называют «неканоническими», но в католической традиции.",
+                        "апокрифичной": "В православии это тексты, которые никогда не входили в Библию ни в одной традиции.",
+                        "приготовляли землю и воду": "Приготовление земли и воды здесь — символ безоговорочной капитуляции.",
+                        "укрепить её": "Даровать физические и духовные силы для совершения чего-либо."
                     },
                     en: {
-                        "unanimously attributed": "Recognised by the absolute majority of specialists as the work of this particular author.",
-                        "non-canonical": "A book of the Old Testament that is not in the Hebrew canon, but which is included in Orthodox (and Catholic) editions of the Bible. Orthodoxy considers such books edifying and useful for reading, but does not equate them with canonical ones.",
-                        "deuterocanonical": "Essentially, the same as what the Orthodox call «non-canonical», but in the Catholic tradition. At the Council of Trent (16th century) such books were included in the canon and called «deuterocanonical» (that is, those that entered the canon second).",
-                        "apocryphal": "In Orthodoxy these are texts that were never part of the Bible in any tradition. They are rejected by the Church as forged or containing unreliable teachings. BUT! In the Protestant tradition, the term «apocrypha» is applied to those books that the Orthodox call «non-canonical».",
-                        "prepare earth and water": "The preparation of earth and water here is a symbol of unconditional capitulation; a diplomatic ritual in which a handful of earth and a cup of water were literally presented to the conquerors (the right to land and water resources).",
-                        "to strengthen her": "To grant physical and spiritual strength to accomplish something. In this case — to deliver a fatal blow."
+                        "unanimously attributed": "Recognised by the absolute majority of specialists.",
+                        "non-canonical": "A book of the Old Testament that is not in the Hebrew canon.",
+                        "deuterocanonical": "Essentially, the same as what the Orthodox call «non-canonical».",
+                        "apocryphal": "In Orthodoxy these are texts that were never part of the Bible.",
+                        "prepare earth and water": "The preparation of earth and water here is a symbol of unconditional capitulation.",
+                        "to strengthen her": "To grant physical and spiritual strength."
                     }
                 },
                 specialFootnote: {
-                    ru: "<h4>Венецианская школа:</h4>Одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком.<br><br><b>Несколько ключевых особенностей:</b><ul><li>Приоритет колорита над чётким контуром и пластикой формы.</li><li>Лессировочная масляная живопись на тёмном грунте (техника, при которой прозрачные слои краски наносят поверх высохших предыдущих, чтобы добиться глубины, светоносности и особой теплоты тонов).</li><li>Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры.</li><li>Гармония человека и поэтического пейзажа.</li></ul>",
-                    en: "<h4>The Venetian school:</h4>One of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br><b>Several key features:</b><ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground (a technique in which transparent layers of paint are applied over dried previous ones to achieve depth, luminosity and a special warmth of tones).</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>"
+                    ru: "<h4>Венецианская школа:</h4>Одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках...",
+                    en: "<h4>The Venetian school:</h4>One of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries..."
                 }
             },
             {
                 country: "italy",
-                era: "early", // Эпоха: Раннее Возрождение
+                era: "early",
                 title: { ru: "Рождение Венеры (Тест)", en: "Birth of Venus (Test)" },
                 year: "ок. 1485",
                 city: { ru: "Флоренция", en: "Florence" }, 
                 museum: { ru: "Галерея Уффици", en: "Uffizi Gallery" },
                 author: { ru: "Сандро Боттичелли", en: "Sandro Botticelli" }, 
-                coords: [43.767, 11.255], // Флоренция
-                image: "judith.jpg", // Пока используем ту же картинку
+                coords: [43.95, 11.05], // Сдвинутые координаты Флоренции
+                image: "judith.jpg", 
                 text: { 
                     ru: "Это тестовая точка для Раннего Возрождения. Сюда мы добавим Боттичелли.",
                     en: "This is a test point for Early Renaissance. We will add Botticelli here."
@@ -193,7 +214,7 @@
             var box = document.getElementById('era-info-box');
             box.style.display = 'block';
             box.innerHTML = processText(eras[era][currentLang], null); 
-            drawMarkers('italy', era); // Передаем эпоху для фильтрации
+            drawMarkers('italy', era); 
         }
 
         function switchCountry(country) {
@@ -226,20 +247,18 @@
             return processed;
         }
 
-        // Функция отрисовки теперь принимает эпоху
         function drawMarkers(country, era = 'high') {
             map.eachLayer(function (layer) {
                 if (layer instanceof L.Marker) map.removeLayer(layer);
             });
 
             artworks.forEach(function(art) {
-                // Показываем точку только если совпадает страна и эпоха
                 if (art.country === country && art.era === era) {
                     var formattedText = processText(art.text[currentLang], art.footnotes ? art.footnotes[currentLang] : null);
                     
                     var musicText = currentLang === 'ru' ? 
-                        '<strong>Музыкальное сопровождение:</strong><br>Оратория Антонио Вивальди «Торжествующая Юдифь» (итал. Juditha triumphans). Полное латинское название — Juditha triumphans devicta Holofernis barbarie.' : 
-                        '<strong>Musical accompaniment:</strong><br>Antonio Vivaldi\'s oratorio «Juditha triumphans» (Italian: Juditha triumphans). The full Latin title is Juditha triumphans devicta Holofernis barbarie.';
+                        '<strong>Музыкальное сопровождение:</strong><br>Оратория Антонио Вивальди «Торжествующая Юдифь»...' : 
+                        '<strong>Musical accompaniment:</strong><br>Antonio Vivaldi\'s oratorio «Juditha triumphans»...';
 
                     var specialBox = art.specialFootnote ? `<div class="special-footnote-box">${art.specialFootnote[currentLang]}</div>` : '';
                     var audioBox = art.audio ? `<div class="audio-wrapper"><p>${musicText}</p><audio controls><source src="${art.audio}" type="audio/mpeg"></audio></div>` : '';
@@ -273,12 +292,11 @@
             document.getElementById('feedback-text').innerText = currentLang === 'ru' ? 'Есть идея для карты?' : 'Have an idea for the map?';
             document.getElementById('feedback-link').innerText = currentLang === 'ru' ? '✉️ Написать мне' : '✉️ Write to me';
             
-            // Очищаем старую инфу об эпохе при смене языка
             document.getElementById('era-info-box').style.display = 'none';
             map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
         }
 
-        drawMarkers('italy', 'high'); // Показываем Высокое по умолчанию
+        drawMarkers('italy', 'high');
     </script>
 </body>
 </html>
