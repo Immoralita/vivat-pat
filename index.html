@@ -187,31 +187,63 @@
                 id: "venus_birth", country: "italy", era: "early", artist: "botticelli",
                 title: { ru: "Рождение Венеры", en: "Birth of Venus" }, year: "ок. 1485",
                 city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Галерея Уффици", en: "Uffizi" },
-                coords: [44.05, 10.85], image: "judith.jpg", color: "green",
+                coords: [44.10, 10.85], image: "judith.jpg", color: "green",
                 text: { ru: "Заглушка для теста.", en: "Test." }
             },
-            // 4. Мона Лиза (Флоренция, зеленая) - Заглушка
+            // 4. Битва Константина (Ареццо, зеленая) - Заглушка
+            {
+                id: "constantine", country: "italy", era: "early", artist: "piero",
+                title: { ru: "Битва Константина", en: "Battle of Constantine" }, year: "1450-е",
+                city: { ru: "Ареццо", en: "Arezzo" }, museum: { ru: "Сан-Франческо", en: "San Francesco" },
+                coords: [43.46, 11.88], image: "judith.jpg", color: "green",
+                text: { ru: "Заглушка для теста.", en: "Test." }
+            },
+            // 5. Камера дельи Спози (Мантуя, зеленая) - Заглушка
+            {
+                id: "camera", country: "italy", era: "early", artist: "mantegna",
+                title: { ru: "Камера дельи Спози", en: "Camera degli Sposi" }, year: "1465-1474",
+                city: { ru: "Мантуя", en: "Mantua" }, museum: { ru: "Палаццо Дукале", en: "Palazzo Ducale" },
+                coords: [45.16, 10.80], image: "judith.jpg", color: "green",
+                text: { ru: "Заглушка для теста.", en: "Test." }
+            },
+            // 6. Мона Лиза (Флоренция, зеленая) - Заглушка
             {
                 id: "mona_lisa", country: "italy", era: "high", artist: "leonardo",
                 title: { ru: "Мона Лиза", en: "Mona Lisa" }, year: "1503",
                 city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Лувр", en: "Louvre" },
-                coords: [44.0, 10.9], image: "judith.jpg", color: "green",
+                coords: [44.05, 10.95], image: "judith.jpg", color: "green",
                 text: { ru: "Заглушка для теста.", en: "Test." }
             },
-            // 5. Тайная вечеря (Милан, желтая) - Заглушка
+            // 7. Тайная вечеря (Милан, желтая) - Заглушка
             {
                 id: "last_supper", country: "italy", era: "high", artist: "leonardo",
                 title: { ru: "Тайная вечеря", en: "The Last Supper" }, year: "1498",
                 city: { ru: "Милан", en: "Milan" }, museum: { ru: "Санта-Мария-делле-Грацие", en: "Santa Maria delle Grazie" },
-                coords: [45.45, 9.15], image: "judith.jpg", color: "yellow",
+                coords: [45.25, 9.00], image: "judith.jpg", color: "yellow", // Сдвинул вниз и влево
                 text: { ru: "Заглушка для теста.", en: "Test." }
             },
-            // 6. Афинская школа (Рим, розовая) - Заглушка
+            // 8. Афинская школа (Рим, розовая) - Заглушка
             {
                 id: "athens", country: "italy", era: "high", artist: "raphael",
                 title: { ru: "Афинская школа", en: "The School of Athens" }, year: "1511",
                 city: { ru: "Рим", en: "Rome" }, museum: { ru: "Ватикан", en: "Vatican" },
-                coords: [41.9, 12.45], image: "judith.jpg", color: "pink",
+                coords: [42.10, 12.20], image: "judith.jpg", color: "pink", // Сдвинул вверх и влево
+                text: { ru: "Заглушка для теста.", en: "Test." }
+            },
+            // 9. Ассунта (Венеция, синяя) - Заглушка
+            {
+                id: "assunta", country: "italy", era: "late", artist: "titian",
+                title: { ru: "Ассунта", en: "Assumption" }, year: "1518",
+                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Санта-Мария-Глориоза-деи-Фрари", en: "Santa Maria Gloriosa dei Frari" },
+                coords: [45.43, 12.32], image: "judith.jpg", color: "blue",
+                text: { ru: "Заглушка для теста.", en: "Test." }
+            },
+            // 10. Пир в доме Левия (Венеция, синяя) - Заглушка
+            {
+                id: "levi", country: "italy", era: "late", artist: "veronese",
+                title: { ru: "Пир в доме Левия", en: "Feast in the House of Levi" }, year: "1573",
+                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Галерея Академии", en: "Gallerie dell'Accademia" },
+                coords: [45.42, 12.33], image: "judith.jpg", color: "blue",
                 text: { ru: "Заглушка для теста.", en: "Test." }
             }
         ];
@@ -326,7 +358,6 @@
                 if (era !== 'all' && art.era !== era) return;
                 if (artistId !== 'all' && art.artist !== artistId) return;
 
-                // Обработка сносок (только для Юдифи и Венеры)
                 var formattedText = art.text[currentLang];
                 if (art.footnotes && art.footnotes[currentLang]) {
                     for (const [key, val] of Object.entries(art.footnotes[currentLang])) {
@@ -347,7 +378,6 @@
                     ${art.audio ? `<div class="audio-wrapper"><p><strong>Музыка:</strong></p><audio controls><source src="${art.audio}" type="audio/mpeg"></audio></div>` : ''}
                 `;
 
-                // Цветные маркеры
                 var markerIcon = new L.Icon({
                     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + art.color + '.png',
                     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
