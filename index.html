@@ -23,8 +23,19 @@
         .leaflet-popup-content { font-family: 'Georgia', serif; color: #3e2723; width: 100% !important; margin: 0 !important; padding: 10px; font-size: 15px; }
         .leaflet-popup-content h3 { margin: 0 0 10px 0; font-size: 22px; color: #2c1a14; }
         .leaflet-popup-content p { font-size: 15px; line-height: 1.5; margin-bottom: 12px; }
+        .leaflet-popup-content ul { padding-left: 20px; margin-bottom: 12px; }
+        .leaflet-popup-content li { margin-bottom: 5px; line-height: 1.4; }
         .popup-image { width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 4px; margin-bottom: 12px; border: 1px solid #8b5a2b; }
         
+        .footnote { border-bottom: 1px dotted #8b5a2b; cursor: help; position: relative; color: #5d4037; font-weight: bold; }
+        .footnote:hover::after { content: attr(data-text); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #3e2723; color: white; padding: 15px; border-radius: 6px; font-size: 14px; width: 350px; max-width: 80vw; z-index: 2000; line-height: 1.4; pointer-events: none; font-weight: normal; text-align: left; display: block; white-space: normal; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-wrap: break-word; }
+        
+        .special-footnote-box { margin-top: 15px; padding: 15px; background-color: rgba(139, 90, 43, 0.05); border-top: 2px solid #8b5a2b; border-bottom: 2px solid #8b5a2b; font-size: 14px; line-height: 1.5; }
+        .special-footnote-box h4 { margin: 0 0 10px 0; font-size: 16px; color: #3e2723; }
+        
+        .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
+        audio { width: 100%; margin-top: 5px; }
+
         #mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #e8dcc4; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; font-family: 'Georgia', serif; color: #3e2723; }
         #mobile-overlay h2 { font-size: 28px; margin-bottom: 20px; color: #8b5a2b; }
         .mobile-text-block { font-size: 15px; line-height: 1.5; margin-bottom: 15px; }
@@ -63,7 +74,6 @@
             <button class="tab-btn" onclick="showSchools()" id="btn-schools">👨‍🎨 Художники</button>
         </div>
 
-        <!-- Меню стран -->
         <div id="country-list" style="display: none; margin-top: 10px;">
             <button class="tab-btn" onclick="switchCountry('italy')" id="btn-italy">Италия</button>
             <div style="padding-left: 15px; margin-bottom: 5px;">
@@ -75,27 +85,16 @@
             <button class="tab-btn" onclick="switchCountry('france')" id="btn-france">Франция</button>
         </div>
 
-        <!-- Меню художников -->
         <div id="schools-list" style="display: none; margin-top: 10px;">
             <button class="tab-btn" onclick="showSchoolInfo('venetian')" id="btn-venetian" style="font-size: 14px;">Венецианская школа</button>
-            <div id="venetian-artists" style="display: none; margin-bottom: 10px;">
-                <!-- Кнопка Джорджоне -->
-                <button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>
-            </div>
-            
             <button class="tab-btn" onclick="showSchoolInfo('florentine')" id="btn-florentine" style="font-size: 14px;">Флорентийская школа</button>
-            <div id="florentine-artists" style="display: none; margin-bottom: 10px;">
-                <!-- Кнопка Боттичелли -->
-                <button class="artist-btn" onclick="showArtist('botticelli')">Боттичелли</button>
-            </div>
-            
             <button class="tab-btn" onclick="showSchoolInfo('paduan')" id="btn-paduan" style="font-size: 14px;">Падуанская школа</button>
             <button class="tab-btn" onclick="showSchoolInfo('umbrian')" id="btn-umbrian" style="font-size: 14px;">Умбрийская школа</button>
             <button class="tab-btn" onclick="showSchoolInfo('roman')" id="btn-roman" style="font-size: 14px;">Римская школа</button>
         </div>
 
         <div id="info-screen" style="display: none; margin-top: 15px;">
-            <button class="tab-btn" onclick="closeInfoScreen()" style="background: #e0d0c0; text-align: center; font-weight: bold;">← Назад</button>
+            <button class="tab-btn" onclick="goBack()" style="background: #e0d0c0; text-align: center; font-weight: bold;">← Назад</button>
             <h3 id="info-title" style="color: #8b5a2b; margin-top: 15px;"></h3>
             <div id="info-content" style="font-size: 14px; line-height: 1.5;"></div>
         </div>
@@ -117,66 +116,103 @@
 
         var currentLang = 'ru';
         var currentCountry = 'italy';
+        var previousScreen = 'schools'; 
 
         var schools = {
             venetian: {
                 title: { ru: "Венецианская школа", en: "Venetian School" },
                 text: {
-                    ru: "Венецианская школа (XIV–XVIII века, расцвет — XV–XVI века).<br><br>Ранний основатель: Паоло Венециано. Значимые художники: Джорджоне, Тициан, Паоло Веронезе, Якопо Тинторетто, семья Беллини.<br><br>Особенные черты:<br>• Приоритет колорита над рисунком.<br>• Гармония человека и природы.<br>• Праздничная зрелищность и декоративность.<br>• Интерес к повседневной жизни.<br>• Влияние нидерландской техники.<br><br>Интересный факт: Школа дала миру не только Тициана и Веронезе, но и мастеров XVIII века — Тьеполо, Каналетто и Гварди.",
-                    en: "The Venetian School (14th–18th centuries, heyday — 15th–16th centuries).<br><br>Early founder: Paolo Veneziano. Significant artists: Giorgione, Titian, Paolo Veronese, Jacopo Tintoretto, the Bellini family.<br><br>Distinctive features:<br>• The primacy of colour over drawing.<br>• Harmony between man and nature.<br>• Festive spectacle and decorative richness.<br>• Interest in everyday life.<br>• The influence of Netherlandish technique.<br><br>Interesting fact: The school gave the world not only Titian and Veronese, but also 18th-century masters — Tiepolo, Canaletto and Guardi."
+                    ru: "Венецианская школа (XIV–XVIII века).<br><br>Ранний основатель: Паоло Венециано. Значимые художники: Джорджоне, Тициан, Веронезе.<br><br>Особенные черты:<br>• Приоритет колорита над рисунком.<br>• Гармония человека и природы.<br>• Праздничная зрелищность.<br><br>Интересный факт: Школа дала миру не только Тициана, но и мастеров XVIII века — Тьеполо и Каналетто.",
+                    en: "The Venetian School (14th–18th centuries).<br><br>Early founder: Paolo Veneziano. Significant artists: Giorgione, Titian, Veronese.<br><br>Distinctive features:<br>• The primacy of colour over drawing.<br>• Harmony between man and nature.<br>• Festive spectacle.<br><br>Interesting fact: The school gave the world not only Titian, but also 18th-century masters — Tiepolo and Canaletto."
                 }
             },
             florentine: {
                 title: { ru: "Флорентийская школа", en: "Florentine School" },
                 text: {
-                    ru: "Флорентийская школа (XIII–XVI века, расцвет — XV — начало XVI века).<br><br>Значимые художники: Джотто, Мазаччо, Боттичелли, Леонардо да Винчи, Микеланджело.<br><br>Особенные черты:<br>• Приоритет рисунка и пластической формы над колоритом.<br>• Научный подход к перспективе и анатомии.<br>• Светотеневая моделировка объёма.<br>• Повествовательная выразительность и драматизм.<br><br>Интересный факт: Микеланджело в возрасте около 15 лет копировал фрески Джотто и Мазаччо во Флоренции.",
-                    en: "The Florentine School (13th–16th centuries, heyday — 15th — early 16th centuries).<br><br>Significant artists: Giotto, Masaccio, Botticelli, Leonardo da Vinci, Michelangelo.<br><br>Distinctive features:<br>• The primacy of drawing and plastic form over colour.<br>• A scientific approach to perspective and anatomy.<br>• Chiaroscuro modelling of volume.<br>• Narrative expressiveness and drama.<br><br>Interesting fact: At about the age of 15, Michelangelo copied the frescoes of Giotto and Masaccio in Florence."
+                    ru: "Флорентийская школа (XIII–XVI века).<br><br>Значимые художники: Джотто, Боттичелли, Леонардо да Винчи.<br><br>Особенные черты:<br>• Приоритет рисунка над колоритом.<br>• Научный подход к перспективе.<br><br>Интересный факт: Микеланджело в 15 лет копировал фрески Джотто.",
+                    en: "The Florentine School (13th–16th centuries).<br><br>Significant artists: Giotto, Botticelli, Leonardo da Vinci.<br><br>Distinctive features:<br>• The primacy of drawing over colour.<br>• A scientific approach to perspective.<br><br>Interesting fact: Michelangelo copied Giotto's frescoes at 15."
                 }
             },
-            paduan: { title: { ru: "Падуанская школа", en: "Paduan School" }, text: { ru: "Основатель: Франческо Скварчоне. Значимые художники: Андреа Мантенья и др.", en: "Founder: Francesco Squarcione. Significant artists: Andrea Mantegna and others." } },
-            umbrian: { title: { ru: "Умбрийская школа", en: "Umbrian School" }, text: { ru: "Значимые художники: Пьетро Перуджино, Пинтуриккьо, ранний Рафаэль.", en: "Significant artists: Pietro Perugino, Pinturicchio, early Raphael." } },
-            roman: { title: { ru: "Римская школа", en: "Roman School" }, text: { ru: "Основатель: Рафаэль Санти. Значимые художники: Джулио Романо и др.", en: "Founder: Raphael Sanzio. Significant artists: Giulio Romano and others." } }
+            paduan: { title: { ru: "Падуанская школа", en: "Paduan School" }, text: { ru: "Основатель: Франческо Скварчоне.", en: "Founder: Francesco Squarcione." } },
+            umbrian: { title: { ru: "Умбрийская школа", en: "Umbrian School" }, text: { ru: "Значимые художники: Перуджино, ранний Рафаэль.", en: "Significant artists: Perugino, early Raphael." } },
+            roman: { title: { ru: "Римская школа", en: "Roman School" }, text: { ru: "Основатель: Рафаэль Санти.", en: "Founder: Raphael Sanzio." } }
         };
 
         var artists = {
             giorgione: {
-                school: 'venetian',
-                title: { ru: "Джорджоне", en: "Giorgione" },
-                bio: {
-                    ru: "Джорджоне (настоящее имя Джорджо Барбарелли да Кастельфранко) жил примерно с 1477 по 1510 год. Умер от чумы в возрасте 32–33 лет, поэтому достоверных сведений о его жизни сохранилось немного. Он писал в основном камерные картины на религиозные, мифологические и аллегорические сюжеты, среди самых известных работ — «Спящая Венера» и «Гроза». Джорджоне считается одним из первых мастеров Высокого Возрождения в Венеции, его подход к цвету и свету повлиял на последующих художников, включая Тициана.",
-                    en: "Giorgione (real name Giorgio Barbarelli da Castelfranco) lived from approximately 1477 to 1510 and was a painter of the Venetian school. He died of the plague at around age 32–33, so very little reliable information about his life survived. He mainly painted intimate works on religious, mythological, and allegorical subjects, with the «Sleeping Venus» and «The Tempest» among his best-known pieces. Giorgione is regarded as one of the first masters of the High Renaissance in Venice. His approach to color and light influenced later artists, including Titian."
-                },
+                school: 'venetian', title: { ru: "Джорджоне", en: "Giorgione" },
+                bio: { ru: "Джорджоне (1477–1510) — мастер Высокого Возрождения в Венеции.", en: "Giorgione (1477–1510) — a master of the High Renaissance in Venice." },
                 works: [ { title: { ru: "Юдифь", en: "Judith" }, id: "judith" }, { title: { ru: "Спящая Венера", en: "Sleeping Venus" }, id: "venus" } ]
             },
             botticelli: {
-                school: 'florentine',
-                title: { ru: "Сандро Боттичелли", en: "Sandro Botticelli" },
-                bio: { ru: "Итальянский живописец, представитель флорентийской школы.", en: "Italian painter, representative of the Florentine school." },
+                school: 'florentine', title: { ru: "Сандро Боттичелли", en: "Sandro Botticelli" },
+                bio: { ru: "Представитель флорентийской школы.", en: "Representative of the Florentine school." },
                 works: [ { title: { ru: "Рождение Венеры", en: "Birth of Venus" }, id: "venus_birth" } ]
             }
         };
 
         var artworks = [
+            // 1. Юдифь (Венеция, синяя)
             {
                 id: "judith", country: "italy", era: "high", artist: "giorgione",
                 title: { ru: "Юдифь", en: "Judith" }, year: "1504-1506 гг.",
                 city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Эрмитаж", en: "Hermitage" },
-                coords: [45.55, 11.75], image: "judith.jpg", audio: "vivaldi.mp3",
-                text: { ru: "Короткий текст для теста.", en: "Short text for test." }
+                coords: [45.55, 11.75], image: "judith.jpg", audio: "vivaldi.mp3", color: "blue",
+                text: { 
+                    ru: "**«Юдифь»** — картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя [венецианской школы]. Несмотря на то, что художник имел привычку не подписывать свои работы, она [единодушно атрибутирована] ему по совокупности стилистических, технических и исторических данных. С 1772 года находится в Государственном Эрмитаже.<br><br>Картина отсылает нас к ветхозаветному сюжету, а именно к книге Юдифь.<br><br>И здесь появляется наша **Юдифь**. Оставшись одна, Юдифь помолилась, прося Бога [укрепить её], затем сняла со столбика изголовья меч Олоферна, схватила его за волосы и двумя ударами отрубила голову.",
+                    en: "**«Judith»** is a painting by the Italian artist Giorgione, a representative of the [Venetian school]. Although he had a habit of not signing his works, it is [unanimously attributed] to him. Since 1772 it has been in the State Hermitage.<br><br>The painting refers to the Book of Judith.<br><br>And here our **Judith** appears. Left alone, Judith prayed, asking God [to strengthen her], then took Holofernes' sword and cut off his head with two blows."
+                },
+                footnotes: {
+                    ru: { "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии.", "единодушно атрибутирована": "Абсолютным большинством специалистов признана творением конкретно этого человека. Атрибуция обычно также включает в себя определение времени, места, принадлежности к определённому художественному направлению, школе или стилю.", "укрепить её": "Даровать физические и духовные силы." },
+                    en: { "Venetian school": "The Venetian school is one of the leading painting schools of Italy.", "unanimously attributed": "Recognised by the absolute majority of specialists.", "to strengthen her": "To grant physical and spiritual strength." }
+                }
             },
+            // 2. Спящая Венера (Венеция, синяя)
             {
                 id: "venus", country: "italy", era: "high", artist: "giorgione",
-                title: { ru: "Спящая Венера", en: "Sleeping Venus" }, year: "ок. 1510",
+                title: { ru: "Спящая Венера", en: "Sleeping Venus" }, year: "1508-1510",
                 city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Галерея старых мастеров, Дрезден", en: "Old Masters Gallery, Dresden" },
-                coords: [45.50, 11.80], image: "venere.jpg", 
-                text: { ru: "«Спящая Венера» — картина Джорджоне...", en: "The Sleeping Venus is a painting by Giorgione..." }
+                coords: [45.50, 11.80], image: "venere.jpg", color: "blue", 
+                text: { 
+                    ru: "«Спящая Венера» — картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя [венецианской школы]. Некоторое время она [атрибутировалась] Сассоферрато как копия с картины Тициана ввиду того, что работа неоднократно переписывалась и «обновлялась», а ее первоначальный вид сильно исказился.<br><br>Благодаря методу Джованни Морелли, всё встало на свои места...",
+                    en: "The Sleeping Venus is a painting by the Italian artist Giorgione... [Venetian school]..."
+                },
+                footnotes: {
+                    ru: { "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии.", "атрибутировалась": "Приписывалась какому-либо автору." },
+                    en: { "Venetian school": "The Venetian school is one of the leading painting schools of Italy.", "attributed": "Assigned to a specific author." }
+                }
             },
+            // 3. Рождение Венеры (Флоренция, зеленая)
             {
                 id: "venus_birth", country: "italy", era: "early", artist: "botticelli",
                 title: { ru: "Рождение Венеры", en: "Birth of Venus" }, year: "ок. 1485",
-                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Галерея Уффици", en: "Uffizi Gallery" },
-                coords: [44.05, 10.85], image: "judith.jpg", 
-                text: { ru: "Тест.", en: "Test." }
+                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Галерея Уффици", en: "Uffizi" },
+                coords: [44.05, 10.85], image: "judith.jpg", color: "green",
+                text: { ru: "Заглушка для теста.", en: "Test." }
+            },
+            // 4. Мона Лиза (Флоренция, зеленая) - Заглушка
+            {
+                id: "mona_lisa", country: "italy", era: "high", artist: "leonardo",
+                title: { ru: "Мона Лиза", en: "Mona Lisa" }, year: "1503",
+                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Лувр", en: "Louvre" },
+                coords: [44.0, 10.9], image: "judith.jpg", color: "green",
+                text: { ru: "Заглушка для теста.", en: "Test." }
+            },
+            // 5. Тайная вечеря (Милан, желтая) - Заглушка
+            {
+                id: "last_supper", country: "italy", era: "high", artist: "leonardo",
+                title: { ru: "Тайная вечеря", en: "The Last Supper" }, year: "1498",
+                city: { ru: "Милан", en: "Milan" }, museum: { ru: "Санта-Мария-делле-Грацие", en: "Santa Maria delle Grazie" },
+                coords: [45.45, 9.15], image: "judith.jpg", color: "yellow",
+                text: { ru: "Заглушка для теста.", en: "Test." }
+            },
+            // 6. Афинская школа (Рим, розовая) - Заглушка
+            {
+                id: "athens", country: "italy", era: "high", artist: "raphael",
+                title: { ru: "Афинская школа", en: "The School of Athens" }, year: "1511",
+                city: { ru: "Рим", en: "Rome" }, museum: { ru: "Ватикан", en: "Vatican" },
+                coords: [41.9, 12.45], image: "judith.jpg", color: "pink",
+                text: { ru: "Заглушка для теста.", en: "Test." }
             }
         ];
 
@@ -186,8 +222,6 @@
             document.getElementById('schools-list').style.display = 'none';
             document.getElementById('info-screen').style.display = 'none';
             document.getElementById('era-info-box').style.display = 'none';
-            document.getElementById('venetian-artists').style.display = 'none';
-            document.getElementById('florentine-artists').style.display = 'none';
         }
 
         function ensureItaly() {
@@ -215,40 +249,29 @@
 
         function showSchoolInfo(schoolId) {
             hideAll();
-            document.getElementById('schools-list').style.display = 'block'; // Оставляем меню видимым
+            previousScreen = 'schools';
+            document.getElementById('schools-list').style.display = 'block'; 
             var school = schools[schoolId];
-            
-            // Вставляем инфу прямо в список (или в отдельный блок)
-            var infoScreen = document.getElementById('info-screen');
-            infoScreen.style.display = 'block';
+            document.getElementById('info-screen').style.display = 'block';
             document.getElementById('info-title').innerHTML = school.title[currentLang];
             
-            // Формируем контент
             var content = processText(school.text[currentLang]);
+            if (schoolId === 'venetian') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>`;
+            if (schoolId === 'florentine') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('botticelli')">Боттичелли</button>`;
             
-            // Добавляем художников ПОД текстом школы
-            if (schoolId === 'venetian') {
-                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>`;
-                content += `<button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>`;
-            }
-            if (schoolId === 'florentine') {
-                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>`;
-                content += `<button class="artist-btn" onclick="showArtist('botticelli')">Боттичелли</button>`;
-            }
-
             document.getElementById('info-content').innerHTML = content;
             ensureItaly();
         }
 
         function showArtist(artistId) {
             hideAll();
+            previousScreen = 'school';
             document.getElementById('schools-list').style.display = 'block';
             var artist = artists[artistId];
             document.getElementById('info-screen').style.display = 'block';
             document.getElementById('info-title').innerHTML = artist.title[currentLang];
             
-            var content = `<div class="bio-text">${processText(artist.bio[currentLang])}</div>`;
-            content += `<h4>Работы / Works:</h4>`;
+            var content = `<div class="bio-text">${processText(artist.bio[currentLang])}</div><h4>Работы / Works:</h4>`;
             artist.works.forEach(function(work) {
                 content += `<span class="work-link" onclick="focusOnWork('${work.id}')">${work.title[currentLang]}</span>`;
             });
@@ -258,17 +281,13 @@
             drawMarkers('italy', 'all', artistId); 
         }
 
-        function focusOnWork(workId) {
-            var art = artworks.find(a => a.id === workId);
-            if (art) {
-                map.setView(art.coords, 8); 
-            }
+        function goBack() {
+            showSchools(); 
         }
 
-        function closeInfoScreen() {
-            hideAll();
-            ensureItaly();
-            drawMarkers('italy', 'all');
+        function focusOnWork(workId) {
+            var art = artworks.find(a => a.id === workId);
+            if (art) map.setView(art.coords, 8); 
         }
 
         function showEraInfo(era) {
@@ -307,16 +326,35 @@
                 if (era !== 'all' && art.era !== era) return;
                 if (artistId !== 'all' && art.artist !== artistId) return;
 
+                // Обработка сносок (только для Юдифи и Венеры)
+                var formattedText = art.text[currentLang];
+                if (art.footnotes && art.footnotes[currentLang]) {
+                    for (const [key, val] of Object.entries(art.footnotes[currentLang])) {
+                        let searchStr = '[' + key + ']';
+                        let replaceStr = `<span class="footnote" data-text="${val.replace(/"/g, '&quot;')}">${key}</span>`;
+                        formattedText = formattedText.split(searchStr).join(replaceStr);
+                    }
+                }
+                formattedText = processText(formattedText);
+
                 var popupContent = `
                     <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
                     <h3>${art.title[currentLang]} (${art.year})</h3>
-                    <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${artists[art.artist].title[currentLang]}</p>
+                    <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${artists[art.artist] ? artists[art.artist].title[currentLang] : 'Неизвестен'}</p>
                     <p><strong>${currentLang === 'ru' ? 'Место создания' : 'Place of creation'}:</strong> ${art.city[currentLang]}</p>
                     <p><strong>${currentLang === 'ru' ? 'Место хранения' : 'Current location'}:</strong> ${art.museum[currentLang]}</p>
-                    <p>${processText(art.text[currentLang])}</p>
+                    <p>${formattedText}</p>
+                    ${art.audio ? `<div class="audio-wrapper"><p><strong>Музыка:</strong></p><audio controls><source src="${art.audio}" type="audio/mpeg"></audio></div>` : ''}
                 `;
 
-                L.marker(art.coords).addTo(map).bindPopup(popupContent, { maxHeight: 600 });
+                // Цветные маркеры
+                var markerIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + art.color + '.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+                });
+
+                L.marker(art.coords, {icon: markerIcon}).addTo(map).bindPopup(popupContent, { maxHeight: 600 });
             });
         }
 
