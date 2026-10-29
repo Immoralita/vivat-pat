@@ -189,7 +189,7 @@
                     en: "<h4>The Venetian school:</h4>One of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br><b>Several key features:</b><ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground (a technique in which transparent layers of paint are applied over dried previous ones to achieve depth, luminosity and a special warmth of tones).</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>"
                 }
             },
-            // 2. Спящая Венера (Венеция, синяя) - С картинкой
+            // 2. Спящая Венера (Венеция, синяя)
             {
                 id: "venus", country: "italy", era: "high", artist: "giorgione",
                 title: { ru: "Спящая Венера", en: "Sleeping Venus" }, year: "1508-1510",
@@ -232,7 +232,7 @@
                 coords: [44.10, 10.95], image: "judith.jpg", color: "green",
                 text: { ru: "Заглушка.", en: "Test." }
             },
-            // 7. Тайная вечеря (Милан, желтая) - Координаты [45.55, 9.00]
+            // 7. Тайная вечеря (Милан, желтая)
             {
                 id: "last_supper", country: "italy", era: "high", artist: "leonardo",
                 title: { ru: "Тайная вечеря", en: "The Last Supper" }, year: "1498",
@@ -337,7 +337,10 @@
 
         function focusOnWork(workId) {
             var art = artworks.find(a => a.id === workId);
-            if (art) map.setView(art.coords, 8); 
+            if (art) {
+                map.setView(art.coords, 8); 
+                drawMarkers('italy', 'all', 'all', workId); // ФИЛЬТР: Показываем ТОЛЬКО эту точку!
+            }
         }
 
         function showEraInfo(era) {
@@ -368,13 +371,14 @@
             return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         }
 
-        function drawMarkers(country, era = 'all', artistId = 'all') {
+        function drawMarkers(country, era = 'all', artistId = 'all', specificWorkId = 'all') {
             map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
 
             artworks.forEach(function(art) {
                 if (art.country !== country) return;
                 if (era !== 'all' && art.era !== era) return;
                 if (artistId !== 'all' && art.artist !== artistId) return;
+                if (specificWorkId !== 'all' && art.id !== specificWorkId) return; // ФИЛЬТР ПО КАРТИНЕ
 
                 var formattedText = art.text[currentLang];
                 if (art.footnotes && art.footnotes[currentLang]) {
@@ -415,6 +419,13 @@
             document.getElementById('lang-switch').innerText = currentLang === 'ru' ? 'EN' : 'RU';
             document.getElementById('btn-countries').innerText = currentLang === 'ru' ? '🏛️ Страны' : '🏛️ Countries';
             document.getElementById('btn-schools').innerText = currentLang === 'ru' ? '👨‍🎨 Художники' : '👨‍🎨 Artists';
+            
+            document.getElementById('btn-venetian').innerText = currentLang === 'ru' ? 'Венецианская школа' : 'Venetian School';
+            document.getElementById('btn-florentine').innerText = currentLang === 'ru' ? 'Флорентийская школа' : 'Florentine School';
+            document.getElementById('btn-paduan').innerText = currentLang === 'ru' ? 'Падуанская школа' : 'Paduan School';
+            document.getElementById('btn-umbrian').innerText = currentLang === 'ru' ? 'Умбрийская школа' : 'Umbrian School';
+            document.getElementById('btn-roman').innerText = currentLang === 'ru' ? 'Римская школа' : 'Roman School';
+
             hideAll();
             ensureItaly();
             drawMarkers('italy', 'all');
