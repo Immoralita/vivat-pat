@@ -33,7 +33,7 @@
     <div id="panel">
         <h2>Настройка координат</h2>
         <p style="font-size: 14px; color: #5d4037;">Сейчас настраиваем: <b>Милан (желтая точка)</b>.</p>
-        <p style="font-size: 12px; color: #888;">Текущие координаты: [44.50, 8.50]</p>
+        <p style="font-size: 12px; color: #888;">Текущие координаты: [44.20, 8.35]</p>
         
         <button class="tab-btn" onclick="drawAll()" style="margin-top: 20px;">Показать все точки</button>
         <button class="tab-btn" onclick="drawMilan()">Показать только Милан</button>
@@ -45,10 +45,9 @@
         var map = L.map('map', { minZoom: 5, maxZoom: 8, center: [45.0, 12.0], zoom: 7, zoomControl: false });
         var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
 
-        // Точка Милана, которую мы настраиваем
-        var milanCoords = [44.50, 8.50]; 
+        // НОВЫЕ КООРДИНАТЫ МИЛАНА
+        var milanCoords = [44.20, 8.35]; 
         
-        // Картинка для теста (берем гравюру, чтобы точно не было битой иконки)
         var testImage = "map.webp";
 
         function createMarker(coords, color, title) {
@@ -68,25 +67,21 @@
         function drawAll() {
             map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
             
-            // Венеция
             createMarker([45.55, 11.75], "blue", "Юдифь").addTo(map);
             createMarker([45.50, 11.80], "blue", "Спящая Венера").addTo(map);
             createMarker([45.43, 12.32], "blue", "Ассунта").addTo(map);
             
-            // Флоренция / Ареццо
             createMarker([44.15, 10.85], "green", "Рождение Венеры").addTo(map);
             createMarker([44.10, 10.95], "green", "Мона Лиза").addTo(map);
             createMarker([43.25, 11.85], "green", "Битва Константина").addTo(map);
             createMarker([45.16, 10.80], "violet", "Камера дельи Спози").addTo(map);
             
-            // Милан
             createMarker(milanCoords, "yellow", "Тайная вечеря").addTo(map);
             
-            // Рим (теперь с картой вместо битой картинки)
             createMarker([42.10, 12.20], "pink", "Афинская школа").addTo(map);
         }
 
-        drawMilan(); // По умолчанию показываем только Милан
+        drawMilan();
     </script>
 </body>
 </html>
