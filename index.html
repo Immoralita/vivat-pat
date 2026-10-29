@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vivat-Pat | Карта Возрождения</title>
+    <title>Настройка координат</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
@@ -14,391 +14,79 @@
         #panel { position: absolute; top: 0; left: 0; width: 350px; height: 100%; background: rgba(245, 235, 220, 0.98); z-index: 1000; padding: 20px; box-sizing: border-box; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
         #map { height: 100%; width: calc(100% - 350px); margin-left: 350px; z-index: 1; background-color: #e8dcc4; }
         
-        .tab-btn { background: none; border: 1px solid #8b5a2b; color: #3e2723; padding: 10px; width: 100%; cursor: pointer; font-family: 'Georgia', serif; font-size: 16px; text-align: left; margin-bottom: 5px; transition: background 0.2s; }
-        .tab-btn:hover { background: #e0d0c0; }
+        .tab-btn { background: none; border: 1px solid #8b5a2b; color: #3e2723; padding: 10px; width: 100%; cursor: pointer; font-family: 'Georgia', serif; font-size: 16px; text-align: left; margin-bottom: 5px; }
         
-        #lang-switch { position: absolute; top: 20px; right: 20px; z-index: 1000; background: rgba(245, 235, 220, 0.9); border: 1px solid #8b5a2b; padding: 8px 15px; cursor: pointer; font-size: 16px; font-family: 'Georgia', serif; color: #3e2723; }
-        
-        .leaflet-popup-content-wrapper { width: 700px !important; max-width: 90vw !important; }
-        .leaflet-popup-content { font-family: 'Georgia', serif; color: #3e2723; width: 100% !important; margin: 0 !important; padding: 10px; font-size: 15px; }
-        .leaflet-popup-content h3 { margin: 0 0 10px 0; font-size: 22px; color: #2c1a14; }
-        .leaflet-popup-content p { font-size: 15px; line-height: 1.5; margin-bottom: 12px; }
-        .leaflet-popup-content ul { padding-left: 20px; margin-bottom: 12px; }
-        .leaflet-popup-content li { margin-bottom: 5px; line-height: 1.4; }
-        .popup-image { width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 4px; margin-bottom: 12px; border: 1px solid #8b5a2b; }
-        
-        .footnote { border-bottom: 1px dotted #8b5a2b; cursor: help; position: relative; color: #5d4037; font-weight: bold; }
-        .footnote:hover::after { content: attr(data-text); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #3e2723; color: white; padding: 15px; border-radius: 6px; font-size: 14px; width: 350px; max-width: 80vw; z-index: 2000; line-height: 1.4; pointer-events: none; font-weight: normal; text-align: left; display: block; white-space: normal; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-wrap: break-word; }
-        
-        .special-footnote-box { margin-top: 15px; padding: 15px; background-color: rgba(139, 90, 43, 0.05); border-top: 2px solid #8b5a2b; border-bottom: 2px solid #8b5a2b; font-size: 14px; line-height: 1.5; }
-        .special-footnote-box h4 { margin: 0 0 10px 0; font-size: 16px; color: #3e2723; }
-        
-        .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
-        audio { width: 100%; margin-top: 5px; }
-
-        #mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #e8dcc4; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; font-family: 'Georgia', serif; color: #3e2723; }
-        #mobile-overlay h2 { font-size: 28px; margin-bottom: 20px; color: #8b5a2b; }
-        .mobile-text-block { font-size: 15px; line-height: 1.5; margin-bottom: 15px; }
-        .mobile-divider { width: 80%; border-top: 1px solid #8b5a2b; margin: 15px 0; opacity: 0.5; }
-        .mobile-link-box { background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 5px; border: 1px dashed #8b5a2b; word-break: break-all; font-weight: bold; font-size: 14px; margin-top: 15px; width: 90%; }
-
+        #mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #e8dcc4; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; font-family: 'Georgia', serif; color: #3e2723; }
         @media (max-width: 768px) {
-            #panel, #map, #lang-switch { display: none; }
+            #panel, #map { display: none; }
             #mobile-overlay { display: flex; }
         }
-
-        .bio-text { font-size: 14px; line-height: 1.5; margin-bottom: 15px; }
-        .work-link { cursor: pointer; color: #8b5a2b; text-decoration: underline; font-weight: bold; display: block; margin-bottom: 5px; }
-        .work-link:hover { color: #d35400; }
-        
-        .artist-btn { border: none; border-bottom: 1px solid #ccc; background: #f9f4ec; width: 100%; text-align: left; padding: 8px; cursor: pointer; font-family: 'Georgia', serif; color: #8b5a2b; font-weight: bold; }
-        .artist-btn:hover { background: #e0d0c0; }
     </style>
 </head>
 <body>
 
     <div id="mobile-overlay">
         <h2>Vivat-Pat</h2>
-        <div class="mobile-text-block"><strong>RU:</strong> Для комфортного просмотра откройте сайт на компьютере.</div>
-        <div class="mobile-text-block"><strong>EN:</strong> For a comfortable viewing, open the site on a computer.</div>
-        <div class="mobile-divider"></div>
-        <div class="mobile-text-block" style="font-size: 14px;">Скопируйте ссылку:<br><em>Copy the link:</em></div>
-        <div class="mobile-link-box">https://immoralita.github.io/vivat-pat/</div>
+        <p>Откройте на компьютере.</p>
     </div>
 
     <div id="panel">
-        <h2 id="site-title">Vivat-Pat</h2>
+        <h2>Настройка координат</h2>
+        <p style="font-size: 14px; color: #5d4037;">Сейчас настраиваем: <b>Милан (желтая точка)</b>.</p>
+        <p style="font-size: 12px; color: #888;">Текущие координаты: [44.50, 8.50]</p>
         
-        <div id="main-menu">
-            <button class="tab-btn" onclick="showCountries()" id="btn-countries">🏛️ Страны</button>
-            <button class="tab-btn" onclick="showSchools()" id="btn-schools">👨‍🎨 Художники</button>
-        </div>
-
-        <div id="country-list" style="display: none; margin-top: 10px;">
-            <button class="tab-btn" onclick="switchCountry('italy')" id="btn-italy">Италия</button>
-            <div style="padding-left: 15px; margin-bottom: 5px;">
-                <button class="tab-btn" onclick="showEraInfo('early')" id="btn-early" style="font-size: 14px;">Раннее Возрождение</button>
-                <button class="tab-btn" onclick="showEraInfo('high')" id="btn-high" style="font-size: 14px;">Высокое Возрождение</button>
-                <button class="tab-btn" onclick="showEraInfo('late')" id="btn-late" style="font-size: 14px;">Позднее Возрождение</button>
-                <div id="era-info-box" style="display: none; font-size: 13px; color: #5d4037; padding: 10px; border-left: 2px solid #8b5a2b; margin-bottom: 10px;"></div>
-            </div>
-            <button class="tab-btn" onclick="switchCountry('france')" id="btn-france">Франция</button>
-        </div>
-
-        <div id="schools-list" style="display: none; margin-top: 10px;">
-            <button class="tab-btn" onclick="showSchoolInfo('venetian')" id="btn-venetian" style="font-size: 14px;">Венецианская школа</button>
-            <button class="tab-btn" onclick="showSchoolInfo('florentine')" id="btn-florentine" style="font-size: 14px;">Флорентийская школа</button>
-            <button class="tab-btn" onclick="showSchoolInfo('paduan')" id="btn-paduan" style="font-size: 14px;">Падуанская школа</button>
-            <button class="tab-btn" onclick="showSchoolInfo('umbrian')" id="btn-umbrian" style="font-size: 14px;">Умбрийская школа</button>
-            <button class="tab-btn" onclick="showSchoolInfo('roman')" id="btn-roman" style="font-size: 14px;">Римская школа</button>
-        </div>
-
-        <div id="info-screen" style="display: none; margin-top: 15px;">
-            <button class="tab-btn" onclick="goBack()" style="background: #e0d0c0; text-align: center; font-weight: bold;">← Назад</button>
-            <h3 id="info-title" style="color: #8b5a2b; margin-top: 15px;"></h3>
-            <div id="info-content" style="font-size: 14px; line-height: 1.5;"></div>
-        </div>
-
-        <hr style="border: 1px solid #8b5a2b; margin: 20px 0;">
-        <p style="font-size: 14px;">
-            <span id="feedback-text">Есть идея для карты?</span><br>
-            <a href="mailto:patyukhova@gmail.com?subject=Идея для Vivat-Pat" id="feedback-link" style="color: #8b5a2b;">✉️ Написать мне</a>
-        </p>
+        <button class="tab-btn" onclick="drawAll()" style="margin-top: 20px;">Показать все точки</button>
+        <button class="tab-btn" onclick="drawMilan()">Показать только Милан</button>
     </div>
     
-    <button id="lang-switch" onclick="toggleLanguage()">EN</button>
     <div id="map"></div>
 
     <script>
         var map = L.map('map', { minZoom: 5, maxZoom: 8, center: [45.0, 12.0], zoom: 7, zoomControl: false });
         var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
-        var franceLayer = L.imageOverlay('map_france.webp', [[42.0, -5.0], [51.5, 8.5]]);
 
-        var currentLang = 'ru';
-        var currentCountry = 'italy';
-        var previousScreen = 'schools'; 
+        // Точка Милана, которую мы настраиваем
+        var milanCoords = [44.50, 8.50]; 
+        
+        // Картинка для теста (берем гравюру, чтобы точно не было битой иконки)
+        var testImage = "map.webp";
 
-        var schools = {
-            venetian: {
-                title: { ru: "Венецианская школа", en: "Venetian School" },
-                text: {
-                    ru: "Венецианская школа (XIV–XVIII века).<br><br>Ранний основатель: Паоло Венециано. Значимые художники: Джорджоне, Тициан, Веронезе.<br><br>Особенные черты:<br>• Приоритет колорита над рисунком.<br>• Гармония человека и природы.<br>• Праздничная зрелищность.<br><br>Интересный факт: Школа дала миру не только Тициана, но и мастеров XVIII века — Тьеполо и Каналетто.",
-                    en: "The Venetian School (14th–18th centuries).<br><br>Early founder: Paolo Veneziano. Significant artists: Giorgione, Titian, Veronese.<br><br>Distinctive features:<br>• The primacy of colour over drawing.<br>• Harmony between man and nature.<br>• Festive spectacle.<br><br>Interesting fact: The school gave the world not only Titian, but also 18th-century masters — Tiepolo and Canaletto."
-                }
-            },
-            florentine: {
-                title: { ru: "Флорентийская школа", en: "Florentine School" },
-                text: {
-                    ru: "Флорентийская школа (XIII–XVI века).<br><br>Значимые художники: Джотто, Боттичелли, Леонардо да Винчи.<br><br>Особенные черты:<br>• Приоритет рисунка над колоритом.<br>• Научный подход к перспективе.<br><br>Интересный факт: Микеланджело в 15 лет копировал фрески Джотто.",
-                    en: "The Florentine School (13th–16th centuries).<br><br>Significant artists: Giotto, Botticelli, Leonardo da Vinci.<br><br>Distinctive features:<br>• The primacy of drawing over colour.<br>• A scientific approach to perspective.<br><br>Interesting fact: Michelangelo copied Giotto's frescoes at 15."
-                }
-            },
-            paduan: { title: { ru: "Падуанская школа", en: "Paduan School" }, text: { ru: "Основатель: Франческо Скварчоне.", en: "Founder: Francesco Squarcione." } },
-            umbrian: { title: { ru: "Умбрийская школа", en: "Umbrian School" }, text: { ru: "Значимые художники: Перуджино, ранний Рафаэль.", en: "Significant artists: Perugino, early Raphael." } },
-            roman: { title: { ru: "Римская школа", en: "Roman School" }, text: { ru: "Основатель: Рафаэль Санти.", en: "Founder: Raphael Sanzio." } }
-        };
-
-        var artists = {
-            giorgione: {
-                school: 'venetian', title: { ru: "Джорджоне", en: "Giorgione" },
-                bio: { ru: "Джорджоне (1477–1510) — мастер Высокого Возрождения в Венеции.", en: "Giorgione (1477–1510) — a master of the High Renaissance in Venice." },
-                works: [ { title: { ru: "Юдифь", en: "Judith" }, id: "judith" }, { title: { ru: "Спящая Венера", en: "Sleeping Venus" }, id: "venus" } ]
-            },
-            botticelli: {
-                school: 'florentine', title: { ru: "Сандро Боттичелли", en: "Sandro Botticelli" },
-                bio: { ru: "Представитель флорентийской школы.", en: "Representative of the Florentine school." },
-                works: [ { title: { ru: "Рождение Венеры", en: "Birth of Venus" }, id: "venus_birth" } ]
-            }
-        };
-
-        var artworks = [
-            // 1. Юдифь (Венеция, синяя)
-            {
-                id: "judith", country: "italy", era: "high", artist: "giorgione",
-                title: { ru: "Юдифь", en: "Judith" }, year: "1504-1506 гг.",
-                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Эрмитаж", en: "Hermitage" },
-                coords: [45.55, 11.75], image: "judith.jpg", audio: "vivaldi.mp3", color: "blue",
-                text: { 
-                    ru: "**«Юдифь»** — картина итальянского живописца Джорджоне... [венецианской школы].",
-                    en: "**«Judith»** is a painting by the Italian artist Giorgione... [Venetian school]."
-                },
-                footnotes: {
-                    ru: { "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии." },
-                    en: { "Venetian school": "The Venetian school is one of the leading painting schools of Italy." }
-                }
-            },
-            // 2. Спящая Венера (Венеция, синяя)
-            {
-                id: "venus", country: "italy", era: "high", artist: "giorgione",
-                title: { ru: "Спящая Венера", en: "Sleeping Venus" }, year: "1508-1510",
-                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Галерея старых мастеров, Дрезден", en: "Old Masters Gallery, Dresden" },
-                coords: [45.50, 11.80], image: "venere.jpg", color: "blue", 
-                text: { 
-                    ru: "«Спящая Венера» — картина итальянского живописца Джорджоне... [венецианской школы].",
-                    en: "The Sleeping Venus is a painting by the Italian artist Giorgione..."
-                },
-                footnotes: {
-                    ru: { "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии." },
-                    en: { "Venetian school": "The Venetian school is one of the leading painting schools of Italy." }
-                }
-            },
-            // 3. Рождение Венеры (Флоренция, зеленая) - Сдвинул чуть выше
-            {
-                id: "venus_birth", country: "italy", era: "early", artist: "botticelli",
-                title: { ru: "Рождение Венеры", en: "Birth of Venus" }, year: "ок. 1485",
-                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Галерея Уффици", en: "Uffizi" },
-                coords: [44.15, 10.85], image: "judith.jpg", color: "green",
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            },
-            // 4. Битва Константина (Ареццо, зеленая) - Сдвинул вниз, на надпись
-            {
-                id: "constantine", country: "italy", era: "early", artist: "piero",
-                title: { ru: "Битва Константина", en: "Battle of Constantine" }, year: "1450-е",
-                city: { ru: "Ареццо", en: "Arezzo" }, museum: { ru: "Сан-Франческо", en: "San Francesco" },
-                coords: [43.25, 11.85], image: "judith.jpg", color: "green", 
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            },
-            // 5. Камера дельи Спози (Мантуя, фиолетовая)
-            {
-                id: "camera", country: "italy", era: "early", artist: "mantegna",
-                title: { ru: "Камера дельи Спози", en: "Camera degli Sposi" }, year: "1465-1474",
-                city: { ru: "Мантуя", en: "Mantua" }, museum: { ru: "Палаццо Дукале", en: "Palazzo Ducale" },
-                coords: [45.16, 10.80], image: "judith.jpg", color: "violet",
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            },
-            // 6. Мона Лиза (Флоренция, зеленая)
-            {
-                id: "mona_lisa", country: "italy", era: "high", artist: "leonardo",
-                title: { ru: "Мона Лиза", en: "Mona Lisa" }, year: "1503",
-                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Лувр", en: "Louvre" },
-                coords: [44.10, 10.95], image: "judith.jpg", color: "green",
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            },
-            // 7. Тайная вечеря (Милан, желтая) - Сдвинул вправо, на надпись Milano
-            {
-                id: "last_supper", country: "italy", era: "high", artist: "leonardo",
-                title: { ru: "Тайная вечеря", en: "The Last Supper" }, year: "1498",
-                city: { ru: "Милан", en: "Milan" }, museum: { ru: "Санта-Мария-делле-Грацие", en: "Santa Maria delle Grazie" },
-                coords: [45.45, 9.15], image: "judith.jpg", color: "yellow", 
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            },
-            // 8. Афинская школа (Рим, розовая) - Поднял выше
-            {
-                id: "athens", country: "italy", era: "high", artist: "raphael",
-                title: { ru: "Афинская школа", en: "The School of Athens" }, year: "1511",
-                city: { ru: "Рим", en: "Rome" }, museum: { ru: "Ватикан", en: "Vatican" },
-                coords: [42.10, 12.20], image: "venere.jpg", color: "pink", // Поменял картинку на venere, чтобы не было квадратика
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            },
-            // 9. Ассунта (Венеция, синяя)
-            {
-                id: "assunta", country: "italy", era: "late", artist: "titian",
-                title: { ru: "Ассунта", en: "Assumption" }, year: "1518",
-                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Санта-Мария-Глориоза-деи-Фрари", en: "Santa Maria Gloriosa dei Frari" },
-                coords: [45.43, 12.32], image: "judith.jpg", color: "blue",
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            },
-            // 10. Пир в доме Левия (Венеция, синяя) - Сдвинул сильно влево, на берег
-            {
-                id: "levi", country: "italy", era: "late", artist: "veronese",
-                title: { ru: "Пир в доме Левия", en: "Feast in the House of Levi" }, year: "1573",
-                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Галерея Академии", en: "Gallerie dell'Accademia" },
-                coords: [45.45, 12.25], image: "judith.jpg", color: "blue",
-                text: { ru: "Заглушка для теста.", en: "Test." }
-            }
-        ];
-
-        function hideAll() {
-            document.getElementById('main-menu').style.display = 'block';
-            document.getElementById('country-list').style.display = 'none';
-            document.getElementById('schools-list').style.display = 'none';
-            document.getElementById('info-screen').style.display = 'none';
-            document.getElementById('era-info-box').style.display = 'none';
-        }
-
-        function ensureItaly() {
-            if (currentCountry !== 'italy') {
-                if(map.hasLayer(franceLayer)) map.removeLayer(franceLayer);
-                italyLayer.addTo(map);
-                map.setView([45.0, 12.0], 7);
-                currentCountry = 'italy';
-            }
-        }
-
-        function showCountries() {
-            hideAll();
-            document.getElementById('country-list').style.display = 'block';
-            ensureItaly();
-            drawMarkers('italy', 'all');
-        }
-
-        function showSchools() {
-            hideAll();
-            document.getElementById('schools-list').style.display = 'block';
-            map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
-            ensureItaly();
-        }
-
-        function showSchoolInfo(schoolId) {
-            hideAll();
-            previousScreen = 'schools';
-            document.getElementById('schools-list').style.display = 'block'; 
-            var school = schools[schoolId];
-            document.getElementById('info-screen').style.display = 'block';
-            document.getElementById('info-title').innerHTML = school.title[currentLang];
-            
-            var content = processText(school.text[currentLang]);
-            if (schoolId === 'venetian') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>`;
-            if (schoolId === 'florentine') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('botticelli')">Боттичелли</button>`;
-            
-            document.getElementById('info-content').innerHTML = content;
-            ensureItaly();
-        }
-
-        function showArtist(artistId) {
-            hideAll();
-            previousScreen = 'school';
-            document.getElementById('schools-list').style.display = 'block';
-            var artist = artists[artistId];
-            document.getElementById('info-screen').style.display = 'block';
-            document.getElementById('info-title').innerHTML = artist.title[currentLang];
-            
-            var content = `<div class="bio-text">${processText(artist.bio[currentLang])}</div><h4>Работы / Works:</h4>`;
-            artist.works.forEach(function(work) {
-                content += `<span class="work-link" onclick="focusOnWork('${work.id}')">${work.title[currentLang]}</span>`;
+        function createMarker(coords, color, title) {
+            var markerIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + color + '.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
             });
-            
-            document.getElementById('info-content').innerHTML = content;
-            ensureItaly();
-            drawMarkers('italy', 'all', artistId); 
+            return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${testImage}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
         }
 
-        function goBack() {
-            showSchools(); 
-        }
-
-        function focusOnWork(workId) {
-            var art = artworks.find(a => a.id === workId);
-            if (art) map.setView(art.coords, 8); 
-        }
-
-        function showEraInfo(era) {
-            hideAll();
-            document.getElementById('country-list').style.display = 'block';
-            var box = document.getElementById('era-info-box');
-            box.style.display = 'block';
-            box.innerHTML = "Текст эпохи " + era; 
-            ensureItaly();
-            drawMarkers('italy', era);
-        }
-
-        function switchCountry(country) {
-            hideAll();
-            document.getElementById('country-list').style.display = 'block';
-            currentCountry = country;
-            if (country === 'france') {
-                map.removeLayer(italyLayer); franceLayer.addTo(map); map.setView([46.5, 2.0], 6);
-                map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
-            } else {
-                ensureItaly();
-                drawMarkers('italy', 'all');
-            }
-        }
-
-        function processText(text) {
-            if(!text) return '';
-            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        }
-
-        function drawMarkers(country, era = 'all', artistId = 'all') {
+        function drawMilan() {
             map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
-
-            artworks.forEach(function(art) {
-                if (art.country !== country) return;
-                if (era !== 'all' && art.era !== era) return;
-                if (artistId !== 'all' && art.artist !== artistId) return;
-
-                var formattedText = art.text[currentLang];
-                if (art.footnotes && art.footnotes[currentLang]) {
-                    for (const [key, val] of Object.entries(art.footnotes[currentLang])) {
-                        let searchStr = '[' + key + ']';
-                        let replaceStr = `<span class="footnote" data-text="${val.replace(/"/g, '&quot;')}">${key}</span>`;
-                        formattedText = formattedText.split(searchStr).join(replaceStr);
-                    }
-                }
-                formattedText = processText(formattedText);
-
-                var popupContent = `
-                    <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
-                    <h3>${art.title[currentLang]} (${art.year})</h3>
-                    <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${artists[art.artist] ? artists[art.artist].title[currentLang] : 'Неизвестен'}</p>
-                    <p><strong>${currentLang === 'ru' ? 'Место создания' : 'Place of creation'}:</strong> ${art.city[currentLang]}</p>
-                    <p><strong>${currentLang === 'ru' ? 'Место хранения' : 'Current location'}:</strong> ${art.museum[currentLang]}</p>
-                    <p>${formattedText}</p>
-                    ${art.audio ? `<div class="audio-wrapper"><p><strong>Музыка:</strong></p><audio controls><source src="${art.audio}" type="audio/mpeg"></audio></div>` : ''}
-                `;
-
-                var markerIcon = new L.Icon({
-                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + art.color + '.png',
-                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-                });
-
-                L.marker(art.coords, {icon: markerIcon}).addTo(map).bindPopup(popupContent, { maxHeight: 600 });
-            });
+            createMarker(milanCoords, "yellow", "Милан (Тайная вечеря)").addTo(map);
         }
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'ru' ? 'en' : 'ru';
-            document.getElementById('lang-switch').innerText = currentLang === 'ru' ? 'EN' : 'RU';
-            document.getElementById('btn-countries').innerText = currentLang === 'ru' ? '🏛️ Страны' : '🏛️ Countries';
-            document.getElementById('btn-schools').innerText = currentLang === 'ru' ? '👨‍🎨 Художники' : '👨‍🎨 Artists';
-            hideAll();
-            ensureItaly();
-            drawMarkers('italy', 'all');
+        function drawAll() {
+            map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
+            
+            // Венеция
+            createMarker([45.55, 11.75], "blue", "Юдифь").addTo(map);
+            createMarker([45.50, 11.80], "blue", "Спящая Венера").addTo(map);
+            createMarker([45.43, 12.32], "blue", "Ассунта").addTo(map);
+            
+            // Флоренция / Ареццо
+            createMarker([44.15, 10.85], "green", "Рождение Венеры").addTo(map);
+            createMarker([44.10, 10.95], "green", "Мона Лиза").addTo(map);
+            createMarker([43.25, 11.85], "green", "Битва Константина").addTo(map);
+            createMarker([45.16, 10.80], "violet", "Камера дельи Спози").addTo(map);
+            
+            // Милан
+            createMarker(milanCoords, "yellow", "Тайная вечеря").addTo(map);
+            
+            // Рим (теперь с картой вместо битой картинки)
+            createMarker([42.10, 12.20], "pink", "Афинская школа").addTo(map);
         }
 
-        drawMarkers('italy', 'all');
+        drawMilan(); // По умолчанию показываем только Милан
     </script>
 </body>
 </html>
