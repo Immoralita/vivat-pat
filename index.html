@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест цвета</title>
+    <title>Настройка координат</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
@@ -17,8 +17,8 @@
 <body>
 
     <div id="panel">
-        <h2>Тест цвета</h2>
-        <p style="font-size: 14px; color: #5d4037;">Все точки синие (blue).</p>
+        <h2>Настройка координат</h2>
+        <p style="font-size: 14px; color: #5d4037;">Рим (красный) сдвинут.</p>
     </div>
     
     <div id="map"></div>
@@ -30,7 +30,6 @@
         var testImage = "map.webp";
 
         function createMarker(coords, color, title) {
-            // ВОЗВРАЩАЕМ СТАРЫЙ СПОСОБ С ЦВЕТАМИ
             var markerIcon = new L.Icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + color + '.png',
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -39,18 +38,24 @@
             return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${testImage}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
         }
 
-        // Все точки делаем СИНИМИ
+        // ВЕНЕЦИЯ (Синий)
         createMarker([45.55, 11.75], "blue", "Юдифь").addTo(map);
         createMarker([45.48, 11.68], "blue", "Спящая Венера").addTo(map);
         createMarker([45.62, 11.85], "blue", "Ассунта").addTo(map);
-        createMarker([44.05, 10.85], "blue", "Рождение Венеры").addTo(map);
-        createMarker([44.05, 10.95], "blue", "Мона Лиза").addTo(map);
-        createMarker([43.80, 11.45], "blue", "Битва Константина").addTo(map);
-        createMarker([45.25, 10.70], "blue", "Камера дельи Спози").addTo(map);
-        createMarker([45.55, 9.75], "blue", "Тайная вечеря").addTo(map);
         
-        // АФИНСКАЯ ШКОЛА ТОЖЕ СИНЯЯ
-        createMarker([42.10, 12.10], "blue", "Афинская школа (Рим)").addTo(map);
+        // ФЛОРЕНЦИЯ / АРЕЦЦО (Зеленый)
+        createMarker([44.05, 10.85], "green", "Рождение Венеры").addTo(map);
+        createMarker([44.05, 10.95], "green", "Мона Лиза").addTo(map);
+        createMarker([43.80, 11.45], "green", "Битва Константина").addTo(map);
+        
+        // МАНТУЯ (Фиолетовый)
+        createMarker([45.25, 10.70], "violet", "Камера дельи Спози").addTo(map);
+        
+        // МИЛАН (Желтый)
+        createMarker([45.55, 9.75], "yellow", "Тайная вечеря").addTo(map);
+        
+        // РИМ (Красный, сдвинут влево и наверх)
+        createMarker([42.25, 12.00], "red", "Афинская школа (Рим)").addTo(map);
 
     </script>
 </body>
