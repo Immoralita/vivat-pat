@@ -32,11 +32,11 @@
 
     <div id="panel">
         <h2>Настройка координат</h2>
-        <p style="font-size: 14px; color: #5d4037;">Настраиваем: <b>Камера дельи Спози (Мантуя)</b>.</p>
-        <p style="font-size: 12px; color: #888;">Координаты: [45.25, 10.70]</p>
+        <p style="font-size: 14px; color: #5d4037;">Настраиваем: <b>Битва Константина (Ареццо)</b> и <b>Рождение Венеры (Флоренция)</b>.</p>
+        <p style="font-size: 12px; color: #888;">Ареццо: [43.50, 11.50] | Флоренция: [44.10, 10.85]</p>
         
         <button class="tab-btn" onclick="drawAll()" style="margin-top: 20px;">Показать все точки</button>
-        <button class="tab-btn" onclick="drawMantua()">Показать только Мантую</button>
+        <button class="tab-btn" onclick="drawGreen()">Показать только зеленые</button>
     </div>
     
     <div id="map"></div>
@@ -45,13 +45,15 @@
         var map = L.map('map', { minZoom: 5, maxZoom: 8, center: [45.0, 12.0], zoom: 7, zoomControl: false });
         var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
 
+        // Обновленные координаты
         var milanCoords = [45.55, 9.75]; 
         var judithCoords = [45.55, 11.75];
         var venusCoords = [45.48, 11.68];
         var assuntaCoords = [45.62, 11.85];
-        
-        // НОВЫЕ КООРДИНАТЫ МАНТУИ
         var mantuaCoords = [45.25, 10.70]; 
+        
+        var arezzoCoords = [43.50, 11.50]; // Битва Константина (подняли и влево)
+        var venusBirthCoords = [44.10, 10.85]; // Рождение Венеры (на уровне Моны Лизы)
         
         var testImage = "map.webp";
 
@@ -64,9 +66,11 @@
             return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${testImage}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
         }
 
-        function drawMantua() {
+        function drawGreen() {
             map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
-            createMarker(mantuaCoords, "violet", "Камера дельи Спози (Мантуя)").addTo(map);
+            createMarker(arezzoCoords, "green", "Битва Константина").addTo(map);
+            createMarker(venusBirthCoords, "green", "Рождение Венеры").addTo(map);
+            createMarker([44.10, 10.95], "green", "Мона Лиза").addTo(map);
         }
 
         function drawAll() {
@@ -76,16 +80,16 @@
             createMarker(venusCoords, "blue", "Спящая Венера").addTo(map);
             createMarker(assuntaCoords, "blue", "Ассунта").addTo(map);
             
-            createMarker([44.15, 10.85], "green", "Рождение Венеры").addTo(map);
+            createMarker(venusBirthCoords, "green", "Рождение Венеры").addTo(map);
             createMarker([44.10, 10.95], "green", "Мона Лиза").addTo(map);
-            createMarker([43.25, 11.85], "green", "Битва Константина").addTo(map);
+            createMarker(arezzoCoords, "green", "Битва Константина").addTo(map);
             
             createMarker(mantuaCoords, "violet", "Камера дельи Спози").addTo(map);
             createMarker(milanCoords, "yellow", "Тайная вечеря").addTo(map);
             createMarker([42.10, 12.20], "pink", "Афинская школа").addTo(map);
         }
 
-        drawMantua();
+        drawGreen();
     </script>
 </body>
 </html>
