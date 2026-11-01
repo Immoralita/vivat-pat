@@ -3,61 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройка координат</title>
+    <title>Vivat-Pat | Карта Возрождения</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <style>
         .leaflet-attribution-flag { display: none !important; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Georgia', serif; overflow: hidden; }
-        #panel { position: absolute; top: 0; left: 0; width: 350px; height: 100%; background: rgba(245, 235, 220, 0.98); z-index: 1000; padding: 20px; box-sizing: border-box; }
+        
+        #panel { position: absolute; top: 0; left: 0; width: 350px; height: 100%; background: rgba(245, 235, 220, 0.98); z-index: 1000; padding: 20px; box-sizing: border-box; overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
         #map { height: 100%; width: calc(100% - 350px); margin-left: 350px; z-index: 1; background-color: #e8dcc4; }
+        
+        .tab-btn { background: none; border: 1px solid #8b5a2b; color: #3e2723; padding: 10px; width: 100%; cursor: pointer; font-family: 'Georgia', serif; font-size: 16px; text-align: left; margin-bottom: 5px; transition: background 0.2s; }
+        .tab-btn:hover { background: #e0d0c0; }
+        
+        #lang-switch { position: absolute; top: 20px; right: 20px; z-index: 1000; background: rgba(245, 235, 220, 0.9); border: 1px solid #8b5a2b; padding: 8px 15px; cursor: pointer; font-size: 16px; font-family: 'Georgia', serif; color: #3e2723; }
+        
+        .leaflet-popup-content-wrapper { width: 700px !important; max-width: 90vw !important; }
+        .leaflet-popup-content { font-family: 'Georgia', serif; color: #3e2723; width: 100% !important; margin: 0 !important; padding: 10px; font-size: 15px; }
+        .leaflet-popup-content h3 { margin: 0 0 10px 0; font-size: 22px; color: #2c1a14; }
+        .leaflet-popup-content p { font-size: 15px; line-height: 1.5; margin-bottom: 12px; }
+        .leaflet-popup-content ul { padding-left: 20px; margin-bottom: 12px; }
+        .leaflet-popup-content li { margin-bottom: 5px; line-height: 1.4; }
+        .popup-image { width: 100%; height: auto; max-height: 400px; object-fit: contain; border-radius: 4px; margin-bottom: 12px; border: 1px solid #8b5a2b; }
+        
+        .footnote { border-bottom: 1px dotted #8b5a2b; cursor: help; position: relative; color: #5d4037; font-weight: bold; }
+        .footnote:hover::after { content: attr(data-text); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #3e2723; color: white; padding: 15px; border-radius: 6px; font-size: 14px; width: 350px; max-width: 80vw; z-index: 2000; line-height: 1.4; pointer-events: none; font-weight: normal; text-align: left; display: block; white-space: normal; box-shadow: 0 4px 10px rgba(0,0,0,0.3); word-wrap: break-word; }
+        
+        .special-footnote-box { margin-top: 15px; padding: 15px; background-color: rgba(139, 90, 43, 0.05); border-top: 2px solid #8b5a2b; border-bottom: 2px solid #8b5a2b; font-size: 14px; line-height: 1.5; }
+        .special-footnote-box h4 { margin: 0 0 10px 0; font-size: 16px; color: #3e2723; }
+        
+        .audio-wrapper { margin-top: 15px; padding-top: 10px; border-top: 1px solid #8b5a2b; }
+        audio { width: 100%; margin-top: 5px; }
+
+        #mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #e8dcc4; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; font-family: 'Georgia', serif; color: #3e2723; }
+        #mobile-overlay h2 { font-size: 28px; margin-bottom: 20px; color: #8b5a2b; }
+        .mobile-text-block { font-size: 15px; line-height: 1.5; margin-bottom: 15px; }
+        .mobile-divider { width: 80%; border-top: 1px solid #8b5a2b; margin: 15px 0; opacity: 0.5; }
+        .mobile-link-box { background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 5px; border: 1px dashed #8b5a2b; word-break: break-all; font-weight: bold; font-size: 14px; margin-top: 15px; width: 90%; }
+
+        @media (max-width: 768px) {
+            #panel, #map, #lang-switch { display: none; }
+            #mobile-overlay { display: flex; }
+        }
+
+        .bio-text { font-size: 14px; line-height: 1.5; margin-bottom: 15px; }
+        .work-link { cursor: pointer; color: #8b5a2b; text-decoration: underline; font-weight: bold; display: block; margin-bottom: 5px; }
+        .work-link:hover { color: #d35400; }
+        
+        .artist-btn { border: none; border-bottom: 1px solid #ccc; background: #f9f4ec; width: 100%; text-align: left; padding: 8px; cursor: pointer; font-family: 'Georgia', serif; color: #8b5a2b; font-weight: bold; }
+        .artist-btn:hover { background: #e0d0c0; }
     </style>
 </head>
 <body>
 
+    <div id="mobile-overlay">
+        <h2>Vivat-Pat</h2>
+        <div class="mobile-text-block"><strong>RU:</strong> Для комфортного просмотра откройте сайт на компьютере.</div>
+        <div class="mobile-text-block"><strong>EN:</strong> For a comfortable viewing, open the site on a computer.</div>
+        <div class="mobile-divider"></div>
+        <div class="mobile-text-block" style="font-size: 14px;">Скопируйте ссылку:<br><em>Copy the link:</em></div>
+        <div class="mobile-link-box">https://immoralita.github.io/vivat-pat/</div>
+    </div>
+
     <div id="panel">
-        <h2>Настройка координат</h2>
-        <p style="font-size: 14px; color: #5d4037;">Рим (красный).</p>
-        <p style="font-size: 12px; color: #888;">Координаты: [42.50, 11.80]</p>
+        <h2 id="site-title">Vivat-Pat</h2>
+        
+        <div id="main-menu">
+            <button class="tab-btn" onclick="showCountries()" id="btn-countries">🏛️ Страны</button>
+            <button class="tab-btn" onclick="showSchools()" id="btn-schools">👨‍🎨 Художники</button>
+        </div>
+
+        <div id="country-list" style="display: none; margin-top: 10px;">
+            <button class="tab-btn" onclick="switchCountry('italy')" id="btn-italy">Италия</button>
+            <div style="padding-left: 15px; margin-bottom: 5px;">
+                <button class="tab-btn" onclick="showEraInfo('early')" id="btn-early" style="font-size: 14px;">Раннее Возрождение</button>
+                <button class="tab-btn" onclick="showEraInfo('high')" id="btn-high" style="font-size: 14px;">Высокое Возрождение</button>
+                <button class="tab-btn" onclick="showEraInfo('late')" id="btn-late" style="font-size: 14px;">Позднее Возрождение</button>
+                <div id="era-info-box" style="display: none; font-size: 13px; color: #5d4037; padding: 10px; border-left: 2px solid #8b5a2b; margin-bottom: 10px;"></div>
+            </div>
+            <button class="tab-btn" onclick="switchCountry('france')" id="btn-france">Франция</button>
+        </div>
+
+        <div id="schools-list" style="display: none; margin-top: 10px;">
+            <button class="tab-btn" onclick="showSchoolInfo('venetian')" id="btn-venetian" style="font-size: 14px;">Венецианская школа</button>
+            <button class="tab-btn" onclick="showSchoolInfo('florentine')" id="btn-florentine" style="font-size: 14px;">Флорентийская школа</button>
+            <button class="tab-btn" onclick="showSchoolInfo('paduan')" id="btn-paduan" style="font-size: 14px;">Падуанская школа</button>
+            <button class="tab-btn" onclick="showSchoolInfo('umbrian')" id="btn-umbrian" style="font-size: 14px;">Умбрийская школа</button>
+            <button class="tab-btn" onclick="showSchoolInfo('roman')" id="btn-roman" style="font-size: 14px;">Римская школа</button>
+        </div>
+
+        <div id="info-screen" style="display: none; margin-top: 15px;">
+            <button class="tab-btn" onclick="goBack()" style="background: #e0d0c0; text-align: center; font-weight: bold;">← Назад</button>
+            <h3 id="info-title" style="color: #8b5a2b; margin-top: 15px;"></h3>
+            <div id="info-content" style="font-size: 14px; line-height: 1.5;"></div>
+        </div>
+
+        <hr style="border: 1px solid #8b5a2b; margin: 20px 0;">
+        <p style="font-size: 14px;">
+            <span id="feedback-text">Есть идея для карты?</span><br>
+            <a href="mailto:patyukhova@gmail.com?subject=Идея для Vivat-Pat" id="feedback-link" style="color: #8b5a2b;">✉️ Написать мне</a>
+        </p>
     </div>
     
+    <button id="lang-switch" onclick="toggleLanguage()">EN</button>
     <div id="map"></div>
 
     <script>
-        var map = L.map('map', { minZoom: 5, maxZoom: 9, center: [44.0, 10.0], zoom: 7, zoomControl: false });
+        var map = L.map('map', { minZoom: 5, maxZoom: 10, center: [45.0, 12.0], zoom: 7, zoomControl: false });
         var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
+        var franceLayer = L.imageOverlay('map_france.webp', [[42.0, -5.0], [51.5, 8.5]]);
 
-        var testImage = "map.webp";
+        var currentLang = 'ru';
+        var currentCountry = 'italy';
+        var previousScreen = 'schools'; 
 
-        function createMarker(coords, color, title) {
-            var markerIcon = new L.Icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + color + '.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-            });
-            return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${testImage}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
+        var schools = {
+            venetian: { title: { ru: "Венецианская школа", en: "Venetian School" }, text: { ru: "Венецианская школа...", en: "Venetian School..." } },
+            florentine: { title: { ru: "Флорентийская школа", en: "Florentine School" }, text: { ru: "Флорентийская школа...", en: "Florentine School..." } },
+            paduan: { title: { ru: "Падуанская школа", en: "Paduan School" }, text: { ru: "Основатель: Франческо Скварчоне.", en: "Founder: Francesco Squarcione." } },
+            umbrian: { title: { ru: "Умбрийская школа", en: "Umbrian School" }, text: { ru: "Значимые художники: Перуджино, ранний Рафаэль.", en: "Significant artists: Perugino, early Raphael." } },
+            roman: { title: { ru: "Римская школа", en: "Roman School" }, text: { ru: "Основатель: Рафаэль Санти.", en: "Founder: Raphael Sanzio." } }
+        };
+
+        var artists = {
+            giorgione: {
+                school: 'venetian', title: { ru: "Джорджоне", en: "Giorgione" },
+                bio: { ru: "Джорджоне (1477–1510) — мастер Высокого Возрождения.", en: "Giorgione (1477–1510) — master of the High Renaissance." },
+                works: [ { title: { ru: "Юдифь", en: "Judith" }, id: "judith" }, { title: { ru: "Спящая Венера", en: "Sleeping Venus" }, id: "venus" } ]
+            },
+            botticelli: {
+                school: 'florentine', title: { ru: "Сандро Боттичелли", en: "Sandro Botticelli" },
+                bio: { ru: "Представитель флорентийской школы.", en: "Representative of the Florentine school." },
+                works: [ { title: { ru: "Рождение Венеры", en: "Birth of Venus" }, id: "venus_birth" }, { title: { ru: "Весна", en: "Primavera" }, id: "primavera" } ]
+            }
+        };
+
+        var artworks = [
+            {
+                id: "judith", country: "italy", era: "high", artist: "giorgione",
+                title: { ru: "Юдифь", en: "Judith" }, year: "1504-1506 гг.",
+                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Эрмитаж", en: "Hermitage" },
+                coords: [45.55, 11.75], image: "judith.jpg", audio: "vivaldi.mp3", color: "blue",
+                text: { 
+                    ru: "**«Юдифь»** — картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя [венецианской школы]. Несмотря на то, что художник имел привычку не подписывать свои работы, она [единодушно атрибутирована] ему по совокупности стилистических, технических и исторических данных. С 1772 года находится в Государственном Эрмитаже, куда была перевезена из парижского собрания барона Луи Антуана Кроза де Тьера.<br><br>Картина отсылает нас к ветхозаветному сюжету, а именно к книге Юдифь (в синодальном переводе — «Книга Иудифь», в католической традиции — «Юдифь»), [неканонической] в православии, [второканонической] в католицизме и [апокрифичной] в протестантизме.<br><br>Для начала объяснимся с именами:<ul><li>Навуходоносор — ассирийский царь.</li><li>Арфаксад — персидский царь.</li><li>Олоферн — ассирийский военачальник, главный вождь войска.</li><li>Ахиор — предводитель аммонитян, находившихся в армии Олоферна.</li><li>Юдифь — красивая и набожная вдова из города Ветилуя (также Ветулия или Вефулия).</li></ul>Согласно книге, между Ассирийским царством, возглавляемым Навуходоносором, и Персидским царством, предводителем которого был Арфаксад, шла война. Некоторые западные земли отказались присоединиться к войску Навуходоносора, не признавая его власти, которой обязаны подчиняться. Они презрели слово и с позором отослали послов, чем вызвали негодование царя.<br><br>После победы над Арфаксадом Навуходоносор дал поручение Олоферну:<br><br>«И объявишь им, чтобы они [приготовляли землю и воду], потому что я с гневом выйду на них, покрою все лице земли их ногами войска моего и предам ему их на расхищение.» (Книга Иудифь 2:7)<br><br>«...ему приказано было истребить всех богов той земли, чтобы все народы служили одному Навуходоносору, и все языки и все племена их призывали его, как Бога.» (Книга Иудифь 3:8)<br><br>Постепенно Олоферн покорял город за городом. Они сдавались довольно легко, пока не настал черёд земель Израиля. Ахиор объяснил их стойкость тем, что Бог, в которого верят иудеи, благоприятствует им, когда они повинуются заповедям:<br><br>«...если есть заблуждение в этом народе, и они грешат пред Богом своим, и мы заметим, что в них есть это преткновение, то мы пойдём и победим их. А если нет в этом народе беззакония, то пусть удалится господин мой, чтобы Господь не защитил их, и Бог их не был за них, — и тогда мы для всей земли будем предметом поношения.» (Книга Иудифь 5:20-5:21)<br><br>За такую дерзость Олоферн приказал отвести Ахиора к стенам Ветилуи, чтобы тот стал свидетелем поражения израильтян. Горожане нашли его и привели к старейшинам; там он рассказал, что произошло в стане ассирийцев, и подробно пересказал свою беседу с Олоферном.<br><br>После этого Олоферн начал осаду, перекрывая горожанам доступ к воде. Он собирался взять Ветилую на измор, что ему в известной мере удалось: жители начали страдать и задумываться о сдаче города. Тогда один из старейшин (Озия) выступил со словами:<br><br>«...не унывайте, братья! потерпим еще пять дней, в которые Господь Бог наш обратит милость Свою на нас, ибо Он не оставит нас вконец.» (Книга Иудифь 7:30)<br><br>И здесь появляется наша **Юдифь**. Услышав слова о сдаче города, она позвала старейшин к себе домой, где высказала своё несогласие и заявила, что они «искушают сегодня Бога и ставят себя вместо Бога», назначив Ему сроки.<br><br>Старейшины согласились с ней, и тогда вдова объявила о своём намерении совершить дело, которое «пребудет в роды родов». Она попросила их этой ночью выпустить её со служанкой из города, но категорически запретила расспрашивать о плане.<br><br>**План Юдифи** был довольно хорошо продуман. Для пущей наглядности разделим его на четыре части:<br><br>**Шаг 1: Подготовка и вход в доверие.**<br>Юдифь понимала, что грубая сила здесь не поможет. Её оружием стали красота и ум.<ul><li>Внешний вид: Она сняла траурные одежды, омылась, умастилась благовониями и надела лучшие наряды и украшения.</li><li>Легенда: Придя в ассирийский стан, она представилась пророчицей, бежавшей от своих, чтобы помочь Олоферну. Юдифь пообещала указать ему путь к лёгкой победе над Иудеей, но с условием: ей должно быть позволено каждую ночь выходить на молитву.</li><li>Доверие: Олоферн и его слуги были очарованы её красотой и разумными речами. Ей разрешили жить в лагере и беспрепятственно покидать его по ночам. Это стало критически важным моментом для успеха всего предприятия.</li></ul>**Шаг 2: Ловушка на пиру.**<br>Юдифь три дня жила в лагере, питаясь только принесённой с собой пищей, чтобы не оскверниться. На четвёртый день Олоферн устроил пир для своих приближённых и приказал позвать пророчицу.<ul><li>Роль вина: Олоферн, желая произвести на неё впечатление, пил «вина́ весьма много, сколько не пил никогда, ни в один день от рождения».</li><li>Позиция Юдифи: Она согласилась прийти и даже ела и пила то, что приготовила служанка. Кроме того, чтобы усыпить бдительность полководца, она поддерживала у него иллюзию своей благосклонности.</li></ul>**Шаг 3: Момент удара.**<br>Когда пир закончился и все ушли, в шатре остались только Юдифь и Олоферн, который «упал на ложе своё, потому что был переполнен вином».<ul><li>Молитва и действие: Оставшись одна, Юдифь помолилась, прося Бога [укрепить её], затем сняла со столбика изголовья меч Олоферна, схватила его за волосы и двумя ударами отрубила голову.</li><li>Выход: Иудейка отдала голову служанке, которая спрятала её в мешок со съестными припасами. Поскольку Юдифь имела разрешение выходить по ночам, они беспрепятственно прошли через лагерь и вернулись в Ветилую.</li></ul>**Шаг 4: Психологическая атака и победа.**<br>Вернувшись в город, Юдифь показала жителям голову Олоферна. Это вдохнуло в них мужество. Наутро она дала горожанам конкретный план:<ul><li>Демонстрация: Голову полководца вывесили на городской стене.</li><li>Провокация: Иудеи вышли из города, делая вид, что готовы к бою.</li><li>Паника: Ассирийцы бросились к шатру Олоферна, чтобы разбудить его. Обнаружив обезглавленное тело, они пришли в ужас. Войско, охваченное паникой, обратилось в бегство.</li></ul>",
+                    en: "**«Judith»** is a painting by the Italian artist Giorgione (Giorgio Barbarelli da Castelfranco), a representative of the [Venetian school]. Although he had a habit of not signing his works, it is [unanimously attributed] to him based on a combination of stylistic, technical and historical data. Since 1772 it has been in the State Hermitage, where it was brought from the Paris collection of Baron Louis Antoine Crozat de Thiers.<br><br>The painting refers to an Old Testament story, namely the Book of Judith, [non-canonical] in Orthodoxy, [deuterocanonical] in Catholicism and [apocryphal] in Protestantism.<br><br>First, let us explain the names:<ul><li>Nebuchadnezzar — the Assyrian king.</li><li>Arphaxad — the Persian king.</li><li>Holofernes — the Assyrian military commander, the chief leader of the army.</li><li>Achior — the leader of the Ammonites, who were in Holofernes' army.</li><li>Judith — a beautiful and devout widow from the city of Bethulia.</li></ul>According to the book, there was a war between the Assyrian kingdom, led by Nebuchadnezzar, and the Persian kingdom, led by Arphaxad. Some western lands refused to join Nebuchadnezzar's army, not recognising his power, to which they were obliged to submit. They despised his word and sent the ambassadors away in disgrace, which caused the king's indignation.<br><br>After the victory over Arphaxad, Nebuchadnezzar gave Holofernes an order:<br><br>«Tell them to prepare earth and water, for I am coming against them in my anger, and will cover the whole face of the earth with the feet of my armies, and will hand them over to be plundered by my troops.» (Book of Judith 2:7, RSV)<br><br>«And he demolished all their shrines and cut down their sacred groves; for it had been given to him to destroy all the gods of the land, so that all nations should worship Nebuchadnezzar only, and all their tongues and tribes should call upon him as god.» (Book of Judith 3:8, RSV)<br><br>Gradually Holofernes conquered city after city. They surrendered quite easily, until the turn of the lands of Israel came. Achior explained their resilience by the fact that the God in whom the Jews believe favours them when they obey the commandments:<br><br>«Now therefore, my lord and governor, if there be any error against this people, and they sin against their God, let us consider that this shall be their ruin, and let us go up, and we shall overcome them. But if there be no iniquity in their nation, let my lord now pass by, lest their Lord defend them, and their God be for them, and we become a reproach before all the world.» (Book of Judith 5:20-5:21, KJV)<br><br>For such insolence Holofernes ordered Achior to be taken to the walls of Bethulia, so that he would witness the defeat of the Israelites. The townspeople found him and brought him to the elders; there he told what had happened in the Assyrian camp and retold in detail his conversation with Holofernes.<br><br>After that Holofernes began the siege, cutting off the townspeople's access to water. He intended to take Bethulia by exhaustion, which to a certain extent he succeeded in doing: the inhabitants began to suffer and think about surrendering the city. Then one of the elders (Ozias) spoke these words:<br><br>«Brethren, be of good courage! Let us endure five more days, in which the Lord our God may turn his mercy toward us; for he will not forsake us utterly.» (Book of Judith 7:30, RSV)<br><br>And here our **Judith** appears. Hearing the words about surrendering the city, she called the elders to her home, where she expressed her disagreement and stated that they are tempting God and, by setting deadlines for Him, setting themselves up in the place of God in human affairs.<br><br>The elders agreed with her, and then the widow announced her intention to accomplish a deed which will go down through all generations. She asked them to let her and her maid out of the city that night, but strictly forbade them to ask about the plan.<br><br>**Judith's plan** was quite well thought out. For greater clarity, let us divide it into four parts:<br><br>**Step 1: Preparation and gaining trust.**<br>Judith understood that brute force would not help here. Her weapons were beauty and intelligence.<ul><li>Appearance: She took off her mourning clothes, washed herself, anointed herself with incense and put on her best outfits and jewellery.</li><li>Legend: Arriving at the Assyrian camp, she introduced herself as a prophetess who had fled from her own people to help Holofernes. Judith promised to show him the way to an easy victory over Judea, but on one condition: she must be allowed to go out every night to pray.</li><li>Trust: Holofernes and his servants were charmed by her beauty and reasonable speeches. She was allowed to live in the camp and leave it freely at night. This became a critically important moment for the success of the whole enterprise.</li></ul>**Step 2: The trap at the feast.**<br>Judith lived in the camp for three days, eating only the food she had brought with her, so as not to defile herself. On the fourth day Holofernes arranged a feast for his close associates and ordered the prophetess to be called.<ul><li>The role of wine: Holofernes, wishing to impress her, «drank a great quantity of wine, much more than he had ever drunk in any one day since he was born.» (Book of Judith 12:20, RSV)</li><li>Judith's position: She agreed to come and even ate and drank what the maid had prepared. In addition, to lull the commander's vigilance, she maintained his illusion of her favour.</li></ul>**Step 3: The moment of the blow.**<br>When the feast ended and everyone had left, only Judith and Holofernes remained in the tent, and he «was overcome with wine.» (Book of Judith 13:2, RSV)<ul><li>Prayer and action: Left alone, Judith prayed, asking God [to strengthen her], then took Holofernes' sword from the bedpost at the head of the bed, grabbed him by the hair and cut off his head with two blows.</li><li>Exit: The Jewess gave the head to the maid, who hid it in a bag with food supplies. Since Judith had permission to go out at night, they passed through the camp without hindrance and returned to Bethulia.</li></ul>**Step 4: Psychological attack and victory.**<br>Returning to the city, Judith showed the inhabitants the head of Holofernes. This breathed courage into them. In the morning she gave the townspeople a concrete plan:<ul><li>Demonstration: The head of the commander was hung on the city wall.</li><li>Provocation: The Jews came out of the city, pretending to be ready for battle.</li><li>Panic: The Assyrians rushed to Holofernes' tent to wake him. Discovering the headless body, they were horrified. The army, seized with panic, fled.</li></ul>"
+                },
+                                footnotes: {
+                    ru: {
+                        "единодушно атрибутирована": "Абсолютным большинством специалистов признана творением конкретно этого человека. Атрибуция обычно также включает в себя определение времени, места, принадлежности к определённому художественному направлению, школе или стилю.",
+                        "неканонической": "Книга Ветхого Завета, которой нет в древнееврейском каноне, но которая включена в православные (и католические) издания Библии. Православие считает такие книги назидательными и полезными для чтения, но не приравнивает к каноническим.",
+                        "второканонической": "То же, что православные называют «неканоническими», но в католической традиции. На Тридентском соборе (XVI в.) такие книги включили в канон и назвали «второканоническими» (то есть вошедшими в канон во вторую очередь).",
+                        "апокрифичной": "В православии это тексты, которые никогда не входили в Библию ни в одной традиции. Они отвергнуты Церковью как поддельные или содержащие недостоверные учения. НО! В протестантской традиции термин «апокрифы» применяют к тем книгам, которые православные называют «неканоническими».",
+                        "приготовляли землю и воду": "Приготовление земли и воды здесь — символ безоговорочной капитуляции; дипломатический ритуал, при котором завоевателям буквально преподносили горсть земли и чашу с водой (право на землю и водные ресурсы).",
+                        "укрепить её": "Даровать физические и духовные силы для совершения чего-либо. В данном случае — для нанесения смертельного удара."
+                    },
+                    en: {
+                        "unanimously attributed": "Recognised by the absolute majority of specialists as the work of this particular author. Attribution usually also includes determining the time, place, and belonging to a specific artistic movement, school, or style.",
+                        "non-canonical": "A book of the Old Testament that is not in the Hebrew canon, but which is included in Orthodox (and Catholic) editions of the Bible. Orthodoxy considers such books edifying and useful for reading, but does not equate them with canonical ones.",
+                        "deuterocanonical": "Essentially, the same as what the Orthodox call «non-canonical», but in the Catholic tradition. At the Council of Trent (16th century) such books were included in the canon and called «deuterocanonical» (that is, those that entered the canon second).",
+                        "apocryphal": "In Orthodoxy these are texts that were never part of the Bible in any tradition. They are rejected by the Church as forged or containing unreliable teachings. BUT! In the Protestant tradition, the term «apocrypha» is applied to those books that the Orthodox call «non-canonical».",
+                        "prepare earth and water": "The preparation of earth and water here is a symbol of unconditional capitulation; a diplomatic ritual in which a handful of earth and a cup of water were literally presented to the conquerors (the right to land and water resources).",
+                        "to strengthen her": "To grant physical and spiritual strength to accomplish something. In this case — to deliver a fatal blow."
+                    }
+                },
+                specialFootnote: {
+                    ru: "<h4>Венецианская школа:</h4>Одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком.<br><br><b>Несколько ключевых особенностей:</b><ul><li>Приоритет колорита над чётким контуром и пластикой формы.</li><li>Лессировочная масляная живопись на тёмном грунте (техника, при которой прозрачные слои краски наносят поверх высохших предыдущих, чтобы добиться глубины, светоносности и особой теплоты тонов).</li><li>Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры.</li><li>Гармония человека и поэтического пейзажа.</li></ul>",
+                    en: "<h4>The Venetian school:</h4>One of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br><b>Several key features:</b><ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground (a technique in which transparent layers of paint are applied over dried previous ones to achieve depth, luminosity and a special warmth of tones).</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>"
+                }
+            },
+            {
+                id: "venus", country: "italy", era: "high", artist: "giorgione",
+                title: { ru: "Спящая Венера", en: "Sleeping Venus" }, year: "1508-1510",
+                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Дрезден", en: "Dresden" },
+                coords: [45.48, 11.68], image: "venere.jpg", color: "blue", 
+                              text: { 
+                    ru: "**«Спящая Венера»** — картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя [венецианской школы]. Некоторое время она [атрибутировалась] Сассоферрато как копия с картины Тициана ввиду того, что работа неоднократно переписывалась и «обновлялась», а ее первоначальный вид сильно исказился.<br><br>Благодаря **методу Джованни Морелли**, всё встало на свои места. И перед тем как продолжить: что за метод такой?<br>Джованни считал, что истинный стиль художника выдают мелкие особенности, второстепенные и зачастую кажущиеся незначительными, вроде прорисовки кистей, ногтей, ушных раковин и пр. Он считал, что при копировании картин больше внимания уделяется общей композиции и ярким деталям, в то время как мелкие детали, выполняемые «на автомате», сохраняют уникальный почерк автора.<br><br>Вернёмся к нашим баранам.<br><br>Джорджоне не успел завершить картину, потому как умер от чумы в Венеции в 1510 году. Искусствоведы считают, что ему принадлежит сама фигура Венеры и, возможно, часть скалы за ней, остальное же — пейзаж, небо, [драпировки], на которых лежит богиня, и Купидона у её ног — сотворил Тициан, ученик Джорджоне.<br><br>Вы не нашли Купидона?<br>Не удивительно. К XIX в. картина в этом месте была настолько повреждена, что восстановить его фигуру было невозможно. Её просто закрасили зелёной краской, превратив в траву.<br><br>Между прочим, Купидон играет в сюжете, например, свадебных античных песен не последнюю роль — он будил Венеру, спящую в саду, где царит вечная весна, в окружении [путти], дабы та направилась на празднество по поводу людской свадьбы и благословила их брак. Именно поэтому некоторые искусствоведы считают, что изначально картина была заказана в память о счастливой свадьбе венецианского патриция Джироламо Марчелло и Морозины Пизани.",
+                    en: "**\"Sleeping Venus\"** is a painting by the Italian artist Giorgione (Giorgio Barbarelli da Castelfranco), a representative of the [Venetian school]. For some time it was [attributed] to Sassoferrato as a copy of a painting by Titian, because the work had been repeatedly repainted and \"updated\", and its original appearance had been badly distorted.<br><br>Thanks to **Giovanni Morelli's method**, everything fell into place. But before we continue: what is this method?<br>Giovanni believed that an artist's true style is revealed by small details — secondary and often seemingly insignificant ones, such as the drawing of hands, nails, ears and so on. He believed that when copying paintings, more attention is paid to the overall composition and striking details, while small details, executed \"on autopilot\", preserve the author's unique handwriting.<br><br>Let us return to our sheep.<br><br>Giorgione did not manage to finish the painting, because he died of the plague in Venice in 1510. Art historians believe that the figure of Venus herself and, possibly, part of the rock behind her belong to him, while the rest — the landscape, the sky, the [draperies] on which the goddess lies, and the Cupid at her feet — was created by Titian, Giorgione's pupil.<br><br>You didn't find the Cupid?<br>No wonder. By the 19th century the painting in that place was so damaged that it was impossible to restore his figure. It was simply painted over with green paint, turning it into grass.<br><br>By the way, Cupid plays no small role in the story — for example, in ancient wedding songs: he woke Venus, sleeping in a garden where eternal spring reigns, surrounded by [putti], so that she would go to the celebration of a human wedding and bless their marriage. That is why some art historians believe that the painting was originally commissioned in memory of a happy wedding between the Venetian patrician Girolamo Marcello and Morosina Pisani."
+                },
+                                footnotes: {
+                    ru: {
+                        "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком. Несколько ключевых особенностей: Приоритет колорита над чётким контуром и пластикой формы. Лессировочная масляная живопись на тёмном грунте. Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры. Гармония человека и поэтического пейзажа.",
+                        "атрибутировалась": "Художником признавался конкретно этот человек. Атрибуция также включает в себя определение времени, места, принадлежности к определённому художественному направлению, школе или стилю.",
+                        "драпировки": "Ткань, свободно падающая или собранная в красивые складки. В скульптуре и живописи это также может быть свободная одежда (туники, тоги, плащи и др.), в которую художник облекает изображённые человеческие фигуры. Основная роль драпировки в искусстве — гармонировать с фигурой и образом человека, а иногда и служить истолкованию образа.",
+                        "путти": "Итальянское слово putti, мн. ч. от putto — «младенец». Это изображение маленьких мальчиков, зачастую обнаженных и крылатых. Образ, крайне распространенный во времена Ренессанса, барокко и рококо."
+                    },
+                    en: {
+                        "Venetian school": "The Venetian school is one of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing. Several key features: The priority of colour over a clear contour and plasticity of form. Glaze oil painting on a dark ground. Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture. Harmony of man and poetic landscape.",
+                        "attributed": "Recognised as the work of this particular artist. Attribution also includes determining the time, place, and belonging to a particular artistic movement, school or style.",
+                        "draperies": "Fabric falling freely or gathered into beautiful folds. In sculpture and painting, it can also be loose clothing (tunics, togas, cloaks, etc.) in which the artist clothes the depicted human figures. The main role of drapery in art is to harmonise with the figure and image of the person, and sometimes also to serve as an interpretation of the image.",
+                        "putti": "The Italian word putti, plural of putto — \"baby\". It is a depiction of little boys, often naked and winged. An image extremely common during the Renaissance, Baroque and Rococo."
+                    }
+                }
+            },
+            {
+                id: "venus_birth", country: "italy", era: "early", artist: "botticelli",
+                title: { ru: "Рождение Венеры", en: "Birth of Venus" }, year: "ок. 1485",
+                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Уффици", en: "Uffizi" },
+                coords: [44.05, 10.85], image: "venera.jpg", audio: "birthvwnera.mp3", color: "green",
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "primavera", country: "italy", era: "early", artist: "botticelli",
+                title: { ru: "Весна", en: "Primavera" }, year: "ок. 1482",
+                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Уффици", en: "Uffizi" },
+                coords: [44.05, 10.95], image: "primavera.jpg", audio: "primavera.mp3", color: "green",
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "constantine", country: "italy", era: "early", artist: "piero",
+                title: { ru: "Битва Константина", en: "Battle of Constantine" }, year: "1450-е",
+                city: { ru: "Ареццо", en: "Arezzo" }, museum: { ru: "Сан-Франческо", en: "San Francesco" },
+                coords: [43.80, 11.45], image: "judith.jpg", color: "green", 
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "camera", country: "italy", era: "early", artist: "mantegna",
+                title: { ru: "Камера дельи Спози", en: "Camera degli Sposi" }, year: "1465-1474",
+                city: { ru: "Мантуя", en: "Mantua" }, museum: { ru: "Палаццо Дукале", en: "Palazzo Ducale" },
+                coords: [45.25, 10.70], image: "camera1.jpg", color: "violet",
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "mona_lisa", country: "italy", era: "high", artist: "leonardo",
+                title: { ru: "Мона Лиза", en: "Mona Lisa" }, year: "1503",
+                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Лувр", en: "Louvre" },
+                coords: [45.55, 9.75], image: "monalisa.webp", audio: "monalisa.mp3", color: "yellow",
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "last_supper", country: "italy", era: "high", artist: "leonardo",
+                title: { ru: "Тайная вечеря", en: "The Last Supper" }, year: "1498",
+                city: { ru: "Милан", en: "Milan" }, museum: { ru: "Санта-Мария-делле-Грацие", en: "Santa Maria delle Grazie" },
+                coords: [45.55, 9.75], image: "vechera.jpg", audio: "holst.mp3", color: "yellow", 
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "athens", country: "italy", era: "high", artist: "raphael",
+                title: { ru: "Афинская школа", en: "The School of Athens" }, year: "1511",
+                city: { ru: "Рим", en: "Rome" }, museum: { ru: "Ватикан", en: "Vatican" },
+                coords: [42.50, 11.80], image: "af.school.jpg", audio: "m.af.school.mp3", color: "red", 
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "assunta", country: "italy", era: "late", artist: "titian",
+                title: { ru: "Ассунта", en: "Assumption" }, year: "1518",
+                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Санта-Мария-Глориоза-деи-Фрари", en: "Santa Maria Gloriosa dei Frari" },
+                coords: [45.62, 11.85], image: "assunta.jpg", audio: "missa.mp3", color: "blue",
+                text: { ru: "Заглушка.", en: "Test." }
+            },
+            {
+                id: "levi", country: "italy", era: "late", artist: "veronese",
+                title: { ru: "Пир в доме Левия", en: "Feast in the House of Levi" }, year: "1573",
+                city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Галерея Академии", en: "Gallerie dell'Accademia" },
+                coords: [45.45, 12.25], image: "pir.jpg", color: "blue",
+                text: { ru: "Заглушка.", en: "Test." }
+            }
+        ];
+
+        function hideAll() {
+            document.getElementById('main-menu').style.display = 'block';
+            document.getElementById('country-list').style.display = 'none';
+            document.getElementById('schools-list').style.display = 'none';
+            document.getElementById('info-screen').style.display = 'none';
+            document.getElementById('era-info-box').style.display = 'none';
         }
 
-        // ВЕНЕЦИЯ (Синий)
-        createMarker([45.55, 11.75], "blue", "Юдифь").addTo(map);
-        createMarker([45.48, 11.68], "blue", "Спящая Венера").addTo(map);
-        createMarker([45.62, 11.85], "blue", "Ассунта").addTo(map);
-        
-        // ФЛОРЕНЦИЯ / АРЕЦЦО (Зеленый)
-        createMarker([44.05, 10.85], "green", "Рождение Венеры").addTo(map);
-        createMarker([44.05, 10.95], "green", "Мона Лиза").addTo(map);
-        createMarker([43.80, 11.45], "green", "Битва Константина").addTo(map);
-        
-        // МАНТУЯ (Фиолетовый)
-        createMarker([45.25, 10.70], "violet", "Камера дельи Спози").addTo(map);
-        
-        // МИЛАН (Желтый)
-        createMarker([45.55, 9.75], "yellow", "Тайная вечеря").addTo(map);
-        
-        // РИМ (Красный, финальный сдвиг)
-        createMarker([42.50, 11.80], "red", "Афинская школа (Рим)").addTo(map);
+        function ensureItaly() {
+            if (currentCountry !== 'italy') {
+                if(map.hasLayer(franceLayer)) map.removeLayer(franceLayer);
+                italyLayer.addTo(map);
+                map.setView([45.0, 12.0], 7);
+                currentCountry = 'italy';
+            }
+        }
 
+        function showCountries() {
+            hideAll();
+            document.getElementById('country-list').style.display = 'block';
+            ensureItaly();
+            drawMarkers('italy', 'all');
+        }
+
+        function showSchools() {
+            hideAll();
+            document.getElementById('schools-list').style.display = 'block';
+            map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
+            ensureItaly();
+        }
+
+        function showSchoolInfo(schoolId) {
+            hideAll();
+            previousScreen = 'schools';
+            document.getElementById('schools-list').style.display = 'block'; 
+            var school = schools[schoolId];
+            document.getElementById('info-screen').style.display = 'block';
+            document.getElementById('info-title').innerHTML = school.title[currentLang];
+            
+            var content = processText(school.text[currentLang]);
+            if (schoolId === 'venetian') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>`;
+            if (schoolId === 'florentine') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('botticelli')">Боттичелли</button>`;
+            
+            document.getElementById('info-content').innerHTML = content;
+            ensureItaly();
+        }
+
+        function showArtist(artistId) {
+            hideAll();
+            previousScreen = 'school';
+            document.getElementById('schools-list').style.display = 'block';
+            var artist = artists[artistId];
+            document.getElementById('info-screen').style.display = 'block';
+            document.getElementById('info-title').innerHTML = artist.title[currentLang];
+            
+            var content = `<div class="bio-text">${processText(artist.bio[currentLang])}</div><h4>Работы / Works:</h4>`;
+            artist.works.forEach(function(work) {
+                content += `<span class="work-link" onclick="focusOnWork('${work.id}')">${work.title[currentLang]}</span>`;
+            });
+            
+            document.getElementById('info-content').innerHTML = content;
+            ensureItaly();
+            drawMarkers('italy', 'all', artistId); 
+        }
+
+        function goBack() {
+            showSchools(); 
+        }
+
+        function focusOnWork(workId) {
+            var art = artworks.find(a => a.id === workId);
+            if (art) {
+                map.setView(art.coords, 8); 
+                drawMarkers('italy', 'all', 'all', workId);
+            }
+        }
+
+        function showEraInfo(era) {
+            hideAll();
+            document.getElementById('country-list').style.display = 'block';
+            var box = document.getElementById('era-info-box');
+            box.style.display = 'block';
+            box.innerHTML = "Текст эпохи " + era; 
+            ensureItaly();
+            drawMarkers('italy', era);
+        }
+
+        function switchCountry(country) {
+            hideAll();
+            document.getElementById('country-list').style.display = 'block';
+            currentCountry = country;
+            if (country === 'france') {
+                map.removeLayer(italyLayer); franceLayer.addTo(map); map.setView([46.5, 2.0], 6);
+                map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
+            } else {
+                ensureItaly();
+                drawMarkers('italy', 'all');
+            }
+        }
+
+        function processText(text) {
+            if(!text) return '';
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function drawMarkers(country, era = 'all', artistId = 'all', specificWorkId = 'all') {
+            map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
+
+            artworks.forEach(function(art) {
+                if (art.country !== country) return;
+                if (era !== 'all' && art.era !== era) return;
+                if (artistId !== 'all' && art.artist !== artistId) return;
+                if (specificWorkId !== 'all' && art.id !== specificWorkId) return;
+
+                var formattedText = processText(art.text[currentLang]);
+
+                var audioBox = art.audio ? `<div class="audio-wrapper"><p><strong>Музыка:</strong></p><audio controls><source src="${art.audio}" type="audio/mpeg"></audio></div>` : '';
+
+                var popupContent = `
+                    <img src="${art.image}" class="popup-image" alt="${art.title[currentLang]}">
+                    <h3>${art.title[currentLang]} (${art.year})</h3>
+                    <p><strong>${currentLang === 'ru' ? 'Художник' : 'Artist'}:</strong> ${artists[art.artist] ? artists[art.artist].title[currentLang] : 'Неизвестен'}</p>
+                    <p><strong>${currentLang === 'ru' ? 'Место создания' : 'Place of creation'}:</strong> ${art.city[currentLang]}</p>
+                    <p><strong>${currentLang === 'ru' ? 'Место хранения' : 'Current location'}:</strong> ${art.museum[currentLang]}</p>
+                    <p>${formattedText}</p>
+                    ${audioBox}
+                `;
+
+                var markerIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + art.color + '.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+                });
+
+                L.marker(art.coords, {icon: markerIcon}).addTo(map).bindPopup(popupContent, { maxHeight: 600 });
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ru' ? 'en' : 'ru';
+            document.getElementById('lang-switch').innerText = currentLang === 'ru' ? 'EN' : 'RU';
+            document.getElementById('btn-countries').innerText = currentLang === 'ru' ? '🏛️ Страны' : '🏛️ Countries';
+            document.getElementById('btn-schools').innerText = currentLang === 'ru' ? '👨‍🎨 Художники' : '👨‍🎨 Artists';
+            
+            document.getElementById('btn-venetian').innerText = currentLang === 'ru' ? 'Венецианская школа' : 'Venetian School';
+            document.getElementById('btn-florentine').innerText = currentLang === 'ru' ? 'Флорентийская школа' : 'Florentine School';
+            document.getElementById('btn-paduan').innerText = currentLang === 'ru' ? 'Падуанская школа' : 'Paduan School';
+            document.getElementById('btn-umbrian').innerText = currentLang === 'ru' ? 'Умбрийская школа' : 'Umbrian School';
+            document.getElementById('btn-roman').innerText = currentLang === 'ru' ? 'Римская школа' : 'Roman School';
+
+            hideAll();
+            ensureItaly();
+            drawMarkers('italy', 'all');
+        }
+
+        drawMarkers('italy', 'all');
     </script>
 </body>
 </html>
