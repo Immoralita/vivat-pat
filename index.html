@@ -315,7 +315,7 @@
                 id: "levi", country: "italy", era: "late", artist: "veronese",
                 title: { ru: "Пир в доме Левия", en: "Feast in the House of Levi" }, year: "1573",
                 city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Галерея Академии", en: "Gallerie dell'Accademia" },
-                coords: [45.50, 12.10], image: "pir.jpg", color: "blue",
+                coords: [45.52, 11.95], image: "pir.jpg", color: "blue",
                 text: { ru: "Заглушка.", en: "Test." }
             }
         ];
@@ -363,24 +363,24 @@
             var content = processText(school.text[currentLang]);
             
             // Добавляем кнопки художников для каждой школы
-            if (schoolId === 'venetian') {
-                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
-                <button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>
-                <button class="artist-btn" onclick="showArtist('titian')">Тициан</button>
-                <button class="artist-btn" onclick="showArtist('veronese')">Паоло Веронезе</button>`;
+                        if (schoolId === 'venetian') {
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">${currentLang === 'ru' ? 'Художники' : 'Artists'}:</h4>
+                <button class="artist-btn" onclick="showArtist('giorgione')">${currentLang === 'ru' ? 'Джорджоне' : 'Giorgione'}</button>
+                <button class="artist-btn" onclick="showArtist('titian')">${currentLang === 'ru' ? 'Тициан' : 'Titian'}</button>
+                <button class="artist-btn" onclick="showArtist('veronese')">${currentLang === 'ru' ? 'Паоло Веронезе' : 'Paolo Veronese'}</button>`;
             }
             if (schoolId === 'florentine') {
-                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
-                <button class="artist-btn" onclick="showArtist('botticelli')">Сандро Боттичелли</button>
-                <button class="artist-btn" onclick="showArtist('leonardo')">Леонардо да Винчи</button>`;
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">${currentLang === 'ru' ? 'Художники' : 'Artists'}:</h4>
+                <button class="artist-btn" onclick="showArtist('botticelli')">${currentLang === 'ru' ? 'Сандро Боттичелли' : 'Sandro Botticelli'}</button>
+                <button class="artist-btn" onclick="showArtist('leonardo')">${currentLang === 'ru' ? 'Леонардо да Винчи' : 'Leonardo da Vinci'}</button>`;
             }
             if (schoolId === 'paduan') {
-                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
-                <button class="artist-btn" onclick="showArtist('mantegna')">Андреа Мантенья</button>`;
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">${currentLang === 'ru' ? 'Художники' : 'Artists'}:</h4>
+                <button class="artist-btn" onclick="showArtist('mantegna')">${currentLang === 'ru' ? 'Андреа Мантенья' : 'Andrea Mantegna'}</button>`;
             }
             if (schoolId === 'roman') {
-                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
-                <button class="artist-btn" onclick="showArtist('raphael')">Рафаэль Санти</button>`;
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">${currentLang === 'ru' ? 'Художники' : 'Artists'}:</h4>
+                <button class="artist-btn" onclick="showArtist('raphael')">${currentLang === 'ru' ? 'Рафаэль Санти' : 'Raphael Sanzio'}</button>`;
             }
             
             document.getElementById('info-content').innerHTML = content;
@@ -428,7 +428,7 @@
                 high: "**Высокое Возрождение (кон. XV – нач. XVI вв.)**<br>Период наивысшего расцвета. Идеальная гармония, симметрия, монументальность. Искусство прославляет величие человека.",
                 late: "**Позднее Возрождение (XVI век)**<br>Эволюция в сторону большей эмоциональности и свободы (маньеризм). Композиции становятся динамичнее, формы иногда деформируются."
             };
-            box.innerHTML = processText(eraText[era]); 
+            box.innerHTML = processText(currentLang === 'ru' ? eraText[era] : eraText_en[era]);
             
             ensureItaly();
             drawMarkers('italy', era);
@@ -528,6 +528,8 @@
             hideAll();
             ensureItaly();
             drawMarkers('italy', 'all');
+                        document.getElementById('feedback-text').innerText = currentLang === 'ru' ? 'Есть идея для карты?' : 'Have an idea for the map?';
+            document.getElementById('feedback-link').innerText = currentLang === 'ru' ? '✉️ Написать мне' : '✉️ Write to me';
         }
 
         // Запуск при загрузке
