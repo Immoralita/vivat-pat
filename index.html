@@ -32,17 +32,14 @@
 
     <div id="panel">
         <h2>Настройка координат</h2>
-        <p style="font-size: 14px; color: #5d4037;">Настраиваем: <b>Ареццо (Битва Константина)</b>.</p>
-        <p style="font-size: 12px; color: #888;">Зум ограничен до 9.</p>
+        <p style="font-size: 14px; color: #5d4037;">Настраиваем: <b>Рим (Афинская школа)</b> и добавляем <b>Пир в доме Левия</b>.</p>
         
-        <button class="tab-btn" onclick="drawAll()" style="margin-top: 20px;">Показать все точки</button>
-        <button class="tab-btn" onclick="drawGreen()">Показать только зеленые</button>
+        <button class="tab-btn" onclick="drawAll()" style="margin-top: 20px;">Показать все 10 точек</button>
     </div>
     
     <div id="map"></div>
 
     <script>
-        // ОГРАНИЧЕНИЕ ЗУМА ДО 9
         var map = L.map('map', { minZoom: 5, maxZoom: 9, center: [45.0, 12.0], zoom: 7, zoomControl: false });
         var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
 
@@ -51,48 +48,48 @@
         var venusCoords = [45.48, 11.68];
         var assuntaCoords = [45.62, 11.85];
         var mantuaCoords = [45.25, 10.70]; 
-        
-        // НОВЫЕ КООРДИНАТЫ АРЕЦЦО
-        var arezzoCoords = [43.80, 11.45]; // Еще выше и правее
-        
+        var arezzoCoords = [43.80, 11.45]; 
         var venusBirthCoords = [44.05, 10.85]; 
         var monaLisaCoords = [44.05, 10.95]; 
         
-        var testImage = "map.webp";
+        // НОВЫЕ КООРДИНАТЫ
+        var romeCoords = [42.40, 11.90]; // Рим (выше и левее)
+        var leviCoords = [45.55, 12.00]; // Пир в доме Левия (Венеция, чуть правее Юдифи)
+        
+        // Картинка для Рима (проверь название файла на GitHub!)
+        var romeImage = "af.school.jpg"; 
 
-        function createMarker(coords, color, title) {
+        function createMarker(coords, color, title, img) {
             var markerIcon = new L.Icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + color + '.png',
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
                 iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
             });
-            return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${testImage}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
-        }
-
-        function drawGreen() {
-            map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
-            createMarker(arezzoCoords, "green", "Битва Константина").addTo(map);
-            createMarker(venusBirthCoords, "green", "Рождение Венеры").addTo(map);
-            createMarker(monaLisaCoords, "green", "Мона Лиза").addTo(map);
+            var imageToShow = img ? img : "map.webp";
+            return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${imageToShow}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
         }
 
         function drawAll() {
             map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
             
+            // Венеция (3 + 1)
             createMarker(judithCoords, "blue", "Юдифь").addTo(map);
             createMarker(venusCoords, "blue", "Спящая Венера").addTo(map);
             createMarker(assuntaCoords, "blue", "Ассунта").addTo(map);
+            createMarker(leviCoords, "blue", "Пир в доме Левия").addTo(map);
             
+            // Флоренция / Ареццо
             createMarker(venusBirthCoords, "green", "Рождение Венеры").addTo(map);
             createMarker(monaLisaCoords, "green", "Мона Лиза").addTo(map);
             createMarker(arezzoCoords, "green", "Битва Константина").addTo(map);
             
+            // Остальные
             createMarker(mantuaCoords, "violet", "Камера дельи Спози").addTo(map);
             createMarker(milanCoords, "yellow", "Тайная вечеря").addTo(map);
-            createMarker([42.10, 12.20], "pink", "Афинская школа").addTo(map);
+            createMarker(romeCoords, "pink", "Афинская школа", romeImage).addTo(map); // Передали картинку
         }
 
-        drawGreen();
+        drawAll();
     </script>
 </body>
 </html>
