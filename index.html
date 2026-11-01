@@ -32,8 +32,8 @@
 
     <div id="panel">
         <h2>Настройка координат</h2>
-        <p style="font-size: 14px; color: #5d4037;">Настраиваем зеленые точки.</p>
-        <p style="font-size: 12px; color: #888;">Ареццо: [43.75, 11.35] | Флоренция: [44.05, ...]</p>
+        <p style="font-size: 14px; color: #5d4037;">Настраиваем: <b>Ареццо (Битва Константина)</b>.</p>
+        <p style="font-size: 12px; color: #888;">Зум ограничен до 9.</p>
         
         <button class="tab-btn" onclick="drawAll()" style="margin-top: 20px;">Показать все точки</button>
         <button class="tab-btn" onclick="drawGreen()">Показать только зеленые</button>
@@ -42,8 +42,8 @@
     <div id="map"></div>
 
     <script>
-        // Убрал maxZoom, теперь можно приближать сколько хочешь (до 15)
-        var map = L.map('map', { minZoom: 5, maxZoom: 15, center: [45.0, 12.0], zoom: 7, zoomControl: false });
+        // ОГРАНИЧЕНИЕ ЗУМА ДО 9
+        var map = L.map('map', { minZoom: 5, maxZoom: 9, center: [45.0, 12.0], zoom: 7, zoomControl: false });
         var italyLayer = L.imageOverlay('map.webp', [[36.5, 5.0], [47.5, 20.0]]).addTo(map);
 
         var milanCoords = [45.55, 9.75]; 
@@ -52,10 +52,11 @@
         var assuntaCoords = [45.62, 11.85];
         var mantuaCoords = [45.25, 10.70]; 
         
-        // НОВЫЕ КООРДИНАТЫ
-        var arezzoCoords = [43.75, 11.35]; // Битва Константина (выше и левее)
-        var venusBirthCoords = [44.05, 10.85]; // Рождение Венеры (опустили)
-        var monaLisaCoords = [44.05, 10.95]; // Мона Лиза (опустили)
+        // НОВЫЕ КООРДИНАТЫ АРЕЦЦО
+        var arezzoCoords = [43.80, 11.45]; // Еще выше и правее
+        
+        var venusBirthCoords = [44.05, 10.85]; 
+        var monaLisaCoords = [44.05, 10.95]; 
         
         var testImage = "map.webp";
 
