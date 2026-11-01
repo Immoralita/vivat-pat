@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройка координат</title>
+    <title>Тест картинок</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
@@ -31,8 +31,9 @@
     </div>
 
     <div id="panel">
-        <h2>Настройка координат</h2>
-        <p style="font-size: 14px; color: #5d4037;">Настраиваем: <b>Рим (Афинская школа)</b>.</p>
+        <h2>Тест картинок</h2>
+        <p style="font-size: 14px; color: #5d4037;">Настраиваем: <b>Рим</b>.</p>
+        <p style="font-size: 12px; color: #888;">Рим (розовая): [42.10, 11.95]</p>
         
         <button class="tab-btn" onclick="drawAll()" style="margin-top: 20px;">Показать все точки</button>
     </div>
@@ -52,36 +53,40 @@
         var venusBirthCoords = [44.05, 10.85]; 
         var monaLisaCoords = [44.05, 10.95]; 
         
-        // НОВЫЕ КООРДИНАТЫ РИМА (сдвинут влево, без изменения высоты)
-        var romeCoords = [42.10, 12.10]; 
+        var romeCoords = [42.10, 11.95]; 
         
-        var testImage = "map.webp";
+        // ТЕСТОВЫЕ КАРТИНКИ
+        var testImg1 = "af.school";
+        var testImg2 = "af.school.jpg"; // На всякий случай проверяем вариант с расширением
 
-        function createMarker(coords, color, title) {
+        function createMarker(coords, color, title, imgSrc) {
             var markerIcon = new L.Icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + color + '.png',
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
                 iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
             });
-            return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${testImage}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
+            return L.marker(coords, {icon: markerIcon}).bindPopup(`<img src="${imgSrc}" style="width:100%; max-height:200px; object-fit:contain; margin-bottom:10px;"><h3>${title}</h3>`);
         }
 
         function drawAll() {
             map.eachLayer(function (layer) { if (layer instanceof L.Marker) map.removeLayer(layer); });
             
-            createMarker(judithCoords, "blue", "Юдифь").addTo(map);
-            createMarker(venusCoords, "blue", "Спящая Венера").addTo(map);
-            createMarker(assuntaCoords, "blue", "Ассунта").addTo(map);
+            createMarker(judithCoords, "blue", "Юдифь", "judith.jpg").addTo(map);
+            createMarker(venusCoords, "blue", "Спящая Венера", "venere.jpg").addTo(map);
+            createMarker(assuntaCoords, "blue", "Ассунта", "judith.jpg").addTo(map);
             
-            createMarker(venusBirthCoords, "green", "Рождение Венеры").addTo(map);
-            createMarker(monaLisaCoords, "green", "Мона Лиза").addTo(map);
-            createMarker(arezzoCoords, "green", "Битва Константина").addTo(map);
+            createMarker(venusBirthCoords, "green", "Рождение Венеры", "judith.jpg").addTo(map);
+            createMarker(monaLisaCoords, "green", "Мона Лиза", "judith.jpg").addTo(map);
+            createMarker(arezzoCoords, "green", "Битва Константина", "judith.jpg").addTo(map);
             
-            createMarker(mantuaCoords, "violet", "Камера дельи Спози").addTo(map);
-            createMarker(milanCoords, "yellow", "Тайная вечеря").addTo(map);
+            createMarker(mantuaCoords, "violet", "Камера дельи Спози", "judith.jpg").addTo(map);
+            createMarker(milanCoords, "yellow", "Тайная вечеря", "judith.jpg").addTo(map);
             
-            // ВОТ ОНА, НАША РОЗОВАЯ ТОЧКА (ТЕПЕРЬ БЕЗ БИТОЙ КАРТИНКИ)
-            createMarker(romeCoords, "pink", "Афинская школа (Рим)").addTo(map);
+            // ТЕСТОВАЯ РОЗОВАЯ ТОЧКА 1 (без расширения)
+            createMarker([42.15, 12.00], "pink", "Афинская школа (af.school)", testImg1).addTo(map);
+            
+            // ТЕСТОВАЯ РОЗОВАЯ ТОЧКА 2 (с расширением .jpg)
+            createMarker([42.05, 12.00], "pink", "Афинская школа (af.school.jpg)", testImg2).addTo(map);
         }
 
         drawAll();
