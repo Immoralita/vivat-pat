@@ -119,13 +119,44 @@
         var previousScreen = 'schools'; 
 
         var schools = {
-            venetian: { title: { ru: "Венецианская школа", en: "Venetian School" }, text: { ru: "Венецианская школа...", en: "Venetian School..." } },
-            florentine: { title: { ru: "Флорентийская школа", en: "Florentine School" }, text: { ru: "Флорентийская школа...", en: "Florentine School..." } },
-            paduan: { title: { ru: "Падуанская школа", en: "Paduan School" }, text: { ru: "Основатель: Франческо Скварчоне.", en: "Founder: Francesco Squarcione." } },
-            umbrian: { title: { ru: "Умбрийская школа", en: "Umbrian School" }, text: { ru: "Значимые художники: Перуджино, ранний Рафаэль.", en: "Significant artists: Perugino, early Raphael." } },
-            roman: { title: { ru: "Римская школа", en: "Roman School" }, text: { ru: "Основатель: Рафаэль Санти.", en: "Founder: Raphael Sanzio." } }
+            venetian: {
+                title: { ru: "Венецианская школа", en: "Venetian School" },
+                text: {
+                    ru: "Венецианская школа (XIV–XVIII века, расцвет — XV–XVI века).<br><br>Ранний основатель: Паоло Венециано. Значимые художники: Джорджоне, Тициан, Паоло Веронезе, Якопо Тинторетто, семья Беллини.<br><br>Особенные черты:<br>• Приоритет колорита над рисунком.<br>• Гармония человека и природы.<br>• Праздничная зрелищность и декоративность.<br>• Интерес к повседневной жизни.<br>• Влияние нидерландской техники.<br><br>Интересный факт: Школа дала миру не только Тициана и Веронезе, но и мастеров XVIII века — Тьеполо, Каналетто и Гварди.",
+                    en: "The Venetian School (14th–18th centuries, heyday — 15th–16th centuries).<br><br>Early founder: Paolo Veneziano. Significant artists: Giorgione, Titian, Paolo Veronese, Jacopo Tintoretto, the Bellini family.<br><br>Distinctive features:<br>• The primacy of colour over drawing.<br>• Harmony between man and nature.<br>• Festive spectacle and decorative richness.<br>• Interest in everyday life.<br>• The influence of Netherlandish technique.<br><br>Interesting fact: The school gave the world not only Titian and Veronese, but also 18th-century masters — Tiepolo, Canaletto and Guardi."
+                }
+            },
+            florentine: {
+                title: { ru: "Флорентийская школа", en: "Florentine School" },
+                text: {
+                    ru: "Флорентийская школа (XIII–XVI века, расцвет — XV — начало XVI века).<br><br>Значимые художники: Джотто, Мазаччо, Боттичелли, Леонардо да Винчи, Микеланджело.<br><br>Особенные черты:<br>• Приоритет рисунка и пластической формы над колоритом.<br>• Научный подход к перспективе и анатомии.<br>• Светотеневая моделировка объёма.<br>• Повествовательная выразительность и драматизм.<br>• Тесная связь с гуманизмом и кругом Медичи.<br><br>Интересный факт: Микеланджело в возрасте около 15 лет копировал фрески Джотто и Мазаччо во Флоренции.",
+                    en: "The Florentine School (13th–16th centuries, heyday — 15th — early 16th centuries).<br><br>Significant artists: Giotto, Masaccio, Botticelli, Leonardo da Vinci, Michelangelo.<br><br>Distinctive features:<br>• The primacy of drawing and plastic form over colour.<br>• A scientific approach to perspective and anatomy.<br>• Chiaroscuro modelling of volume.<br>• Narrative expressiveness and drama.<br>• Close ties with humanism and the Medici circle.<br><br>Interesting fact: At about the age of 15, Michelangelo copied the frescoes of Giotto and Masaccio in Florence."
+                }
+            },
+            paduan: { 
+                title: { ru: "Падуанская школа", en: "Paduan School" }, 
+                text: { 
+                    ru: "Падуанская школа (XV век).<br><br>Основатель: Франческо Скварчоне. Значимые художники: Андреа Мантенья, Козимо Тура.<br><br>Особенные черты:<br>• Культ античности.<br>• Скульптурность и пластическая определённость форм.<br>• Жёсткий, графичный рисунок.<br>• Драматизм и героическая приподнятость образов.<br><br>Интересный факт: Мантенья подал в суд на своего приёмного отца Скварчоне, чтобы добиться независимости.", 
+                    en: "The Paduan School (15th century).<br><br>Founder: Francesco Squarcione. Significant artists: Andrea Mantegna, Cosimo Tura.<br><br>Distinctive features:<br>• The cult of antiquity.<br>• Sculptural quality and plastic definition of forms.<br>• A rigid, graphic drawing style.<br>• Dramatic power and heroic elevation of images.<br><br>Interesting fact: Mantegna sued his adoptive father Squarcione to gain independence." 
+                } 
+            },
+            umbrian: { 
+                title: { ru: "Умбрийская школа", en: "Umbrian School" }, 
+                text: { 
+                    ru: "Умбрийская школа (XIII — начало XVI века).<br><br>Значимые художники: Пьетро Перуджино, Пинтуриккьо, ранний Рафаэль.<br><br>Особенные черты:<br>• Мягкость светотени.<br>• Созерцательность и лиризм.<br>• Поэтическое чувство природы.<br>• Сдержанный колорит и плавные очертания.<br><br>Интересный факт: Ранние «Мадонны» Рафаэля настолько близки манере Перуджино, что некоторые работы долго приписывались последнему.", 
+                    en: "The Umbrian School (13th — early 16th centuries).<br><br>Significant artists: Pietro Perugino, Pinturicchio, early Raphael.<br><br>Distinctive features:<br>• Softness of chiaroscuro.<br>• Contemplativeness and lyricism.<br>• A poetic feeling for nature.<br>• Restrained colour and smooth outlines.<br><br>Interesting fact: Raphael's early Madonnas are so close to Perugino's manner that some works were long attributed to the latter." 
+                } 
+            },
+            roman: { 
+                title: { ru: "Римская школа", en: "Roman School" }, 
+                text: { 
+                    ru: "Римская школа / «Школа формы» (XVI век).<br><br>Основатель: Рафаэль Санти. Значимые художники: Джулио Романо, Джанфранческо Пенни.<br><br>Особенные черты:<br>• Приоритет рисунка и формы над колоритом.<br>• Ориентация на античную и идеальную форму.<br>• Выразительность и характер как главные задачи.<br><br>Интересный факт: После разграбления Рима в 1527 году школа Рафаэля распалась, но её элементы распространились по всей Италии.", 
+                    en: "The Roman School / \"School of Form\" (16th century).<br><br>Founder: Raphael Sanzio. Significant artists: Giulio Romano, Gianfrancesco Penni.<br><br>Distinctive features:<br>• The primacy of drawing and form over colour.<br>• Orientation towards antique and ideal form.<br>• Expressiveness and character as the main goals.<br><br>Interesting fact: After the Sack of Rome in 1527, Raphael's school disintegrated, but its elements spread throughout Italy." 
+                } 
+            }
         };
 
+        // Добавляем всех художников, чтобы не было "Неизвестен"
         var artists = {
             giorgione: {
                 school: 'venetian', title: { ru: "Джорджоне", en: "Giorgione" },
@@ -136,20 +167,46 @@
                 school: 'florentine', title: { ru: "Сандро Боттичелли", en: "Sandro Botticelli" },
                 bio: { ru: "Представитель флорентийской школы.", en: "Representative of the Florentine school." },
                 works: [ { title: { ru: "Рождение Венеры", en: "Birth of Venus" }, id: "venus_birth" }, { title: { ru: "Весна", en: "Primavera" }, id: "primavera" } ]
+            },
+            leonardo: {
+                school: 'florentine', title: { ru: "Леонардо да Винчи", en: "Leonardo da Vinci" },
+                bio: { ru: "Леонардо да Винчи (1452–1519) — гений эпохи Возрождения.", en: "Leonardo da Vinci (1452–1519) — a genius of the Renaissance." },
+                works: [ { title: { ru: "Мона Лиза", en: "Mona Lisa" }, id: "mona_lisa" }, { title: { ru: "Тайная вечеря", en: "The Last Supper" }, id: "last_supper" } ]
+            },
+            raphael: {
+                school: 'roman', title: { ru: "Рафаэль Санти", en: "Raphael Sanzio" },
+                bio: { ru: "Рафаэль Санти (1483–1520) — мастер Высокого Возрождения.", en: "Raphael Sanzio (1483–1520) — a master of the High Renaissance." },
+                works: [ { title: { ru: "Афинская школа", en: "The School of Athens" }, id: "athens" } ]
+            },
+            titian: {
+                school: 'venetian', title: { ru: "Тициан", en: "Titian" },
+                bio: { ru: "Тициан (1488–1576) — крупнейший представитель венецианской школы.", en: "Titian (1488–1576) — the greatest representative of the Venetian school." },
+                works: [ { title: { ru: "Ассунта", en: "Assumption" }, id: "assunta" } ]
+            },
+            veronese: {
+                school: 'venetian', title: { ru: "Паоло Веронезе", en: "Paolo Veronese" },
+                bio: { ru: "Паоло Веронезе (1528–1588) — венецианский живописец.", en: "Paolo Veronese (1528–1588) — a Venetian painter." },
+                works: [ { title: { ru: "Пир в доме Левия", en: "Feast in the House of Levi" }, id: "levi" } ]
+            },
+            mantegna: {
+                school: 'paduan', title: { ru: "Андреа Мантенья", en: "Andrea Mantegna" },
+                bio: { ru: "Андреа Мантенья (1431–1506) — мастер падуанской школы.", en: "Andrea Mantegna (1431–1506) — a master of the Paduan school." },
+                works: [ { title: { ru: "Камера дельи Спози", en: "Camera degli Sposi" }, id: "camera" } ]
             }
         };
 
         var artworks = [
+            // 1. Юдифь
             {
                 id: "judith", country: "italy", era: "high", artist: "giorgione",
                 title: { ru: "Юдифь", en: "Judith" }, year: "1504-1506 гг.",
                 city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Эрмитаж", en: "Hermitage" },
                 coords: [45.55, 11.75], image: "judith.jpg", audio: "vivaldi.mp3", color: "blue",
-                text: { 
+                             text: { 
                     ru: "**«Юдифь»** — картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя [венецианской школы]. Несмотря на то, что художник имел привычку не подписывать свои работы, она [единодушно атрибутирована] ему по совокупности стилистических, технических и исторических данных. С 1772 года находится в Государственном Эрмитаже, куда была перевезена из парижского собрания барона Луи Антуана Кроза де Тьера.<br><br>Картина отсылает нас к ветхозаветному сюжету, а именно к книге Юдифь (в синодальном переводе — «Книга Иудифь», в католической традиции — «Юдифь»), [неканонической] в православии, [второканонической] в католицизме и [апокрифичной] в протестантизме.<br><br>Для начала объяснимся с именами:<ul><li>Навуходоносор — ассирийский царь.</li><li>Арфаксад — персидский царь.</li><li>Олоферн — ассирийский военачальник, главный вождь войска.</li><li>Ахиор — предводитель аммонитян, находившихся в армии Олоферна.</li><li>Юдифь — красивая и набожная вдова из города Ветилуя (также Ветулия или Вефулия).</li></ul>Согласно книге, между Ассирийским царством, возглавляемым Навуходоносором, и Персидским царством, предводителем которого был Арфаксад, шла война. Некоторые западные земли отказались присоединиться к войску Навуходоносора, не признавая его власти, которой обязаны подчиняться. Они презрели слово и с позором отослали послов, чем вызвали негодование царя.<br><br>После победы над Арфаксадом Навуходоносор дал поручение Олоферну:<br><br>«И объявишь им, чтобы они [приготовляли землю и воду], потому что я с гневом выйду на них, покрою все лице земли их ногами войска моего и предам ему их на расхищение.» (Книга Иудифь 2:7)<br><br>«...ему приказано было истребить всех богов той земли, чтобы все народы служили одному Навуходоносору, и все языки и все племена их призывали его, как Бога.» (Книга Иудифь 3:8)<br><br>Постепенно Олоферн покорял город за городом. Они сдавались довольно легко, пока не настал черёд земель Израиля. Ахиор объяснил их стойкость тем, что Бог, в которого верят иудеи, благоприятствует им, когда они повинуются заповедям:<br><br>«...если есть заблуждение в этом народе, и они грешат пред Богом своим, и мы заметим, что в них есть это преткновение, то мы пойдём и победим их. А если нет в этом народе беззакония, то пусть удалится господин мой, чтобы Господь не защитил их, и Бог их не был за них, — и тогда мы для всей земли будем предметом поношения.» (Книга Иудифь 5:20-5:21)<br><br>За такую дерзость Олоферн приказал отвести Ахиора к стенам Ветилуи, чтобы тот стал свидетелем поражения израильтян. Горожане нашли его и привели к старейшинам; там он рассказал, что произошло в стане ассирийцев, и подробно пересказал свою беседу с Олоферном.<br><br>После этого Олоферн начал осаду, перекрывая горожанам доступ к воде. Он собирался взять Ветилую на измор, что ему в известной мере удалось: жители начали страдать и задумываться о сдаче города. Тогда один из старейшин (Озия) выступил со словами:<br><br>«...не унывайте, братья! потерпим еще пять дней, в которые Господь Бог наш обратит милость Свою на нас, ибо Он не оставит нас вконец.» (Книга Иудифь 7:30)<br><br>И здесь появляется наша **Юдифь**. Услышав слова о сдаче города, она позвала старейшин к себе домой, где высказала своё несогласие и заявила, что они «искушают сегодня Бога и ставят себя вместо Бога», назначив Ему сроки.<br><br>Старейшины согласились с ней, и тогда вдова объявила о своём намерении совершить дело, которое «пребудет в роды родов». Она попросила их этой ночью выпустить её со служанкой из города, но категорически запретила расспрашивать о плане.<br><br>**План Юдифи** был довольно хорошо продуман. Для пущей наглядности разделим его на четыре части:<br><br>**Шаг 1: Подготовка и вход в доверие.**<br>Юдифь понимала, что грубая сила здесь не поможет. Её оружием стали красота и ум.<ul><li>Внешний вид: Она сняла траурные одежды, омылась, умастилась благовониями и надела лучшие наряды и украшения.</li><li>Легенда: Придя в ассирийский стан, она представилась пророчицей, бежавшей от своих, чтобы помочь Олоферну. Юдифь пообещала указать ему путь к лёгкой победе над Иудеей, но с условием: ей должно быть позволено каждую ночь выходить на молитву.</li><li>Доверие: Олоферн и его слуги были очарованы её красотой и разумными речами. Ей разрешили жить в лагере и беспрепятственно покидать его по ночам. Это стало критически важным моментом для успеха всего предприятия.</li></ul>**Шаг 2: Ловушка на пиру.**<br>Юдифь три дня жила в лагере, питаясь только принесённой с собой пищей, чтобы не оскверниться. На четвёртый день Олоферн устроил пир для своих приближённых и приказал позвать пророчицу.<ul><li>Роль вина: Олоферн, желая произвести на неё впечатление, пил «вина́ весьма много, сколько не пил никогда, ни в один день от рождения».</li><li>Позиция Юдифи: Она согласилась прийти и даже ела и пила то, что приготовила служанка. Кроме того, чтобы усыпить бдительность полководца, она поддерживала у него иллюзию своей благосклонности.</li></ul>**Шаг 3: Момент удара.**<br>Когда пир закончился и все ушли, в шатре остались только Юдифь и Олоферн, который «упал на ложе своё, потому что был переполнен вином».<ul><li>Молитва и действие: Оставшись одна, Юдифь помолилась, прося Бога [укрепить её], затем сняла со столбика изголовья меч Олоферна, схватила его за волосы и двумя ударами отрубила голову.</li><li>Выход: Иудейка отдала голову служанке, которая спрятала её в мешок со съестными припасами. Поскольку Юдифь имела разрешение выходить по ночам, они беспрепятственно прошли через лагерь и вернулись в Ветилую.</li></ul>**Шаг 4: Психологическая атака и победа.**<br>Вернувшись в город, Юдифь показала жителям голову Олоферна. Это вдохнуло в них мужество. Наутро она дала горожанам конкретный план:<ul><li>Демонстрация: Голову полководца вывесили на городской стене.</li><li>Провокация: Иудеи вышли из города, делая вид, что готовы к бою.</li><li>Паника: Ассирийцы бросились к шатру Олоферна, чтобы разбудить его. Обнаружив обезглавленное тело, они пришли в ужас. Войско, охваченное паникой, обратилось в бегство.</li></ul>",
                     en: "**«Judith»** is a painting by the Italian artist Giorgione (Giorgio Barbarelli da Castelfranco), a representative of the [Venetian school]. Although he had a habit of not signing his works, it is [unanimously attributed] to him based on a combination of stylistic, technical and historical data. Since 1772 it has been in the State Hermitage, where it was brought from the Paris collection of Baron Louis Antoine Crozat de Thiers.<br><br>The painting refers to an Old Testament story, namely the Book of Judith, [non-canonical] in Orthodoxy, [deuterocanonical] in Catholicism and [apocryphal] in Protestantism.<br><br>First, let us explain the names:<ul><li>Nebuchadnezzar — the Assyrian king.</li><li>Arphaxad — the Persian king.</li><li>Holofernes — the Assyrian military commander, the chief leader of the army.</li><li>Achior — the leader of the Ammonites, who were in Holofernes' army.</li><li>Judith — a beautiful and devout widow from the city of Bethulia.</li></ul>According to the book, there was a war between the Assyrian kingdom, led by Nebuchadnezzar, and the Persian kingdom, led by Arphaxad. Some western lands refused to join Nebuchadnezzar's army, not recognising his power, to which they were obliged to submit. They despised his word and sent the ambassadors away in disgrace, which caused the king's indignation.<br><br>After the victory over Arphaxad, Nebuchadnezzar gave Holofernes an order:<br><br>«Tell them to prepare earth and water, for I am coming against them in my anger, and will cover the whole face of the earth with the feet of my armies, and will hand them over to be plundered by my troops.» (Book of Judith 2:7, RSV)<br><br>«And he demolished all their shrines and cut down their sacred groves; for it had been given to him to destroy all the gods of the land, so that all nations should worship Nebuchadnezzar only, and all their tongues and tribes should call upon him as god.» (Book of Judith 3:8, RSV)<br><br>Gradually Holofernes conquered city after city. They surrendered quite easily, until the turn of the lands of Israel came. Achior explained their resilience by the fact that the God in whom the Jews believe favours them when they obey the commandments:<br><br>«Now therefore, my lord and governor, if there be any error against this people, and they sin against their God, let us consider that this shall be their ruin, and let us go up, and we shall overcome them. But if there be no iniquity in their nation, let my lord now pass by, lest their Lord defend them, and their God be for them, and we become a reproach before all the world.» (Book of Judith 5:20-5:21, KJV)<br><br>For such insolence Holofernes ordered Achior to be taken to the walls of Bethulia, so that he would witness the defeat of the Israelites. The townspeople found him and brought him to the elders; there he told what had happened in the Assyrian camp and retold in detail his conversation with Holofernes.<br><br>After that Holofernes began the siege, cutting off the townspeople's access to water. He intended to take Bethulia by exhaustion, which to a certain extent he succeeded in doing: the inhabitants began to suffer and think about surrendering the city. Then one of the elders (Ozias) spoke these words:<br><br>«Brethren, be of good courage! Let us endure five more days, in which the Lord our God may turn his mercy toward us; for he will not forsake us utterly.» (Book of Judith 7:30, RSV)<br><br>And here our **Judith** appears. Hearing the words about surrendering the city, she called the elders to her home, where she expressed her disagreement and stated that they are tempting God and, by setting deadlines for Him, setting themselves up in the place of God in human affairs.<br><br>The elders agreed with her, and then the widow announced her intention to accomplish a deed which will go down through all generations. She asked them to let her and her maid out of the city that night, but strictly forbade them to ask about the plan.<br><br>**Judith's plan** was quite well thought out. For greater clarity, let us divide it into four parts:<br><br>**Step 1: Preparation and gaining trust.**<br>Judith understood that brute force would not help here. Her weapons were beauty and intelligence.<ul><li>Appearance: She took off her mourning clothes, washed herself, anointed herself with incense and put on her best outfits and jewellery.</li><li>Legend: Arriving at the Assyrian camp, she introduced herself as a prophetess who had fled from her own people to help Holofernes. Judith promised to show him the way to an easy victory over Judea, but on one condition: she must be allowed to go out every night to pray.</li><li>Trust: Holofernes and his servants were charmed by her beauty and reasonable speeches. She was allowed to live in the camp and leave it freely at night. This became a critically important moment for the success of the whole enterprise.</li></ul>**Step 2: The trap at the feast.**<br>Judith lived in the camp for three days, eating only the food she had brought with her, so as not to defile herself. On the fourth day Holofernes arranged a feast for his close associates and ordered the prophetess to be called.<ul><li>The role of wine: Holofernes, wishing to impress her, «drank a great quantity of wine, much more than he had ever drunk in any one day since he was born.» (Book of Judith 12:20, RSV)</li><li>Judith's position: She agreed to come and even ate and drank what the maid had prepared. In addition, to lull the commander's vigilance, she maintained his illusion of her favour.</li></ul>**Step 3: The moment of the blow.**<br>When the feast ended and everyone had left, only Judith and Holofernes remained in the tent, and he «was overcome with wine.» (Book of Judith 13:2, RSV)<ul><li>Prayer and action: Left alone, Judith prayed, asking God [to strengthen her], then took Holofernes' sword from the bedpost at the head of the bed, grabbed him by the hair and cut off his head with two blows.</li><li>Exit: The Jewess gave the head to the maid, who hid it in a bag with food supplies. Since Judith had permission to go out at night, they passed through the camp without hindrance and returned to Bethulia.</li></ul>**Step 4: Psychological attack and victory.**<br>Returning to the city, Judith showed the inhabitants the head of Holofernes. This breathed courage into them. In the morning she gave the townspeople a concrete plan:<ul><li>Demonstration: The head of the commander was hung on the city wall.</li><li>Provocation: The Jews came out of the city, pretending to be ready for battle.</li><li>Panic: The Assyrians rushed to Holofernes' tent to wake him. Discovering the headless body, they were horrified. The army, seized with panic, fled.</li></ul>"
-                },
-                                footnotes: {
+                } },
+            footnotes: {
                     ru: {
                         "единодушно атрибутирована": "Абсолютным большинством специалистов признана творением конкретно этого человека. Атрибуция обычно также включает в себя определение времени, места, принадлежности к определённому художественному направлению, школе или стилю.",
                         "неканонической": "Книга Ветхого Завета, которой нет в древнееврейском каноне, но которая включена в православные (и католические) издания Библии. Православие считает такие книги назидательными и полезными для чтения, но не приравнивает к каноническим.",
@@ -172,37 +229,39 @@
                     en: "<h4>The Venetian school:</h4>One of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.<br><br><b>Several key features:</b><ul><li>The priority of colour over a clear contour and plasticity of form.</li><li>Glaze oil painting on a dark ground (a technique in which transparent layers of paint are applied over dried previous ones to achieve depth, luminosity and a special warmth of tones).</li><li>Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture.</li><li>Harmony of man and poetic landscape.</li></ul>"
                 }
             },
+            // 2. Спящая Венера
             {
                 id: "venus", country: "italy", era: "high", artist: "giorgione",
                 title: { ru: "Спящая Венера", en: "Sleeping Venus" }, year: "1508-1510",
                 city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Дрезден", en: "Dresden" },
                 coords: [45.48, 11.68], image: "venere.jpg", color: "blue", 
-                              text: { 
+                               text: { 
                     ru: "**«Спящая Венера»** — картина итальянского живописца Джорджоне (Джорджо Барбарелли да Кастельфранко), представителя [венецианской школы]. Некоторое время она [атрибутировалась] Сассоферрато как копия с картины Тициана ввиду того, что работа неоднократно переписывалась и «обновлялась», а ее первоначальный вид сильно исказился.<br><br>Благодаря **методу Джованни Морелли**, всё встало на свои места. И перед тем как продолжить: что за метод такой?<br>Джованни считал, что истинный стиль художника выдают мелкие особенности, второстепенные и зачастую кажущиеся незначительными, вроде прорисовки кистей, ногтей, ушных раковин и пр. Он считал, что при копировании картин больше внимания уделяется общей композиции и ярким деталям, в то время как мелкие детали, выполняемые «на автомате», сохраняют уникальный почерк автора.<br><br>Вернёмся к нашим баранам.<br><br>Джорджоне не успел завершить картину, потому как умер от чумы в Венеции в 1510 году. Искусствоведы считают, что ему принадлежит сама фигура Венеры и, возможно, часть скалы за ней, остальное же — пейзаж, небо, [драпировки], на которых лежит богиня, и Купидона у её ног — сотворил Тициан, ученик Джорджоне.<br><br>Вы не нашли Купидона?<br>Не удивительно. К XIX в. картина в этом месте была настолько повреждена, что восстановить его фигуру было невозможно. Её просто закрасили зелёной краской, превратив в траву.<br><br>Между прочим, Купидон играет в сюжете, например, свадебных античных песен не последнюю роль — он будил Венеру, спящую в саду, где царит вечная весна, в окружении [путти], дабы та направилась на празднество по поводу людской свадьбы и благословила их брак. Именно поэтому некоторые искусствоведы считают, что изначально картина была заказана в память о счастливой свадьбе венецианского патриция Джироламо Марчелло и Морозины Пизани.",
                     en: "**\"Sleeping Venus\"** is a painting by the Italian artist Giorgione (Giorgio Barbarelli da Castelfranco), a representative of the [Venetian school]. For some time it was [attributed] to Sassoferrato as a copy of a painting by Titian, because the work had been repeatedly repainted and \"updated\", and its original appearance had been badly distorted.<br><br>Thanks to **Giovanni Morelli's method**, everything fell into place. But before we continue: what is this method?<br>Giovanni believed that an artist's true style is revealed by small details — secondary and often seemingly insignificant ones, such as the drawing of hands, nails, ears and so on. He believed that when copying paintings, more attention is paid to the overall composition and striking details, while small details, executed \"on autopilot\", preserve the author's unique handwriting.<br><br>Let us return to our sheep.<br><br>Giorgione did not manage to finish the painting, because he died of the plague in Venice in 1510. Art historians believe that the figure of Venus herself and, possibly, part of the rock behind her belong to him, while the rest — the landscape, the sky, the [draperies] on which the goddess lies, and the Cupid at her feet — was created by Titian, Giorgione's pupil.<br><br>You didn't find the Cupid?<br>No wonder. By the 19th century the painting in that place was so damaged that it was impossible to restore his figure. It was simply painted over with green paint, turning it into grass.<br><br>By the way, Cupid plays no small role in the story — for example, in ancient wedding songs: he woke Venus, sleeping in a garden where eternal spring reigns, surrounded by [putti], so that she would go to the celebration of a human wedding and bless their marriage. That is why some art historians believe that the painting was originally commissioned in memory of a happy wedding between the Venetian patrician Girolamo Marcello and Morosina Pisani."
-                },
-                                footnotes: {
+                               footnotes: {
                     ru: {
-                        "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком. Несколько ключевых особенностей: Приоритет колорита над чётким контуром и пластикой формы. Лессировочная масляная живопись на тёмном грунте. Праздничная декоративность, звучная палитра, роскошь тканей и архитектуры. Гармония человека и поэтического пейзажа.",
+                        "венецианской школы": "Венецианская школа — одна из ведущих живописных школ Италии, сложившаяся в Венеции в XIV–XVIII веках. Прославилась прежде всего виртуозным владением цветом и светом, а не рисунком.",
                         "атрибутировалась": "Художником признавался конкретно этот человек. Атрибуция также включает в себя определение времени, места, принадлежности к определённому художественному направлению, школе или стилю.",
-                        "драпировки": "Ткань, свободно падающая или собранная в красивые складки. В скульптуре и живописи это также может быть свободная одежда (туники, тоги, плащи и др.), в которую художник облекает изображённые человеческие фигуры. Основная роль драпировки в искусстве — гармонировать с фигурой и образом человека, а иногда и служить истолкованию образа.",
+                        "драпировки": "Ткань, свободно падающая или собранная в красивые складки. В скульптуре и живописи это также может быть свободная одежда (туники, тоги, плащи и др.).",
                         "путти": "Итальянское слово putti, мн. ч. от putto — «младенец». Это изображение маленьких мальчиков, зачастую обнаженных и крылатых. Образ, крайне распространенный во времена Ренессанса, барокко и рококо."
                     },
                     en: {
-                        "Venetian school": "The Venetian school is one of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing. Several key features: The priority of colour over a clear contour and plasticity of form. Glaze oil painting on a dark ground. Festive decorativeness, a sonorous palette, the luxury of fabrics and architecture. Harmony of man and poetic landscape.",
+                        "Venetian school": "The Venetian school is one of the leading painting schools of Italy, which formed in Venice in the 14th–18th centuries. It became famous primarily for its virtuoso mastery of colour and light, rather than drawing.",
                         "attributed": "Recognised as the work of this particular artist. Attribution also includes determining the time, place, and belonging to a particular artistic movement, school or style.",
-                        "draperies": "Fabric falling freely or gathered into beautiful folds. In sculpture and painting, it can also be loose clothing (tunics, togas, cloaks, etc.) in which the artist clothes the depicted human figures. The main role of drapery in art is to harmonise with the figure and image of the person, and sometimes also to serve as an interpretation of the image.",
-                        "putti": "The Italian word putti, plural of putto — \"baby\". It is a depiction of little boys, often naked and winged. An image extremely common during the Renaissance, Baroque and Rococo."
+                        "draperies": "Fabric falling freely or gathered into beautiful folds. In sculpture and painting, it can also be loose clothing (tunics, togas, cloaks, etc.).",
+                        "putti": "The Italian word putti, plural of putto — \"baby\". It is a depiction of little boys, often naked and winged."
                     }
                 }
             },
+            // 3. Рождение Венеры (Исправлены названия файлов)
             {
                 id: "venus_birth", country: "italy", era: "early", artist: "botticelli",
                 title: { ru: "Рождение Венеры", en: "Birth of Venus" }, year: "ок. 1485",
                 city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Уффици", en: "Uffizi" },
-                coords: [44.05, 10.85], image: "venera.jpg", audio: "birthvwnera.mp3", color: "green",
+                coords: [44.05, 10.85], image: "birthvenera.avif", audio: "venera.mp3", color: "green",
                 text: { ru: "Заглушка.", en: "Test." }
             },
+            // 4. Весна
             {
                 id: "primavera", country: "italy", era: "early", artist: "botticelli",
                 title: { ru: "Весна", en: "Primavera" }, year: "ок. 1482",
@@ -210,13 +269,15 @@
                 coords: [44.05, 10.95], image: "primavera.jpg", audio: "primavera.mp3", color: "green",
                 text: { ru: "Заглушка.", en: "Test." }
             },
+            // 5. Мона Лиза (Вместо Битвы Константина)
             {
-                id: "constantine", country: "italy", era: "early", artist: "piero",
-                title: { ru: "Битва Константина", en: "Battle of Constantine" }, year: "1450-е",
-                city: { ru: "Ареццо", en: "Arezzo" }, museum: { ru: "Сан-Франческо", en: "San Francesco" },
-                coords: [43.80, 11.45], image: "judith.jpg", color: "green", 
+                id: "mona_lisa", country: "italy", era: "high", artist: "leonardo",
+                title: { ru: "Мона Лиза (Портрет госпожи Лизы дель Джокондо)", en: "Mona Lisa (Portrait of Lisa Gherardini)" }, year: "1503",
+                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Лувр", en: "Louvre" },
+                coords: [44.10, 10.85], image: "monalisa.webp", audio: "monalisa.mp3", color: "green",
                 text: { ru: "Заглушка.", en: "Test." }
             },
+            // 6. Камера дельи Спози
             {
                 id: "camera", country: "italy", era: "early", artist: "mantegna",
                 title: { ru: "Камера дельи Спози", en: "Camera degli Sposi" }, year: "1465-1474",
@@ -224,13 +285,7 @@
                 coords: [45.25, 10.70], image: "camera1.jpg", color: "violet",
                 text: { ru: "Заглушка.", en: "Test." }
             },
-            {
-                id: "mona_lisa", country: "italy", era: "high", artist: "leonardo",
-                title: { ru: "Мона Лиза", en: "Mona Lisa" }, year: "1503",
-                city: { ru: "Флоренция", en: "Florence" }, museum: { ru: "Лувр", en: "Louvre" },
-                coords: [45.55, 9.75], image: "monalisa.webp", audio: "monalisa.mp3", color: "yellow",
-                text: { ru: "Заглушка.", en: "Test." }
-            },
+            // 7. Тайная вечеря
             {
                 id: "last_supper", country: "italy", era: "high", artist: "leonardo",
                 title: { ru: "Тайная вечеря", en: "The Last Supper" }, year: "1498",
@@ -238,6 +293,7 @@
                 coords: [45.55, 9.75], image: "vechera.jpg", audio: "holst.mp3", color: "yellow", 
                 text: { ru: "Заглушка.", en: "Test." }
             },
+            // 8. Афинская школа
             {
                 id: "athens", country: "italy", era: "high", artist: "raphael",
                 title: { ru: "Афинская школа", en: "The School of Athens" }, year: "1511",
@@ -245,6 +301,7 @@
                 coords: [42.50, 11.80], image: "af.school.jpg", audio: "m.af.school.mp3", color: "red", 
                 text: { ru: "Заглушка.", en: "Test." }
             },
+            // 9. Ассунта
             {
                 id: "assunta", country: "italy", era: "late", artist: "titian",
                 title: { ru: "Ассунта", en: "Assumption" }, year: "1518",
@@ -252,14 +309,16 @@
                 coords: [45.62, 11.85], image: "assunta.jpg", audio: "missa.mp3", color: "blue",
                 text: { ru: "Заглушка.", en: "Test." }
             },
+            // 10. Пир в доме Левия (Сдвинут левее)
             {
                 id: "levi", country: "italy", era: "late", artist: "veronese",
                 title: { ru: "Пир в доме Левия", en: "Feast in the House of Levi" }, year: "1573",
                 city: { ru: "Венеция", en: "Venice" }, museum: { ru: "Галерея Академии", en: "Gallerie dell'Accademia" },
-                coords: [45.45, 12.25], image: "pir.jpg", color: "blue",
+                coords: [45.50, 12.10], image: "pir.jpg", color: "blue",
                 text: { ru: "Заглушка.", en: "Test." }
             }
         ];
+                // --- ЛОГИКА ИНТЕРФЕЙСА ---
 
         function hideAll() {
             document.getElementById('main-menu').style.display = 'block';
@@ -301,8 +360,27 @@
             document.getElementById('info-title').innerHTML = school.title[currentLang];
             
             var content = processText(school.text[currentLang]);
-            if (schoolId === 'venetian') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>`;
-            if (schoolId === 'florentine') content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4><button class="artist-btn" onclick="showArtist('botticelli')">Боттичелли</button>`;
+            
+            // Добавляем кнопки художников для каждой школы
+            if (schoolId === 'venetian') {
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
+                <button class="artist-btn" onclick="showArtist('giorgione')">Джорджоне</button>
+                <button class="artist-btn" onclick="showArtist('titian')">Тициан</button>
+                <button class="artist-btn" onclick="showArtist('veronese')">Паоло Веронезе</button>`;
+            }
+            if (schoolId === 'florentine') {
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
+                <button class="artist-btn" onclick="showArtist('botticelli')">Сандро Боттичелли</button>
+                <button class="artist-btn" onclick="showArtist('leonardo')">Леонардо да Винчи</button>`;
+            }
+            if (schoolId === 'paduan') {
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
+                <button class="artist-btn" onclick="showArtist('mantegna')">Андреа Мантенья</button>`;
+            }
+            if (schoolId === 'roman') {
+                content += `<h4 style="margin-top: 15px; color: #8b5a2b;">Художники:</h4>
+                <button class="artist-btn" onclick="showArtist('raphael')">Рафаэль Санти</button>`;
+            }
             
             document.getElementById('info-content').innerHTML = content;
             ensureItaly();
@@ -343,7 +421,14 @@
             document.getElementById('country-list').style.display = 'block';
             var box = document.getElementById('era-info-box');
             box.style.display = 'block';
-            box.innerHTML = "Текст эпохи " + era; 
+            
+            var eraText = {
+                early: "**Раннее Возрождение (XV век)**<br>Период перехода от средневековой традиции к новому искусству, основанному на изучении античности и натуры. Художники экспериментируют с перспективой, в центре внимания — человек.",
+                high: "**Высокое Возрождение (кон. XV – нач. XVI вв.)**<br>Период наивысшего расцвета. Идеальная гармония, симметрия, монументальность. Искусство прославляет величие человека.",
+                late: "**Позднее Возрождение (XVI век)**<br>Эволюция в сторону большей эмоциональности и свободы (маньеризм). Композиции становятся динамичнее, формы иногда деформируются."
+            };
+            box.innerHTML = processText(eraText[era]); 
+            
             ensureItaly();
             drawMarkers('italy', era);
         }
@@ -361,9 +446,20 @@
             }
         }
 
-        function processText(text) {
+        // Обработка текста (жирный шрифт и сноски)
+        function processText(text, footnotes) {
             if(!text) return '';
-            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            let processed = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            // Ищем сноски в квадратных скобках
+            if (footnotes) {
+                for (const [key, val] of Object.entries(footnotes)) {
+                    let searchStr = '[' + key + ']';
+                    let replaceStr = `<span class="footnote" data-text="${val.replace(/"/g, '&quot;')}">${key}</span>`;
+                    processed = processed.split(searchStr).join(replaceStr);
+                }
+            }
+            return processed;
         }
 
         function drawMarkers(country, era = 'all', artistId = 'all', specificWorkId = 'all') {
@@ -375,7 +471,19 @@
                 if (artistId !== 'all' && art.artist !== artistId) return;
                 if (specificWorkId !== 'all' && art.id !== specificWorkId) return;
 
-                var formattedText = processText(art.text[currentLang]);
+                // Получаем сноски для текущего языка, если они есть
+                var artFootnotes = null;
+                if (art.footnotes) {
+                    artFootnotes = art.footnotes[currentLang];
+                }
+
+                var formattedText = processText(art.text[currentLang], artFootnotes);
+
+                // Блок сносок для Венецианской школы (специальная рамочка)
+                var specialBox = '';
+                if (art.specialFootnote && art.specialFootnote[currentLang]) {
+                    specialBox = `<div class="special-footnote-box">${art.specialFootnote[currentLang]}</div>`;
+                }
 
                 var audioBox = art.audio ? `<div class="audio-wrapper"><p><strong>Музыка:</strong></p><audio controls><source src="${art.audio}" type="audio/mpeg"></audio></div>` : '';
 
@@ -386,6 +494,7 @@
                     <p><strong>${currentLang === 'ru' ? 'Место создания' : 'Place of creation'}:</strong> ${art.city[currentLang]}</p>
                     <p><strong>${currentLang === 'ru' ? 'Место хранения' : 'Current location'}:</strong> ${art.museum[currentLang]}</p>
                     <p>${formattedText}</p>
+                    ${specialBox}
                     ${audioBox}
                 `;
 
@@ -411,11 +520,16 @@
             document.getElementById('btn-umbrian').innerText = currentLang === 'ru' ? 'Умбрийская школа' : 'Umbrian School';
             document.getElementById('btn-roman').innerText = currentLang === 'ru' ? 'Римская школа' : 'Roman School';
 
+            document.getElementById('btn-early').innerText = currentLang === 'ru' ? 'Раннее Возрождение' : 'Early Renaissance';
+            document.getElementById('btn-high').innerText = currentLang === 'ru' ? 'Высокое Возрождение' : 'High Renaissance';
+            document.getElementById('btn-late').innerText = currentLang === 'ru' ? 'Позднее Возрождение' : 'Late Renaissance';
+
             hideAll();
             ensureItaly();
             drawMarkers('italy', 'all');
         }
 
+        // Запуск при загрузке
         drawMarkers('italy', 'all');
     </script>
 </body>
