@@ -387,6 +387,7 @@
 
         function showArtist(artistId) {
             hideAll();
+            previousScreen = 'school_' + artists[artistId].school;
             previousScreen = 'school';
             document.getElementById('schools-list').style.display = 'block';
             var artist = artists[artistId];
@@ -403,15 +404,22 @@
             drawMarkers('italy', 'all', artistId); 
         }
 
-           function goBack() {
-        if (previousScreen.startsWith('school_')) {
-            // Если мы пришли из конкретной школы, возвращаемся в неё
-            showSchoolInfo(previousScreen.split('_')[1]);
-        } else {
-            // Иначе возвращаемся к списку всех школ
-            showSchools(); 
+                  function goBack() {
+            // Если мы сейчас смотрим биографию художника
+            if (document.getElementById('info-title').innerHTML !== '' && document.getElementById('info-content').innerHTML.includes('Работы / Works')) {
+                // Возвращаемся к списку школ
+                showSchools();
+            } 
+            // Если мы смотрим описание школы
+            else if (document.getElementById('info-screen').style.display === 'block') {
+                // Возвращаемся к списку школ
+                showSchools();
+            }
+            // Если мы в главном меню
+            else {
+                hideAll();
+            }
         }
-    }
 
         function focusOnWork(workId) {
             var art = artworks.find(a => a.id === workId);
